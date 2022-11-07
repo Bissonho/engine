@@ -435,14 +435,14 @@ const Set<String> _genericFontFamilies = <String>{
 /// For iOS, default to -apple-system, where it should be available, otherwise
 /// default to Arial. BlinkMacSystemFont is used for Chrome on iOS.
 String get _fallbackFontFamily {
-  if (isIOS15) {
+  /*if (isIOS15) {
     // Remove the "-apple-system" fallback font because it causes a crash in
     // iOS 15.
     //
     // See github issue: https://github.com/flutter/flutter/issues/90705
     // See webkit bug: https://bugs.webkit.org/show_bug.cgi?id=231686
     return 'BlinkMacSystemFont';
-  }
+  }*/
   if (isMacOrIOS) {
     return '-apple-system, BlinkMacSystemFont';
   }
@@ -642,15 +642,16 @@ extension JsonExtensions on Map<dynamic, dynamic> {
 ///     Input: [0, 1, 2, 3]
 ///     Output: 0x00 0x01 0x02 0x03
 String bytesToHexString(List<int> data) {
-  return data.map((int byte) => '0x${byte.toRadixString(16).padLeft(2, '0')}').join(' ');
+  return data
+      .map((int byte) => '0x${byte.toRadixString(16).padLeft(2, '0')}')
+      .join(' ');
 }
 
 /// Sets a style property on [element].
 ///
 /// [name] is the name of the property. [value] is the value of the property.
 /// If [value] is null, removes the style property.
-void setElementStyle(
-    DomElement element, String name, String? value) {
+void setElementStyle(DomElement element, String name, String? value) {
   if (value == null) {
     element.style.removeProperty(name);
   } else {
@@ -698,7 +699,8 @@ void drawEllipse(
     double startAngle,
     double endAngle,
     bool antiClockwise) {
-  _ellipseFeatureDetected ??= getJsProperty<Object?>(context, 'ellipse') != null;
+  _ellipseFeatureDetected ??=
+      getJsProperty<Object?>(context, 'ellipse') != null;
   if (_ellipseFeatureDetected!) {
     context.ellipse(centerX, centerY, radiusX, radiusY, rotation, startAngle,
         endAngle, antiClockwise);

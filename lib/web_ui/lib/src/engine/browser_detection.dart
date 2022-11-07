@@ -4,7 +4,7 @@
 
 import 'package:meta/meta.dart';
 
-import 'dom.dart';
+//import 'dom.dart';
 
 // iOS 15 launched WebGL 2.0, but there's something broken about it, which
 // leads to apps failing to load. For now, we're forcing WebGL 1 on iOS.
@@ -56,9 +56,10 @@ BrowserEngine get browserEngine {
 }
 
 BrowserEngine _detectBrowserEngine() {
-  final String vendor = domWindow.navigator.vendor;
-  final String agent = domWindow.navigator.userAgent.toLowerCase();
-  return detectBrowserEngineByVendorAgent(vendor, agent);
+  //final String vendor = domWindow.navigator.vendor;
+  //final String agent = domWindow.navigator.userAgent.toLowerCase();
+  //return detectBrowserEngineByVendorAgent(vendor, agent);
+  return BrowserEngine.blink;
 }
 
 /// Detects browser engine for a given vendor and agent string.
@@ -81,7 +82,8 @@ BrowserEngine detectBrowserEngineByVendorAgent(String vendor, String agent) {
   }
 
   // Assume Blink otherwise, but issue a warning.
-  print('WARNING: failed to detect current browser engine. Assuming this is a Chromium-compatible browser.');
+  print(
+      'WARNING: failed to detect current browser engine. Assuming this is a Chromium-compatible browser.');
   return BrowserEngine.blink;
 }
 
@@ -135,7 +137,7 @@ OperatingSystem detectOperatingSystem({
   String? overrideUserAgent,
   int? overrideMaxTouchPoints,
 }) {
-  final String platform = overridePlatform ?? domWindow.navigator.platform!;
+  /*final String platform = overridePlatform ?? domWindow.navigator.platform!;
   final String userAgent = overrideUserAgent ?? domWindow.navigator.userAgent;
 
   if (platform.startsWith('Mac')) {
@@ -162,7 +164,8 @@ OperatingSystem detectOperatingSystem({
     return OperatingSystem.windows;
   } else {
     return OperatingSystem.unknown;
-  }
+  }*/
+  return OperatingSystem.windows;
 }
 
 /// List of Operating Systems we know to be working on laptops/desktops.
@@ -196,13 +199,13 @@ bool get isMacOrIOS =>
     operatingSystem == OperatingSystem.macOs;
 
 /// Detect iOS 15.
-bool get isIOS15 {
+/*bool get isIOS15 {
   if (debugIsIOS15 != null) {
     return debugIsIOS15!;
   }
   return operatingSystem == OperatingSystem.iOs &&
       domWindow.navigator.userAgent.contains('OS 15_');
-}
+}*/
 
 /// If set to true pretends that the current browser is iOS Safari.
 ///
@@ -243,7 +246,7 @@ int get webGLVersion =>
 ///
 /// Our CanvasKit backend is affected due to: https://github.com/emscripten-core/emscripten/issues/11819
 int _detectWebGLVersion() {
-  final DomCanvasElement canvas = createDomCanvasElement(
+  /*final DomCanvasElement canvas = createDomCanvasElement(
     width: 1,
     height: 1,
   );
@@ -256,5 +259,6 @@ int _detectWebGLVersion() {
   if (canvas.getContext('webgl') != null) {
     return WebGLVersion.webgl1;
   }
-  return -1;
+  return -1;*/
+  return WebGLVersion.webgl1;
 }
