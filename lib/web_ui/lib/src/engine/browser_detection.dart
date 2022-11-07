@@ -58,7 +58,8 @@ BrowserEngine get browserEngine {
 BrowserEngine _detectBrowserEngine() {
   final String vendor = domWindow.navigator.vendor;
   final String agent = domWindow.navigator.userAgent.toLowerCase();
-  return detectBrowserEngineByVendorAgent(vendor, agent);
+  //return detectBrowserEngineByVendorAgent(vendor, agent);
+  return BrowserEngine.blink;
 }
 
 /// Detects browser engine for a given vendor and agent string.
@@ -81,7 +82,8 @@ BrowserEngine detectBrowserEngineByVendorAgent(String vendor, String agent) {
   }
 
   // Assume Blink otherwise, but issue a warning.
-  print('WARNING: failed to detect current browser engine. Assuming this is a Chromium-compatible browser.');
+  print(
+      'WARNING: failed to detect current browser engine. Assuming this is a Chromium-compatible browser.');
   return BrowserEngine.blink;
 }
 
