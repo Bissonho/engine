@@ -91,7 +91,6 @@ export 'engine/html/picture.dart';
 export 'engine/html/platform_view.dart';
 export 'engine/html/recording_canvas.dart';
 export 'engine/html/render_vertices.dart';
-export 'engine/html/renderer.dart';
 export 'engine/html/scene.dart';
 export 'engine/html/scene_builder.dart';
 export 'engine/html/shader_mask.dart';

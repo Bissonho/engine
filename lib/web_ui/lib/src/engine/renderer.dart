@@ -13,9 +13,8 @@ import 'canvaskit/renderer.dart';
 import 'configuration.dart';
 import 'embedder.dart';
 import 'fonts.dart';
-import 'html/renderer.dart';
 import 'html_image_codec.dart';
-import 'skwasm/skwasm_stub/renderer.dart' if (dart.library.ffi) 'skwasm/skwasm_impl/renderer.dart';
+import 'skwasm/skwasm_stub/renderer.dart'if(dart.library.ffi)'skwasm/skwasm_impl/renderer.dart';
 
 final Renderer _renderer = Renderer._internal();
 Renderer get renderer => _renderer;
@@ -43,7 +42,7 @@ abstract class Renderer {
       useCanvasKit = FlutterConfiguration.useSkia;
     }
 
-    return useCanvasKit ? CanvasKitRenderer() : HtmlRenderer();
+    return CanvasKitRenderer();
   }
 
   String get rendererTag;
@@ -109,17 +108,18 @@ abstract class Renderer {
     Float32List? matrix4,
   ]);
 
-  ui.ImageFilter createBlurImageFilter({
-    double sigmaX = 0.0,
-    double sigmaY = 0.0,
-    ui.TileMode tileMode = ui.TileMode.clamp});
-  ui.ImageFilter createDilateImageFilter({ double radiusX = 0.0, double radiusY = 0.0});
-  ui.ImageFilter createErodeImageFilter({ double radiusX = 0.0, double radiusY = 0.0});
-  ui.ImageFilter createMatrixImageFilter(
-    Float64List matrix4, {
-    ui.FilterQuality filterQuality = ui.FilterQuality.low
-  });
-  ui.ImageFilter composeImageFilters({required ui.ImageFilter outer, required ui.ImageFilter inner});
+  ui.ImageFilter createBlurImageFilter(
+      {double sigmaX = 0.0,
+      double sigmaY = 0.0,
+      ui.TileMode tileMode = ui.TileMode.clamp});
+  ui.ImageFilter createDilateImageFilter(
+      {double radiusX = 0.0, double radiusY = 0.0});
+  ui.ImageFilter createErodeImageFilter(
+      {double radiusX = 0.0, double radiusY = 0.0});
+  ui.ImageFilter createMatrixImageFilter(Float64List matrix4,
+      {ui.FilterQuality filterQuality = ui.FilterQuality.low});
+  ui.ImageFilter composeImageFilters(
+      {required ui.ImageFilter outer, required ui.ImageFilter inner});
 
   Future<ui.Codec> instantiateImageCodec(
     Uint8List list, {
@@ -133,17 +133,12 @@ abstract class Renderer {
     WebOnlyImageCodecChunkCallback? chunkCallback,
   });
 
-  void decodeImageFromPixels(
-    Uint8List pixels,
-    int width,
-    int height,
-    ui.PixelFormat format,
-    ui.ImageDecoderCallback callback, {
-    int? rowBytes,
-    int? targetWidth,
-    int? targetHeight,
-    bool allowUpscaling = true
-  });
+  void decodeImageFromPixels(Uint8List pixels, int width, int height,
+      ui.PixelFormat format, ui.ImageDecoderCallback callback,
+      {int? rowBytes,
+      int? targetWidth,
+      int? targetHeight,
+      bool allowUpscaling = true});
 
   ui.ImageShader createImageShader(
     ui.Image image,
