@@ -229,7 +229,7 @@ bool get isFirefox => browserEngine == BrowserEngine.firefox;*/
 //#Unity
 
 /// Use in tests to simulate the detection of iOS 15.
-bool? debugIsIOS15;
+//bool? debugIsIOS15;
 
 int? _cachedWebGLVersion;
 
