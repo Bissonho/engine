@@ -9,10 +9,6 @@ import 'package:path/path.dart' as path;
 import 'browser.dart';
 import 'browser_lock.dart';
 import 'chrome.dart';
-import 'edge.dart';
-import 'environment.dart';
-import 'firefox.dart';
-import 'safari_macos.dart';
 
 /// The port number for debugging.
 const int kDevtoolsPort = 12345;
@@ -27,15 +23,6 @@ abstract class PlatformBinding {
   static PlatformBinding? _instance;
 
   static PlatformBinding _createInstance() {
-    if (io.Platform.isLinux) {
-      return LinuxPlatformBinding();
-    }
-    if (io.Platform.isMacOS) {
-      if (environment.isMacosArm) {
-        return MacArmPlatformBinding();
-      }
-      return Macx64PlatformBinding();
-    }
     if (io.Platform.isWindows) {
       return WindowsPlatformBinding();
     }
@@ -99,115 +86,6 @@ class WindowsPlatformBinding implements PlatformBinding {
   String getCommandToRunEdge() => 'MicrosoftEdgeLauncher';
 }
 
-class LinuxPlatformBinding implements PlatformBinding {
-  @override
-  String getChromeBuild(ChromeLock chromeLock) {
-    return chromeLock.linux;
-  }
-
-  @override
-  String getChromeDownloadUrl(String version) =>
-      '$_kBaseDownloadUrl/Linux_x64%2F$version%2Fchrome-linux.zip?alt=media';
-
-  @override
-  String getChromeDriverDownloadUrl(String version) =>
-      '$_kBaseDownloadUrl/Linux_x64%2F$version%2Fchromedriver_linux64.zip?alt=media';
-
-  @override
-  String getChromeExecutablePath(io.Directory versionDir) =>
-      path.join(versionDir.path, 'chrome');
-
-  @override
-  String getFirefoxDownloadUrl(String version) =>
-      'https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/linux-x86_64/en-US/'
-      '${getFirefoxDownloadFilename(version)}';
-
-  @override
-  String getFirefoxDownloadFilename(String version) =>
-      'firefox-$version.tar.bz2';
-
-  @override
-  String getFirefoxExecutablePath(io.Directory versionDir) =>
-      path.join(versionDir.path, 'firefox', 'firefox');
-
-  @override
-  String getFirefoxLatestVersionUrl() =>
-      'https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US';
-
-  @override
-  String getMacApplicationLauncher() =>
-      throw UnsupportedError('Safari is not supported on Linux');
-
-  @override
-  String getCommandToRunEdge() =>
-      throw UnsupportedError('Edge is not supported on Linux');
-}
-
-abstract class MacPlatformBinding implements PlatformBinding {
-  String get chromePlatformString;
-
-  @override
-  String getChromeDownloadUrl(String version) =>
-      '$_kBaseDownloadUrl/$chromePlatformString%2F$version%2Fchrome-mac.zip?alt=media';
-
-  @override
-  String getChromeDriverDownloadUrl(String version) =>
-      '$_kBaseDownloadUrl/$chromePlatformString%2F$version%2Fchromedriver_mac64.zip?alt=media';
-
-  @override
-  String getChromeExecutablePath(io.Directory versionDir) => path.join(
-        versionDir.path,
-        'chrome-mac',
-        'Chromium.app',
-        'Contents',
-        'MacOS',
-        'Chromium',
-      );
-
-  @override
-  String getFirefoxDownloadUrl(String version) =>
-      'https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/mac/en-US/'
-      '${getFirefoxDownloadFilename(version)}';
-
-  @override
-  String getFirefoxDownloadFilename(String version) => 'Firefox $version.dmg';
-
-  @override
-  String getFirefoxExecutablePath(io.Directory versionDir) =>
-      path.join(versionDir.path, 'Firefox.app', 'Contents', 'MacOS', 'firefox');
-
-  @override
-  String getFirefoxLatestVersionUrl() =>
-      'https://download.mozilla.org/?product=firefox-latest&os=osx&lang=en-US';
-
-  @override
-  String getMacApplicationLauncher() => 'open';
-
-  @override
-  String getCommandToRunEdge() =>
-      throw UnimplementedError('Tests for Edge are not implemented for MacOS.');
-}
-
-class MacArmPlatformBinding extends MacPlatformBinding {
-  @override
-  String get chromePlatformString => 'Mac_Arm';
-
-  @override
-  String getChromeBuild(ChromeLock chromeLock) {
-    return chromeLock.macArm;
-  }
-}
-
-class Macx64PlatformBinding extends MacPlatformBinding {
-  @override
-  String get chromePlatformString => 'Mac';
-
-  @override
-  String getChromeBuild(ChromeLock chromeLock) {
-    return chromeLock.mac;
-  }
-}
-
 class BrowserInstallation {
   const BrowserInstallation({
     required this.version,
@@ -265,12 +143,6 @@ BrowserEnvironment getBrowserEnvironment(String browserName) {
   switch (browserName) {
     case kChrome:
       return ChromeEnvironment();
-    case kEdge:
-      return EdgeEnvironment();
-    case kFirefox:
-      return FirefoxEnvironment();
-    case kSafari:
-      return SafariMacOsEnvironment();
   }
   throw UnsupportedError('Browser $browserName is not supported.');
 }

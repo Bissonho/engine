@@ -24,28 +24,25 @@ class BrowserLock {
     return BrowserLock._fromYaml(yaml);
   }
 
-  BrowserLock._fromYaml(YamlMap yaml) :
-    chromeLock = ChromeLock._fromYaml(yaml['chrome'] as YamlMap),
-    firefoxLock = FirefoxLock._fromYaml(yaml['firefox'] as YamlMap),
-    edgeLock = EdgeLock._fromYaml(yaml['edge'] as YamlMap);
+  BrowserLock._fromYaml(YamlMap yaml)
+      : chromeLock = ChromeLock._fromYaml(yaml['chrome'] as YamlMap);
 
   final ChromeLock chromeLock;
-  final FirefoxLock firefoxLock;
-  final EdgeLock edgeLock;
 }
 
 class ChromeLock {
-  ChromeLock._fromYaml(YamlMap yaml) :
-    linux = (yaml['Linux'] as int).toString(),
-    mac = (yaml['Mac'] as int).toString(),
-    macArm = (yaml['Mac_Arm'] as int).toString(),
-    windows = (yaml['Win'] as int).toString(),
-    version = yaml['version'] as String;
+  ChromeLock._fromYaml(YamlMap yaml)
+      : linux = (yaml['Linux'] as int).toString(),
+        mac = (yaml['Mac'] as int).toString(),
+        macArm = (yaml['Mac_Arm'] as int).toString(),
+        windows = (yaml['Win'] as int).toString(),
+        version = yaml['version'] as String;
 
   final String linux;
   final String mac;
   final String macArm;
   final String windows;
+
   /// The major version of Chromium represented by this lock. E.g: '96' (for Chromium 96.0.554.51)
   final String version;
 
@@ -53,18 +50,4 @@ class ChromeLock {
   String get versionForCurrentPlatform {
     return PlatformBinding.instance.getChromeBuild(this);
   }
-}
-
-class FirefoxLock {
-  FirefoxLock._fromYaml(YamlMap yaml) :
-    version = yaml['version'] as String;
-
-  final String version;
-}
-
-class EdgeLock {
-  EdgeLock._fromYaml(YamlMap yaml) :
-      launcherVersion = yaml['launcher_version'] as String;
-
-  final String launcherVersion;
 }
