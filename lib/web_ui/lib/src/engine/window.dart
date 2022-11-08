@@ -15,9 +15,9 @@ import 'package:ui/ui.dart' as ui;
 import '../engine.dart' show registerHotRestartListener;
 import 'browser_detection.dart';
 import 'dom.dart';
-import 'navigation/history.dart';
-import 'navigation/js_url_strategy.dart';
-import 'navigation/url_strategy.dart';
+//import 'navigation/history.dart'; Unity: remove navigation
+//import 'navigation/js_url_strategy.dart'; Unity: remove navigation
+//import 'navigation/url_strategy.dart'; Unity: remove navigation
 import 'platform_dispatcher.dart';
 import 'services.dart';
 import 'test_embedding.dart';
@@ -34,13 +34,14 @@ const bool debugPrintPlatformMessages = false;
 /// check to determine whether it was set or not. We need an extra boolean.
 bool _isUrlStrategySet = false;
 
+// Unity: remove navigation
 /// A custom URL strategy set by the app before running.
-UrlStrategy? _customUrlStrategy;
+/*UrlStrategy? _customUrlStrategy;
 set customUrlStrategy(UrlStrategy? strategy) {
   assert(!_isUrlStrategySet, 'Cannot set URL strategy more than once.');
   _isUrlStrategySet = true;
   _customUrlStrategy = strategy;
-}
+}*/
 
 /// The Web implementation of [ui.SingletonFlutterWindow].
 class EngineFlutterWindow extends ui.SingletonFlutterWindow {
@@ -48,13 +49,16 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     final EnginePlatformDispatcher engineDispatcher =
         platformDispatcher as EnginePlatformDispatcher;
     engineDispatcher.windows[_windowId] = this;
-    engineDispatcher.windowConfigurations[_windowId] = const ui.ViewConfiguration();
+    engineDispatcher.windowConfigurations[_windowId] =
+        const ui.ViewConfiguration();
+
+    /*Unity: remove navigation
     if (_isUrlStrategySet) {
       _browserHistory = createHistoryForExistingState(_customUrlStrategy);
     }
     registerHotRestartListener(() {
       _browserHistory?.dispose();
-    });
+    });*/
   }
 
   final Object _windowId;
@@ -64,10 +68,13 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
 
   /// Handles the browser history integration to allow users to use the back
   /// button, etc.
+  /*Unity: remove navigation
   BrowserHistory get browserHistory {
     return _browserHistory ??=
         createHistoryForExistingState(_urlStrategyForInitialization);
-  }
+  }*/
+
+  /*Unity: remove navigation
 
   UrlStrategy? get _urlStrategyForInitialization {
     final UrlStrategy? urlStrategy =
@@ -79,7 +86,9 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
 
   BrowserHistory?
       _browserHistory; // Must be either SingleEntryBrowserHistory or MultiEntriesBrowserHistory.
+      */
 
+  /*Unity: remove navigation
   Future<void> _useSingleEntryBrowserHistory() async {
     // Recreate the browser history mode that's appropriate for the existing
     // history state.
@@ -102,8 +111,9 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     final UrlStrategy? strategy = _browserHistory?.urlStrategy;
     await _browserHistory?.tearDown();
     _browserHistory = SingleEntryBrowserHistory(urlStrategy: strategy);
-  }
+  }*/
 
+  /*Unity: remove navigation
   Future<void> _useMultiEntryBrowserHistory() async {
     // Recreate the browser history mode that's appropriate for the existing
     // history state.
@@ -126,8 +136,9 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     final UrlStrategy? strategy = _browserHistory?.urlStrategy;
     await _browserHistory?.tearDown();
     _browserHistory = MultiEntriesBrowserHistory(urlStrategy: strategy);
-  }
+  }*/
 
+  /*Unity: remove navigation
   @visibleForTesting
   Future<void> debugInitializeHistory(
     UrlStrategy? strategy, {
@@ -141,15 +152,16 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     } else {
       _browserHistory = MultiEntriesBrowserHistory(urlStrategy: strategy);
     }
-  }
+  }*/
 
+  /*Unity: remove navigation
   Future<void> resetHistory() async {
     await _browserHistory?.tearDown();
     _browserHistory = null;
     // Reset the globals too.
     _isUrlStrategySet = false;
     _customUrlStrategy = null;
-  }
+  }*/
 
   Future<void> _endOfTheLine = Future<void>.value();
 
@@ -167,10 +179,12 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     return result;
   }
 
+  /*Unity: remove navigation
   Future<bool> handleNavigationMessage(ByteData? data) async {
     return _waitInTheLine(() async {
       final MethodCall decoded = const JSONMethodCodec().decodeMethodCall(data);
-      final Map<String, dynamic>? arguments = decoded.arguments as Map<String, dynamic>?;
+      final Map<String, dynamic>? arguments =
+          decoded.arguments as Map<String, dynamic>?;
       switch (decoded.method) {
         case 'selectMultiEntryHistory':
           await _useMultiEntryBrowserHistory();
@@ -195,7 +209,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
       }
       return false;
     });
-  }
+  }*/
 
   @override
   ui.ViewConfiguration get viewConfiguration {
@@ -307,8 +321,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     double height = 0;
     double width = 0;
     if (domWindow.visualViewport != null) {
-      height =
-          domWindow.visualViewport!.height!.toDouble() * devicePixelRatio;
+      height = domWindow.visualViewport!.height!.toDouble() * devicePixelRatio;
       width = domWindow.visualViewport!.width!.toDouble() * devicePixelRatio;
     } else {
       height = domWindow.innerHeight! * devicePixelRatio;
@@ -343,7 +356,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
   ui.Size? webOnlyDebugPhysicalSizeOverride;
 }
 
-typedef _JsSetUrlStrategy = void Function(JsUrlStrategy?);
+/*Unity: remove navigation typedef _JsSetUrlStrategy = void Function(JsUrlStrategy?); */
 
 /// A JavaScript hook to customize the URL strategy of a Flutter app.
 //
@@ -351,19 +364,21 @@ typedef _JsSetUrlStrategy = void Function(JsUrlStrategy?);
 // https://github.com/flutter/flutter/blob/custom_location_strategy/packages/flutter_web_plugins/lib/src/navigation/js_url_strategy.dart
 //
 // TODO(mdebbar): Add integration test https://github.com/flutter/flutter/issues/66852
-@JS('_flutter_web_set_location_strategy')
-external set jsSetUrlStrategy(_JsSetUrlStrategy? newJsSetUrlStrategy);
 
+/*Unity: remove navigation
+@JS('_flutter_web_set_location_strategy')
+external set jsSetUrlStrategy(_JsSetUrlStrategy? newJsSetUrlStrategy); */
+
+/*Unity: remove navigation
 UrlStrategy? _createDefaultUrlStrategy() {
   return ui.debugEmulateFlutterTesterEnvironment
       ? TestUrlStrategy.fromEntry(const TestHistoryEntry('default', null, '/'))
       : const HashUrlStrategy();
-}
+}*/
 
 /// The Web implementation of [ui.SingletonFlutterWindow].
 class EngineSingletonFlutterWindow extends EngineFlutterWindow {
-  EngineSingletonFlutterWindow(
-      super.windowId, super.platformDispatcher);
+  EngineSingletonFlutterWindow(super.windowId, super.platformDispatcher);
 
   @override
   double get devicePixelRatio =>

@@ -13,7 +13,8 @@ import '../engine.dart';
 
 Future<void>? _platformInitializedFuture;
 
-Future<void> initializeTestFlutterViewEmbedder({double devicePixelRatio = 3.0}) {
+Future<void> initializeTestFlutterViewEmbedder(
+    {double devicePixelRatio = 3.0}) {
   // Force-initialize FlutterViewEmbedder so it doesn't overwrite test pixel ratio.
   ensureFlutterViewEmbedderInitialized();
 
@@ -54,7 +55,7 @@ class TestHistoryEntry {
 ///
 /// It keeps a list of history entries and event listeners in memory and
 /// manipulates them in order to achieve the desired functionality.
-class TestUrlStrategy extends UrlStrategy {
+/*class TestUrlStrategy extends UrlStrategy {
   /// Creates a instance of [TestUrlStrategy] with an empty string as the
   /// path.
   factory TestUrlStrategy() => TestUrlStrategy.fromEntry(const TestHistoryEntry(null, null, ''));
@@ -197,4 +198,4 @@ class TestUrlStrategy extends UrlStrategy {
     }
     return '$runtimeType: [\n${lines.join('\n')}\n]';
   }
-}
+}*/
