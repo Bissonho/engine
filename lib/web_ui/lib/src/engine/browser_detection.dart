@@ -20,12 +20,6 @@ enum BrowserEngine {
   /// Blink is assumed in case when a more precise browser engine wasn't
   /// detected.
   blink,
-
-  /// The engine that powers Safari.
-  webkit,
-
-  /// The engine that powers Firefox.
-  firefox,
 }
 
 /// html webgl version qualifier constants.

@@ -238,16 +238,18 @@ class TextField extends RoleManager {
       ..height = '${semanticsObject.rect!.height}px';
     semanticsObject.element.append(editableElement);
 
-    switch (browserEngine) {
+    _initializeForBlink();
+    /*switch (browserEngine) {
       case BrowserEngine.blink:
+        _initializeForBlink();
       //Unity
-      /*case BrowserEngine.firefox:
+    case BrowserEngine.firefox:
         _initializeForBlink();
         break;
       case BrowserEngine.webkit:
         _initializeForWebkit();
-        break;*/
-    }
+        break;
+    }*/
   }
 
   /// Chrome on Android reports text field activation as a "click" event.
