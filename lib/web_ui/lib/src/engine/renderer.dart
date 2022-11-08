@@ -7,10 +7,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:ui/ui.dart' as ui;
-
-import 'browser_detection.dart';
 import 'canvaskit/renderer.dart';
-import 'configuration.dart';
 import 'embedder.dart';
 import 'fonts.dart';
 import 'html_image_codec.dart';
