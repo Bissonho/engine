@@ -14,7 +14,6 @@ import 'configuration.dart';
 import 'embedder.dart';
 import 'fonts.dart';
 import 'html_image_codec.dart';
-import 'skwasm/skwasm_stub/renderer.dart'if(dart.library.ffi)'skwasm/skwasm_impl/renderer.dart';
 
 final Renderer _renderer = Renderer._internal();
 Renderer get renderer => _renderer;
@@ -26,7 +25,9 @@ Renderer get renderer => _renderer;
 /// of functionality needed by the rest of the generic web engine code.
 abstract class Renderer {
   factory Renderer._internal() {
-    if (FlutterConfiguration.flutterWebUseSkwasm) {
+    //Unity: Adapted to return to Canvaskit /Removed Skwas and htmlenderer
+
+    /*if (FlutterConfiguration.flutterWebUseSkwasm) {
       return SkwasmRenderer();
     }
     bool useCanvasKit;
@@ -40,7 +41,7 @@ abstract class Renderer {
       }
     } else {
       useCanvasKit = FlutterConfiguration.useSkia;
-    }
+    }*/
 
     return CanvasKitRenderer();
   }
