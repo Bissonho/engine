@@ -132,13 +132,14 @@ class TextDimensions {
     _invalidateBoundsCache();
   }
 
-  DomRect _readAndCacheMetrics() =>
-      _cachedBoundingClientRect ??= _element.getBoundingClientRect();
+  DomRect _readAndCacheMetrics() => _cachedBoundingClientRect ??= _element.getBoundingClientRect();
 
   /// The height of the paragraph being measured.
   double get height {
     double cachedHeight = _readAndCacheMetrics().height as double;
-    if (browserEngine == BrowserEngine.firefox &&
+
+    //#Unity
+    /*if (browserEngine == BrowserEngine.firefox &&
       // In the flutter tester environment, we use a predictable-size for font
       // measurement tests.
       !ui.debugEmulateFlutterTesterEnvironment) {
@@ -147,7 +148,7 @@ class TextDimensions {
       // This causes bottom of letters such as 'y' to be cutoff and
       // incorrect rendering of double underlines.
       cachedHeight += 1.0;
-    }
+    }*/
     return cachedHeight;
   }
 }

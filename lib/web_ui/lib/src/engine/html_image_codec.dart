@@ -13,16 +13,15 @@ import 'safe_browser_api.dart';
 import 'util.dart';
 
 Object? get _jsImageDecodeFunction => getJsProperty<Object?>(
-  getJsProperty<Object>(
-    getJsProperty<Object>(domWindow, 'Image'),
-    'prototype',
-  ),
-  'decode',
-);
+      getJsProperty<Object>(
+        getJsProperty<Object>(domWindow, 'Image'),
+        'prototype',
+      ),
+      'decode',
+    );
 final bool _supportsDecode = _jsImageDecodeFunction != null;
 
-typedef WebOnlyImageCodecChunkCallback = void Function(
-    int cumulativeBytesLoaded, int expectedTotalBytes);
+typedef WebOnlyImageCodecChunkCallback = void Function(int cumulativeBytesLoaded, int expectedTotalBytes);
 
 class HtmlCodec implements ui.Codec {
   HtmlCodec(this.src, {this.chunkCallback});
@@ -42,7 +41,7 @@ class HtmlCodec implements ui.Codec {
     // Currently there is no way to watch decode progress, so
     // we add 0/100 , 100/100 progress callbacks to enable loading progress
     // builders to create UI.
-      chunkCallback?.call(0, 100);
+    chunkCallback?.call(0, 100);
     if (_supportsDecode) {
       final DomHTMLImageElement imgElement = createDomHTMLImageElement();
       imgElement.src = src;
@@ -56,11 +55,11 @@ class HtmlCodec implements ui.Codec {
         int naturalWidth = imgElement.naturalWidth;
         int naturalHeight = imgElement.naturalHeight;
         // Workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=700533.
-        if (naturalWidth == 0 && naturalHeight == 0 && browserEngine == BrowserEngine.firefox) {
+        /*if (naturalWidth == 0 && naturalHeight == 0 && browserEngine == BrowserEngine.firefox) {
           const int kDefaultImageSizeFallback = 300;
           naturalWidth = kDefaultImageSizeFallback;
           naturalHeight = kDefaultImageSizeFallback;
-        }
+        }*/
         final HtmlImage image = HtmlImage(
           imgElement,
           naturalWidth,
@@ -163,7 +162,6 @@ class HtmlImage implements ui.Image {
     }
     return throw StateError('Image.debugDisposed is only available when asserts are enabled.');
   }
-
 
   @override
   ui.Image clone() => this;

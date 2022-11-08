@@ -16,8 +16,7 @@ import 'path_to_svg_clip.dart';
 import 'surface.dart';
 
 /// A surface that applies an [ColorFilter] to its children.
-class PersistedColorFilter extends PersistedContainerSurface
-    implements ui.ColorFilterEngineLayer {
+class PersistedColorFilter extends PersistedContainerSurface implements ui.ColorFilterEngineLayer {
   PersistedColorFilter(PersistedColorFilter? super.oldLayer, this.filter);
 
   @override
@@ -139,9 +138,7 @@ class PersistedColorFilter extends PersistedContainerSurface
     _filterElement = svgFilter.element;
     flutterViewEmbedder.addResource(_filterElement!);
     style.filter = 'url(#${svgFilter.id})';
-    if (colorFilterBlendMode == ui.BlendMode.saturation ||
-        colorFilterBlendMode == ui.BlendMode.multiply ||
-        colorFilterBlendMode == ui.BlendMode.modulate) {
+    if (colorFilterBlendMode == ui.BlendMode.saturation || colorFilterBlendMode == ui.BlendMode.multiply || colorFilterBlendMode == ui.BlendMode.modulate) {
       style.backgroundColor = colorToCssString(filterColor)!;
     }
   }
@@ -163,8 +160,7 @@ class PersistedColorFilter extends PersistedContainerSurface
   }
 }
 
-SvgFilter svgFilterFromBlendMode(
-    ui.Color? filterColor, ui.BlendMode colorFilterBlendMode) {
+SvgFilter svgFilterFromBlendMode(ui.Color? filterColor, ui.BlendMode colorFilterBlendMode) {
   final SvgFilter svgFilter;
   switch (colorFilterBlendMode) {
     case ui.BlendMode.srcIn:
@@ -222,8 +218,7 @@ SvgFilter svgFilterFromBlendMode(
     case ui.BlendMode.softLight:
     case ui.BlendMode.difference:
     case ui.BlendMode.exclusion:
-      svgFilter = _blendColorFilterToSvg(
-          filterColor, blendModeToSvgEnum(colorFilterBlendMode)!);
+      svgFilter = _blendColorFilterToSvg(filterColor, blendModeToSvgEnum(colorFilterBlendMode)!);
       break;
     case ui.BlendMode.src:
     case ui.BlendMode.dst:
@@ -270,15 +265,14 @@ class SvgFilterBuilder {
   static int _filterIdCounter = 0;
 
   final String id;
-  final SVGSVGElement root = kSvgResourceHeader.cloneNode(false) as
-      SVGSVGElement;
+  final SVGSVGElement root = kSvgResourceHeader.cloneNode(false) as SVGSVGElement;
   final SVGFilterElement filter = createSVGFilterElement();
 
   set colorInterpolationFilters(String filters) {
     filter.setAttribute('color-interpolation-filters', filters);
   }
 
-  void setFeColorMatrix(List<double> matrix, { required String result }) {
+  void setFeColorMatrix(List<double> matrix, {required String result}) {
     final SVGFEColorMatrixElement element = createSVGFEColorMatrixElement();
     element.type!.baseVal = kMatrixType;
     element.result!.baseVal = result;
@@ -355,12 +349,17 @@ class SvgFilterBuilder {
 
     // WebKit will not render if x/y/width/height is specified. So we return
     // explicit size here unless running on WebKit.
-    if (browserEngine != BrowserEngine.webkit) {
+    //Unity
+    /*if (browserEngine != BrowserEngine.webkit) {
       element.x!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, 0);
       element.y!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, 0);
       element.width!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, width);
       element.height!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, height);
-    }
+    }*/
+    element.x!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, 0);
+    element.y!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, 0);
+    element.width!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, width);
+    element.height!.baseVal!.newValueSpecifiedUnits(svgLengthTypeNumber, height);
     filter.append(element);
   }
 
@@ -401,10 +400,26 @@ SvgFilter _srcInColorFilterToSvg(ui.Color? color) {
   builder.colorInterpolationFilters = 'sRGB';
   builder.setFeColorMatrix(
     const <double>[
-      0, 0, 0, 0, 1,
-      0, 0, 0, 0, 1,
-      0, 0, 0, 0, 1,
-      0, 0, 0, 1, 0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
     ],
     result: 'destalpha',
   );
@@ -478,8 +493,7 @@ SvgFilter _xorColorFilterToSvg(ui.Color? color) {
 
 // The source image and color are composited using :
 // result = k1 *in*in2 + k2*in + k3*in2 + k4.
-SvgFilter _compositeColorFilterToSvg(
-    ui.Color? color, double k1, double k2, double k3, double k4) {
+SvgFilter _compositeColorFilterToSvg(ui.Color? color, double k1, double k2, double k3, double k4) {
   final SvgFilterBuilder builder = SvgFilterBuilder();
   builder.setFeFlood(
     floodColor: colorToCssString(color) ?? '',
@@ -510,10 +524,26 @@ SvgFilter _modulateColorFilterToSvg(ui.Color color) {
   final SvgFilterBuilder builder = SvgFilterBuilder();
   builder.setFeColorMatrix(
     <double>[
-      0, 0, 0, 0, r,
-      0, 0, 0, 0, g,
-      0, 0, 0, 0, b,
-      0, 0, 0, 1, 0,
+      0,
+      0,
+      0,
+      0,
+      r,
+      0,
+      0,
+      0,
+      0,
+      g,
+      0,
+      0,
+      0,
+      0,
+      b,
+      0,
+      0,
+      0,
+      1,
+      0,
     ],
     result: 'recolor',
   );
@@ -531,8 +561,7 @@ SvgFilter _modulateColorFilterToSvg(ui.Color color) {
 }
 
 // Uses feBlend element to blend source image with a color.
-SvgFilter _blendColorFilterToSvg(ui.Color? color, SvgBlendMode svgBlendMode,
-    {bool swapLayers = false}) {
+SvgFilter _blendColorFilterToSvg(ui.Color? color, SvgBlendMode svgBlendMode, {bool swapLayers = false}) {
   final SvgFilterBuilder builder = SvgFilterBuilder();
   builder.setFeFlood(
     floodColor: colorToCssString(color) ?? '',
