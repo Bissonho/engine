@@ -477,7 +477,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         final MethodCall decoded = codec.decodeMethodCall(data);
         switch (decoded.method) {
           case 'SystemNavigator.pop':
-            // TODO(gspencergoog): As multi-window support expands, the pop call
+            /*// TODO(gspencergoog): As multi-window support expands, the pop call
             // will need to include the window ID. Right now only one window is
             // supported.
             (_windows[0]! as EngineFlutterWindow)
@@ -486,7 +486,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
                 .then((_) {
               replyToPlatformMessage(
                   callback, codec.encodeSuccessEnvelope(true));
-            });
+            });*/
             return;
           case 'HapticFeedback.vibrate':
             final String? type = decoded.arguments as String?;
