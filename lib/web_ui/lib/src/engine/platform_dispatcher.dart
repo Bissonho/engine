@@ -1140,8 +1140,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   ///    requests from the embedder.
   @override
   String get defaultRouteName {
-    return _defaultRouteName ??=
-        (_windows[0]! as EngineFlutterWindow).browserHistory.currentPath;
+    return _defaultRouteName = '/';
   }
 
   /// Lazily initialized when the `defaultRouteName` getter is invoked.
