@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-@JS()
-library window;
+/*@JS()
+library window;*/
 
 import 'dart:async';
 import 'dart:typed_data';
@@ -15,12 +15,12 @@ import 'package:ui/ui.dart' as ui;
 import '../engine.dart' show registerHotRestartListener;
 import 'browser_detection.dart';
 import 'dom.dart';
-import 'navigation/history.dart';
+//import 'navigation/history.dart';
 //import 'navigation/js_url_strategy.dart';
-import 'navigation/url_strategy.dart';
+//import 'navigation/url_strategy.dart';
 import 'platform_dispatcher.dart';
 import 'services.dart';
-import 'test_embedding.dart';
+//import 'test_embedding.dart';
 import 'util.dart';
 
 typedef _HandleMessageCallBack = Future<bool> Function();
@@ -35,12 +35,12 @@ const bool debugPrintPlatformMessages = false;
 bool _isUrlStrategySet = false;
 
 /// A custom URL strategy set by the app before running.
-UrlStrategy? _customUrlStrategy;
+/*UrlStrategy? _customUrlStrategy;
 set customUrlStrategy(UrlStrategy? strategy) {
   assert(!_isUrlStrategySet, 'Cannot set URL strategy more than once.');
   _isUrlStrategySet = true;
   _customUrlStrategy = strategy;
-}
+}*/
 
 /// The Web implementation of [ui.SingletonFlutterWindow].
 class EngineFlutterWindow extends ui.SingletonFlutterWindow {
@@ -50,12 +50,12 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     engineDispatcher.windows[_windowId] = this;
     engineDispatcher.windowConfigurations[_windowId] =
         const ui.ViewConfiguration();
-    if (_isUrlStrategySet) {
+    /*if (_isUrlStrategySet) {
       _browserHistory = createHistoryForExistingState(_customUrlStrategy);
     }
     registerHotRestartListener(() {
       _browserHistory?.dispose();
-    });
+    });*/
   }
 
   final Object _windowId;
@@ -65,7 +65,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
 
   /// Handles the browser history integration to allow users to use the back
   /// button, etc.
-  BrowserHistory get browserHistory {
+  /*BrowserHistory get browserHistory {
     return _browserHistory ??=
         createHistoryForExistingState(_urlStrategyForInitialization);
   }
@@ -142,15 +142,15 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     } else {
       _browserHistory = MultiEntriesBrowserHistory(urlStrategy: strategy);
     }
-  }
+  }*/
 
-  Future<void> resetHistory() async {
+  /*Future<void> resetHistory() async {
     await _browserHistory?.tearDown();
     _browserHistory = null;
     // Reset the globals too.
     _isUrlStrategySet = false;
     _customUrlStrategy = null;
-  }
+  }*/
 
   Future<void> _endOfTheLine = Future<void>.value();
 
@@ -173,7 +173,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
       final MethodCall decoded = const JSONMethodCodec().decodeMethodCall(data);
       final Map<String, dynamic>? arguments =
           decoded.arguments as Map<String, dynamic>?;
-      switch (decoded.method) {
+      /*switch (decoded.method) {
         case 'selectMultiEntryHistory':
           await _useMultiEntryBrowserHistory();
           return true;
@@ -194,7 +194,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
             replace: arguments.tryBool('replace') ?? false,
           );
           return true;
-      }
+      }*/
       return false;
     });
   }
@@ -352,14 +352,14 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
 // https://github.com/flutter/flutter/blob/custom_location_strategy/packages/flutter_web_plugins/lib/src/navigation/js_url_strategy.dart
 //
 // TODO(mdebbar): Add integration test https://github.com/flutter/flutter/issues/66852
-@JS('_flutter_web_set_location_strategy')
+/*@JS('_flutter_web_set_location_strategy')
 //external set jsSetUrlStrategy(_JsSetUrlStrategy? newJsSetUrlStrategy);
 
 UrlStrategy? _createDefaultUrlStrategy() {
   return ui.debugEmulateFlutterTesterEnvironment
       ? TestUrlStrategy.fromEntry(const TestHistoryEntry('default', null, '/'))
       : const HashUrlStrategy();
-}
+}*/
 
 /// The Web implementation of [ui.SingletonFlutterWindow].
 class EngineSingletonFlutterWindow extends EngineFlutterWindow {
