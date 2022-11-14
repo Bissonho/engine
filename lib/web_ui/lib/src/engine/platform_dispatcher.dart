@@ -10,11 +10,11 @@ import 'package:ui/src/engine/canvaskit/renderer.dart';
 import 'package:ui/src/engine/renderer.dart';
 import 'package:ui/ui.dart' as ui;
 
-import '../engine.dart'  show platformViewManager, registerHotRestartListener;
+import '../engine.dart' show platformViewManager, registerHotRestartListener;
 import 'clipboard.dart';
 import 'dom.dart';
 import 'embedder.dart';
-import 'mouse_cursor.dart';
+//import 'mouse_cursor.dart';
 import 'platform_views/message_handler.dart';
 import 'plugins.dart';
 import 'safe_browser_api.dart';
@@ -33,7 +33,6 @@ ui.VoidCallback? scheduleFrameCallback;
 typedef HighContrastListener = void Function(bool enabled);
 typedef _KeyDataResponseCallback = void Function(bool handled);
 
-
 /// Determines if high contrast is enabled using media query 'forced-colors: active' for Windows
 class HighContrastSupport {
   static HighContrastSupport instance = HighContrastSupport();
@@ -42,7 +41,8 @@ class HighContrastSupport {
   final List<HighContrastListener> _listeners = <HighContrastListener>[];
 
   /// Reference to css media query that indicates whether high contrast is on.
-  final DomMediaQueryList _highContrastMediaQuery = domWindow.matchMedia(_highContrastMediaQueryString);
+  final DomMediaQueryList _highContrastMediaQuery =
+      domWindow.matchMedia(_highContrastMediaQueryString);
   late final DomEventListener _onHighContrastChangeListener =
       allowInterop(_onHighContrastChange);
 
@@ -144,7 +144,8 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   ///
   /// This should be considered a protected member, only to be used by
   /// [PlatformDispatcher] subclasses.
-  Map<Object, ui.ViewConfiguration> get windowConfigurations => _windowConfigurations;
+  Map<Object, ui.ViewConfiguration> get windowConfigurations =>
+      _windowConfigurations;
   final Map<Object, ui.ViewConfiguration> _windowConfigurations =
       <Object, ui.ViewConfiguration>{};
 
@@ -437,7 +438,6 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
     }
 
     switch (name) {
-
       /// This should be in sync with shell/common/shell.cc
       case 'flutter/skia':
         const MethodCodec codec = JSONMethodCodec();
@@ -450,7 +450,8 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
                 'Argument to Skia.setResourceCacheMaxBytes must be an int, but was ${decoded.arguments.runtimeType}',
               );
               final int cacheSizeInBytes = decoded.arguments as int;
-              CanvasKitRenderer.instance.resourceCacheMaxBytes = cacheSizeInBytes;
+              CanvasKitRenderer.instance.resourceCacheMaxBytes =
+                  cacheSizeInBytes;
             }
 
             // Also respond in HTML mode. Otherwise, apps would have to detect
@@ -493,17 +494,21 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
             replyToPlatformMessage(callback, codec.encodeSuccessEnvelope(true));
             return;
           case 'SystemChrome.setApplicationSwitcherDescription':
-            final Map<String, dynamic> arguments = decoded.arguments as Map<String, dynamic>;
+            final Map<String, dynamic> arguments =
+                decoded.arguments as Map<String, dynamic>;
             // TODO(ferhat): Find more appropriate defaults? Or noop when values are null?
             final String label = arguments['label'] as String? ?? '';
-            final int primaryColor = arguments['primaryColor'] as int? ?? 0xFF000000;
+            final int primaryColor =
+                arguments['primaryColor'] as int? ?? 0xFF000000;
             domDocument.title = label;
             setThemeColor(ui.Color(primaryColor));
             replyToPlatformMessage(callback, codec.encodeSuccessEnvelope(true));
             return;
           case 'SystemChrome.setPreferredOrientations':
             final List<dynamic> arguments = decoded.arguments as List<dynamic>;
-            flutterViewEmbedder.setPreferredOrientation(arguments).then((bool success) {
+            flutterViewEmbedder
+                .setPreferredOrientation(arguments)
+                .then((bool success) {
               replyToPlatformMessage(
                   callback, codec.encodeSuccessEnvelope(success));
             });
@@ -533,10 +538,11 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
       case 'flutter/mousecursor':
         const MethodCodec codec = StandardMethodCodec();
         final MethodCall decoded = codec.decodeMethodCall(data);
-        final Map<dynamic, dynamic> arguments = decoded.arguments as Map<dynamic, dynamic>;
+        final Map<dynamic, dynamic> arguments =
+            decoded.arguments as Map<dynamic, dynamic>;
         switch (decoded.method) {
           case 'activateSystemCursor':
-            MouseCursor.instance!.activateSystemCursor(arguments.tryString('kind'));
+          //MouseCursor.instance!.activateSystemCursor(arguments.tryString('kind'));
         }
         return;
 
@@ -864,8 +870,8 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   void _addFontSizeObserver() {
     const String styleAttribute = 'style';
 
-    _fontSizeObserver = createDomMutationObserver(allowInterop(
-        (List<dynamic> mutations, DomMutationObserver _) {
+    _fontSizeObserver = createDomMutationObserver(
+        allowInterop((List<dynamic> mutations, DomMutationObserver _) {
       for (final dynamic mutation in mutations) {
         final DomMutationRecord record = mutation as DomMutationRecord;
         if (record.type == 'attributes' &&
@@ -915,7 +921,8 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
 
   void updateSemanticsEnabled(bool semanticsEnabled) {
     if (semanticsEnabled != this.semanticsEnabled) {
-      configuration = configuration.copyWith(semanticsEnabled: semanticsEnabled);
+      configuration =
+          configuration.copyWith(semanticsEnabled: semanticsEnabled);
       if (_onSemanticsEnabledChanged != null) {
         invokeOnSemanticsEnabledChanged();
       }
@@ -969,8 +976,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         : ui.Brightness.light);
 
     _brightnessMediaQueryListener = allowInterop((DomEvent event) {
-      final DomMediaQueryListEvent mqEvent =
-          event as DomMediaQueryListEvent;
+      final DomMediaQueryListEvent mqEvent = event as DomMediaQueryListEvent;
       _updatePlatformBrightness(
           mqEvent.matches! ? ui.Brightness.dark : ui.Brightness.light);
     });
@@ -1019,8 +1025,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   ///  * [WidgetsBindingObserver], for a mechanism at the widgets layer to
   ///    observe when this callback is invoked.
   @override
-  ui.VoidCallback? get onSystemFontFamilyChanged =>
-      _onSystemFontFamilyChanged;
+  ui.VoidCallback? get onSystemFontFamilyChanged => _onSystemFontFamilyChanged;
   ui.VoidCallback? _onSystemFontFamilyChanged;
   Zone? _onSystemFontFamilyChangedZone;
   @override
@@ -1245,6 +1250,7 @@ const double _defaultRootFontSize = 16.0;
 /// Finds the text scale factor of the browser by looking at the computed style
 /// of the browser's <html> element.
 double findBrowserTextScaleFactor() {
-  final num fontSize = parseFontSize(domDocument.documentElement!) ?? _defaultRootFontSize;
+  final num fontSize =
+      parseFontSize(domDocument.documentElement!) ?? _defaultRootFontSize;
   return fontSize / _defaultRootFontSize;
 }
