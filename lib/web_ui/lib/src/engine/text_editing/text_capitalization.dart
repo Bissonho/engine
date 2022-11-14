@@ -32,18 +32,16 @@ enum TextCapitalization {
 /// See: https://developers.google.com/web/updates/2015/04/autocapitalize
 /// https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autocapitalize
 class TextCapitalizationConfig {
-  const TextCapitalizationConfig.defaultCapitalization()
-      : textCapitalization = TextCapitalization.none;
+  const TextCapitalizationConfig.defaultCapitalization() : textCapitalization = TextCapitalization.none;
 
   const TextCapitalizationConfig.fromInputConfiguration(String inputConfiguration)
-      : textCapitalization =
-            inputConfiguration == 'TextCapitalization.words'
-                ? TextCapitalization.words
-                : inputConfiguration == 'TextCapitalization.characters'
-                    ? TextCapitalization.characters
-                    : inputConfiguration == 'TextCapitalization.sentences'
-                        ? TextCapitalization.sentences
-                        : TextCapitalization.none;
+      : textCapitalization = inputConfiguration == 'TextCapitalization.words'
+            ? TextCapitalization.words
+            : inputConfiguration == 'TextCapitalization.characters'
+                ? TextCapitalization.characters
+                : inputConfiguration == 'TextCapitalization.sentences'
+                    ? TextCapitalization.sentences
+                    : TextCapitalization.none;
 
   final TextCapitalization textCapitalization;
 
@@ -64,11 +62,17 @@ class TextCapitalizationConfig {
         // TODO(mdebbar): There is a bug for `words` level capitalization in IOS now.
         // For now go back to default. Remove the check after bug is resolved.
         // https://bugs.webkit.org/show_bug.cgi?id=148504
+
+        //#Unity
+        autocapitalize = 'words';
+        /*
         if (browserEngine == BrowserEngine.webkit) {
           autocapitalize = 'sentences';
         } else {
           autocapitalize = 'words';
         }
+        */
+
         break;
       case TextCapitalization.characters:
         autocapitalize = 'characters';
@@ -85,8 +89,7 @@ class TextCapitalizationConfig {
       final DomHTMLInputElement element = domElement as DomHTMLInputElement;
       element.setAttribute('autocapitalize', autocapitalize);
     } else if (domInstanceOfString(domElement, 'HTMLTextAreaElement')) {
-      final DomHTMLTextAreaElement element = domElement as
-          DomHTMLTextAreaElement;
+      final DomHTMLTextAreaElement element = domElement as DomHTMLTextAreaElement;
       element.setAttribute('autocapitalize', autocapitalize);
     }
   }

@@ -130,25 +130,18 @@ class SemanticsTextEditingStrategy extends DefaultTextEditingStrategy {
   @override
   void addEventHandlers() {
     if (inputConfiguration.autofillGroup != null) {
-      subscriptions
-          .addAll(inputConfiguration.autofillGroup!.addInputEventListeners());
+      subscriptions.addAll(inputConfiguration.autofillGroup!.addInputEventListeners());
     }
 
     // Subscribe to text and selection changes.
-    subscriptions.add(
-        DomSubscription(activeDomElement, 'input', allowInterop(handleChange)));
-    subscriptions.add(
-        DomSubscription(activeDomElement, 'keydown',
-            allowInterop(maybeSendAction)));
-    subscriptions.add(
-        DomSubscription(domDocument, 'selectionchange',
-            allowInterop(handleChange)));
+    subscriptions.add(DomSubscription(activeDomElement, 'input', allowInterop(handleChange)));
+    subscriptions.add(DomSubscription(activeDomElement, 'keydown', allowInterop(maybeSendAction)));
+    subscriptions.add(DomSubscription(domDocument, 'selectionchange', allowInterop(handleChange)));
     preventDefaultForMouseEvents();
   }
 
   @override
-  void initializeTextEditing(InputConfiguration inputConfig,
-      {OnChangeCallback? onChange, OnActionCallback? onAction}) {
+  void initializeTextEditing(InputConfiguration inputConfig, {OnChangeCallback? onChange, OnActionCallback? onAction}) {
     isEnabled = true;
     inputConfiguration = inputConfig;
     onChange = onChange;
@@ -171,8 +164,7 @@ class SemanticsTextEditingStrategy extends DefaultTextEditingStrategy {
   }
 
   @override
-  void placeForm() {
-  }
+  void placeForm() {}
 
   @override
   void updateElementPlacement(EditableTextGeometry textGeometry) {
@@ -209,12 +201,8 @@ class SemanticsTextEditingStrategy extends DefaultTextEditingStrategy {
 /// used to detect text box invocation. This is because Safari issues touch
 /// events even when Voiceover is enabled.
 class TextField extends RoleManager {
-  TextField(SemanticsObject semanticsObject)
-      : super(Role.textField, semanticsObject) {
-    editableElement =
-        semanticsObject.hasFlag(ui.SemanticsFlag.isMultiline)
-            ? createDomHTMLTextAreaElement()
-            : createDomHTMLInputElement();
+  TextField(SemanticsObject semanticsObject) : super(Role.textField, semanticsObject) {
+    editableElement = semanticsObject.hasFlag(ui.SemanticsFlag.isMultiline) ? createDomHTMLTextAreaElement() : createDomHTMLInputElement();
     _setupDomElement();
   }
 
@@ -250,15 +238,18 @@ class TextField extends RoleManager {
       ..height = '${semanticsObject.rect!.height}px';
     semanticsObject.element.append(editableElement);
 
-    switch (browserEngine) {
+    _initializeForBlink();
+    /*switch (browserEngine) {
       case BrowserEngine.blink:
-      case BrowserEngine.firefox:
+        _initializeForBlink();
+      //Unity
+    case BrowserEngine.firefox:
         _initializeForBlink();
         break;
       case BrowserEngine.webkit:
         _initializeForWebkit();
         break;
-    }
+    }*/
   }
 
   /// Chrome on Android reports text field activation as a "click" event.
@@ -266,15 +257,13 @@ class TextField extends RoleManager {
   /// When in browser gesture mode, the focus is forwarded to the framework as
   /// a tap to initialize editing.
   void _initializeForBlink() {
-    editableElement.addEventListener(
-        'focus', allowInterop((DomEvent event) {
-          if (semanticsObject.owner.gestureMode != GestureMode.browserGestures) {
-            return;
-          }
+    editableElement.addEventListener('focus', allowInterop((DomEvent event) {
+      if (semanticsObject.owner.gestureMode != GestureMode.browserGestures) {
+        return;
+      }
 
-          EnginePlatformDispatcher.instance.invokeOnSemanticsAction(
-              semanticsObject.id, ui.SemanticsAction.tap, null);
-        }));
+      EnginePlatformDispatcher.instance.invokeOnSemanticsAction(semanticsObject.id, ui.SemanticsAction.tap, null);
+    }));
   }
 
   /// Safari on iOS reports text field activation via touch events.
@@ -291,15 +280,13 @@ class TextField extends RoleManager {
     num? lastTouchStartOffsetX;
     num? lastTouchStartOffsetY;
 
-    editableElement.addEventListener('touchstart',
-        allowInterop((DomEvent event) {
-          final DomTouchEvent touchEvent = event as DomTouchEvent;
-          lastTouchStartOffsetX = touchEvent.changedTouches!.last.clientX;
-          lastTouchStartOffsetY = touchEvent.changedTouches!.last.clientY;
-        }), true);
+    editableElement.addEventListener('touchstart', allowInterop((DomEvent event) {
+      final DomTouchEvent touchEvent = event as DomTouchEvent;
+      lastTouchStartOffsetX = touchEvent.changedTouches!.last.clientX;
+      lastTouchStartOffsetY = touchEvent.changedTouches!.last.clientY;
+    }), true);
 
-    editableElement.addEventListener(
-        'touchend', allowInterop((DomEvent event) {
+    editableElement.addEventListener('touchend', allowInterop((DomEvent event) {
       final DomTouchEvent touchEvent = event as DomTouchEvent;
 
       if (lastTouchStartOffsetX != null) {
@@ -316,8 +303,7 @@ class TextField extends RoleManager {
 
         if (offsetX * offsetX + offsetY * offsetY < kTouchSlop) {
           // Recognize it as a tap that requires a keyboard.
-          EnginePlatformDispatcher.instance.invokeOnSemanticsAction(
-              semanticsObject.id, ui.SemanticsAction.tap, null);
+          EnginePlatformDispatcher.instance.invokeOnSemanticsAction(semanticsObject.id, ui.SemanticsAction.tap, null);
         }
       } else {
         assert(lastTouchStartOffsetY == null);

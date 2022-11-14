@@ -124,8 +124,8 @@ class ParagraphLine {
     required this.fragments,
     required this.textDirection,
     this.displayText,
-  }) : assert(trailingNewlines <= endIndex - startIndex),
-       lineMetrics = EngineLineMetrics(
+  })  : assert(trailingNewlines <= endIndex - startIndex),
+        lineMetrics = EngineLineMetrics(
           hardBreak: hardBreak,
           ascent: ascent,
           descent: descent,
@@ -282,8 +282,7 @@ class EngineParagraphStyle implements ui.ParagraphStyle {
 
   // The effective style attributes should be consistent with paragraph_style.h.
   ui.TextAlign get effectiveTextAlign => textAlign ?? ui.TextAlign.start;
-  ui.TextDirection get effectiveTextDirection =>
-      textDirection ?? ui.TextDirection.ltr;
+  ui.TextDirection get effectiveTextDirection => textDirection ?? ui.TextDirection.ltr;
 
   double? get lineHeight {
     // TODO(mdebbar): Implement proper support for strut styles.
@@ -327,18 +326,7 @@ class EngineParagraphStyle implements ui.ParagraphStyle {
 
   @override
   int get hashCode {
-    return Object.hash(
-        textAlign,
-        textDirection,
-        fontWeight,
-        fontStyle,
-        maxLines,
-        fontFamily,
-        fontSize,
-        height,
-        _textHeightBehavior,
-        ellipsis,
-        locale);
+    return Object.hash(textAlign, textDirection, fontWeight, fontStyle, maxLines, fontFamily, fontSize, height, _textHeightBehavior, ellipsis, locale);
   }
 
   @override
@@ -794,9 +782,7 @@ void applyTextStyleToElement({
     cssStyle.color = 'transparent';
     // Use hairline (device pixel when strokeWidth is not specified).
     final double? strokeWidth = style.foreground?.strokeWidth;
-    final double adaptedWidth = strokeWidth != null && strokeWidth > 0
-        ? strokeWidth
-        : 1.0 / ui.window.devicePixelRatio;
+    final double adaptedWidth = strokeWidth != null && strokeWidth > 0 ? strokeWidth : 1.0 / ui.window.devicePixelRatio;
     cssStyle.textStroke = '${adaptedWidth}px ${colorToCssString(color)}';
   } else if (color != null) {
     cssStyle.color = colorToCssString(color)!;
@@ -813,8 +799,7 @@ void applyTextStyleToElement({
     cssStyle.fontWeight = fontWeightToCss(style.fontWeight)!;
   }
   if (style.fontStyle != null) {
-    cssStyle.fontStyle =
-        style.fontStyle == ui.FontStyle.normal ? 'normal' : 'italic';
+    cssStyle.fontStyle = style.fontStyle == ui.FontStyle.normal ? 'normal' : 'italic';
   }
   // For test environment use effectiveFontFamily since we need to
   // consistently use Ahem font.
@@ -839,14 +824,16 @@ void applyTextStyleToElement({
 
   if (updateDecoration) {
     if (style.decoration != null) {
-      final String? textDecoration =
-          _textDecorationToCssString(style.decoration, style.decorationStyle);
+      final String? textDecoration = _textDecorationToCssString(style.decoration, style.decorationStyle);
       if (textDecoration != null) {
-        if (browserEngine == BrowserEngine.webkit) {
+        //#Unity
+        cssStyle.textDecoration = textDecoration;
+        /*if (browserEngine == BrowserEngine.webkit) {
           setElementStyle(element, '-webkit-text-decoration', textDecoration);
         } else {
           cssStyle.textDecoration = textDecoration;
-        }
+        }*/
+
         final ui.Color? decorationColor = style.decorationColor;
         if (decorationColor != null) {
           cssStyle.textDecorationColor = colorToCssString(decorationColor)!;
@@ -862,8 +849,7 @@ void applyTextStyleToElement({
 
   final List<ui.FontVariation>? fontVariations = style.fontVariations;
   if (fontVariations != null && fontVariations.isNotEmpty) {
-    cssStyle.setProperty(
-        'font-variation-settings', _fontVariationListToCss(fontVariations));
+    cssStyle.setProperty('font-variation-settings', _fontVariationListToCss(fontVariations));
   }
 }
 
@@ -922,8 +908,7 @@ String _fontVariationListToCss(List<ui.FontVariation> fontVariations) {
 }
 
 /// Converts text decoration style to CSS text-decoration-style value.
-String? _textDecorationToCssString(
-    ui.TextDecoration? decoration, ui.TextDecorationStyle? decorationStyle) {
+String? _textDecorationToCssString(ui.TextDecoration? decoration, ui.TextDecorationStyle? decorationStyle) {
   final StringBuffer decorations = StringBuffer();
   if (decoration != null) {
     if (decoration.contains(ui.TextDecoration.underline)) {
@@ -966,8 +951,7 @@ String? _decorationStyleToCssString(ui.TextDecorationStyle decorationStyle) {
 /// ```css
 /// text-align: right;
 /// ```
-String textAlignToCssValue(
-    ui.TextAlign? align, ui.TextDirection textDirection) {
+String textAlignToCssValue(ui.TextAlign? align, ui.TextDirection textDirection) {
   switch (align) {
     case ui.TextAlign.left:
       return 'left';

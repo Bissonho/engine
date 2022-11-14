@@ -26,11 +26,7 @@ final SVGSVGElement kSvgResourceHeader = createSVGSVGElement()
 ///
 /// Calling this method updates [_clipIdCounter]. The HTML id of the generated
 /// clip is set to "svgClip${_clipIdCounter}", e.g. "svgClip123".
-SVGSVGElement pathToSvgClipPath(ui.Path path,
-    {double offsetX = 0,
-    double offsetY = 0,
-    double scaleX = 1.0,
-    double scaleY = 1.0}) {
+SVGSVGElement pathToSvgClipPath(ui.Path path, {double offsetX = 0, double offsetY = 0, double scaleX = 1.0, double scaleY = 1.0}) {
   _clipIdCounter += 1;
   final SVGSVGElement root = kSvgResourceHeader.cloneNode(false) as SVGSVGElement;
   final SVGDefsElement defs = createSVGDefsElement();
@@ -47,10 +43,12 @@ SVGSVGElement pathToSvgClipPath(ui.Path path,
 
   // Firefox objectBoundingBox fails to scale to 1x1 units, instead use
   // no clipPathUnits but write the path in target units.
-  if (browserEngine != BrowserEngine.firefox) {
+
+  //Unity
+  /*if (browserEngine != BrowserEngine.firefox) {
     clipPath.setAttribute('clipPathUnits', 'objectBoundingBox');
     svgPath.setAttribute('transform', 'scale($scaleX, $scaleY)');
-  }
+  }*/
 
   svgPath.setAttribute('d', pathToSvg((path as SurfacePath).pathRef, offsetX: offsetX, offsetY: offsetY));
   return root;

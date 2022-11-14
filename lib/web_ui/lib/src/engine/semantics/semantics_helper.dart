@@ -43,8 +43,7 @@ String placeholderMessage = 'Enable accessibility';
 ///
 /// See [DesktopSemanticsEnabler], [MobileSemanticsEnabler].
 class SemanticsHelper {
-  SemanticsEnabler _semanticsEnabler =
-      isDesktop ? DesktopSemanticsEnabler() : MobileSemanticsEnabler();
+  SemanticsEnabler _semanticsEnabler = isDesktop ? DesktopSemanticsEnabler() : MobileSemanticsEnabler();
 
   @visibleForTesting
   set semanticsEnabler(SemanticsEnabler semanticsEnabler) {
@@ -175,8 +174,7 @@ class DesktopSemanticsEnabler extends SemanticsEnabler {
 
   @override
   DomElement prepareAccessibilityPlaceholder() {
-    final DomElement placeholder =
-        _semanticsPlaceholder = createDomElement('flt-semantics-placeholder');
+    final DomElement placeholder = _semanticsPlaceholder = createDomElement('flt-semantics-placeholder');
 
     // Only listen to "click" because other kinds of events are reported via
     // PointerBinding.
@@ -258,10 +256,13 @@ class MobileSemanticsEnabler extends SemanticsEnabler {
 
     if (_schedulePlaceholderRemoval) {
       // The event type can also be click for VoiceOver.
-      final bool removeNow = browserEngine != BrowserEngine.webkit ||
+
+      //Unity
+      final bool removeNow = true;
+      /*final bool removeNow = browserEngine != BrowserEngine.webkit ||
           event.type == 'touchend' ||
           event.type == 'pointerup' ||
-          event.type == 'click';
+          event.type == 'click';*/
       if (removeNow) {
         dispose();
       }
@@ -343,12 +344,9 @@ class MobileSemanticsEnabler extends SemanticsEnabler {
         return true;
     }
 
-    final DomRect activatingElementRect =
-        _semanticsPlaceholder!.getBoundingClientRect();
-    final double midX = activatingElementRect.left +
-            (activatingElementRect.right - activatingElementRect.left) / 2;
-    final double midY = activatingElementRect.top +
-            (activatingElementRect.bottom - activatingElementRect.top) / 2;
+    final DomRect activatingElementRect = _semanticsPlaceholder!.getBoundingClientRect();
+    final double midX = activatingElementRect.left + (activatingElementRect.right - activatingElementRect.left) / 2;
+    final double midY = activatingElementRect.top + (activatingElementRect.bottom - activatingElementRect.top) / 2;
     final double deltaX = activationPoint.x.toDouble() - midX;
     final double deltaY = activationPoint.y.toDouble() - midY;
     final double deltaSquared = deltaX * deltaX + deltaY * deltaY;
@@ -372,8 +370,7 @@ class MobileSemanticsEnabler extends SemanticsEnabler {
 
   @override
   DomElement prepareAccessibilityPlaceholder() {
-    final DomElement placeholder =
-        _semanticsPlaceholder = createDomElement('flt-semantics-placeholder');
+    final DomElement placeholder = _semanticsPlaceholder = createDomElement('flt-semantics-placeholder');
 
     // Only listen to "click" because other kinds of events are reported via
     // PointerBinding.

@@ -4,7 +4,7 @@
 
 import 'package:ui/ui.dart' as ui;
 
-import 'browser_detection.dart';
+//import 'browser_detection.dart'; Unity Project Remove webkit and FireFox
 import 'dom.dart';
 import 'services.dart';
 
@@ -14,30 +14,24 @@ class ClipboardMessageHandler {
   CopyToClipboardStrategy _copyToClipboardStrategy = CopyToClipboardStrategy();
 
   /// Helper to handle copy to clipboard functionality.
-  PasteFromClipboardStrategy _pasteFromClipboardStrategy =
-      PasteFromClipboardStrategy();
+  PasteFromClipboardStrategy _pasteFromClipboardStrategy = PasteFromClipboardStrategy();
 
   /// Handles the platform message which stores the given text to the clipboard.
-  void setDataMethodCall(
-      MethodCall methodCall, ui.PlatformMessageResponseCallback? callback) {
+  void setDataMethodCall(MethodCall methodCall, ui.PlatformMessageResponseCallback? callback) {
     const MethodCodec codec = JSONMethodCodec();
     bool errorEnvelopeEncoded = false;
-    _copyToClipboardStrategy
-        .setData(methodCall.arguments['text'] as String?)
-        .then((bool success) {
+    _copyToClipboardStrategy.setData(methodCall.arguments['text'] as String?).then((bool success) {
       if (success) {
         callback!(codec.encodeSuccessEnvelope(true));
       } else {
-        callback!(codec.encodeErrorEnvelope(
-            code: 'copy_fail', message: 'Clipboard.setData failed'));
+        callback!(codec.encodeErrorEnvelope(code: 'copy_fail', message: 'Clipboard.setData failed'));
         errorEnvelopeEncoded = true;
       }
     }).catchError((dynamic _) {
       // Don't encode a duplicate reply if we already failed and an error
       // was already encoded.
       if (!errorEnvelopeEncoded) {
-        callback!(codec.encodeErrorEnvelope(
-            code: 'copy_fail', message: 'Clipboard.setData failed'));
+        callback!(codec.encodeErrorEnvelope(code: 'copy_fail', message: 'Clipboard.setData failed'));
       }
     });
   }
@@ -65,11 +59,9 @@ class ClipboardMessageHandler {
     });
   }
 
-  void _reportGetDataFailure(ui.PlatformMessageResponseCallback? callback,
-      MethodCodec codec, dynamic error) {
+  void _reportGetDataFailure(ui.PlatformMessageResponseCallback? callback, MethodCodec codec, dynamic error) {
     print('Could not get text from clipboard: $error');
-    callback!(codec.encodeErrorEnvelope(
-        code: 'paste_fail', message: 'Clipboard.getData failed'));
+    callback!(codec.encodeErrorEnvelope(code: 'paste_fail', message: 'Clipboard.getData failed'));
   }
 
   /// Methods used by tests.
@@ -88,9 +80,7 @@ class ClipboardMessageHandler {
 /// APIs and the browser.
 abstract class CopyToClipboardStrategy {
   factory CopyToClipboardStrategy() {
-    return domWindow.navigator.clipboard != null
-        ? ClipboardAPICopyStrategy()
-        : ExecCommandCopyStrategy();
+    return domWindow.navigator.clipboard != null ? ClipboardAPICopyStrategy() : ExecCommandCopyStrategy();
   }
 
   /// Places the text onto the browser Clipboard.
@@ -107,10 +97,13 @@ abstract class CopyToClipboardStrategy {
 /// APIs and the browser.
 abstract class PasteFromClipboardStrategy {
   factory PasteFromClipboardStrategy() {
+    /* Unity Project Remove webkit
     return (browserEngine == BrowserEngine.firefox ||
             domWindow.navigator.clipboard == null)
         ? ExecCommandPasteStrategy()
-        : ClipboardAPIPasteStrategy();
+        : ClipboardAPIPasteStrategy();*/
+
+    return (domWindow.navigator.clipboard == null) ? ExecCommandPasteStrategy() : ClipboardAPIPasteStrategy();
   }
 
   /// Returns text from the system Clipboard.
@@ -202,7 +195,6 @@ class ExecCommandPasteStrategy implements PasteFromClipboardStrategy {
   @override
   Future<String> getData() {
     // TODO(mdebbar): https://github.com/flutter/flutter/issues/48581
-    return Future<String>.error(
-        UnimplementedError('Paste is not implemented for this browser.'));
+    return Future<String>.error(UnimplementedError('Paste is not implemented for this browser.'));
   }
 }

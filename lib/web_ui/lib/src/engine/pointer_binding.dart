@@ -34,7 +34,7 @@ const int _mouseDeviceId = -1;
 
 const int _kPrimaryMouseButton = 0x1;
 const int _kSecondaryMouseButton = 0x2;
-const int _kMiddleMouseButton =0x4;
+const int _kMiddleMouseButton = 0x4;
 
 int _nthButton(int n) => 0x1 << n;
 
@@ -51,7 +51,7 @@ int _nthButton(int n) => 0x1 << n;
 @visibleForTesting
 int convertButtonToButtons(int button) {
   assert(button >= 0, 'Unexpected negative button $button.');
-  switch(button) {
+  switch (button) {
     case 0:
       return _kPrimaryMouseButton;
     case 1:
@@ -75,11 +75,13 @@ class SafariPointerEventWorkaround {
 
 class PointerBinding {
   PointerBinding(this.glassPaneElement, this._keyboardConverter)
-    : _pointerDataConverter = PointerDataConverter(),
-      _detector = const PointerSupportDetector() {
+      : _pointerDataConverter = PointerDataConverter(),
+        _detector = const PointerSupportDetector() {
+    //#Unity
+    /*
     if (isIosSafari) {
       SafariPointerEventWorkaround.instance.workAroundMissingPointerEvents();
-    }
+    }*/
     _adapter = _createAdapter();
   }
 
@@ -174,8 +176,7 @@ class PointerSupportDetector {
   bool get hasMouseEvents => hasJsProperty(domWindow, 'MouseEvent');
 
   @override
-  String toString() =>
-      'pointers:$hasPointerEvents, touch:$hasTouchEvents, mouse:$hasMouseEvents';
+  String toString() => 'pointers:$hasPointerEvents, touch:$hasTouchEvents, mouse:$hasMouseEvents';
 }
 
 class _Listener {
@@ -312,6 +313,7 @@ abstract class _BaseAdapter {
         handler(event);
       }
     }
+
     _listeners.add(_Listener.register(
       event: eventName,
       target: target,
@@ -324,8 +326,7 @@ abstract class _BaseAdapter {
   /// splitting it into two integer components: milliseconds + microseconds.
   static Duration _eventTimeStampToDuration(num milliseconds) {
     final int ms = milliseconds.toInt();
-    final int micro =
-    ((milliseconds - ms) * Duration.microsecondsPerMillisecond).toInt();
+    final int micro = ((milliseconds - ms) * Duration.microsecondsPerMillisecond).toInt();
     return Duration(milliseconds: ms, microseconds: micro);
   }
 }
@@ -333,9 +334,7 @@ abstract class _BaseAdapter {
 mixin _WheelEventListenerMixin on _BaseAdapter {
   static double? _defaultScrollLineHeight;
 
-  List<ui.PointerData> _convertWheelEventToPointerData(
-    DomWheelEvent event
-  ) {
+  List<ui.PointerData> _convertWheelEventToPointerData(DomWheelEvent event) {
     const int domDeltaPixel = 0x00;
     const int domDeltaLine = 0x01;
     const int domDeltaPage = 0x02;
@@ -355,12 +354,13 @@ mixin _WheelEventListenerMixin on _BaseAdapter {
         deltaY *= ui.window.physicalSize.height;
         break;
       case domDeltaPixel:
-        if (operatingSystem == OperatingSystem.macOs && (isSafari || isFirefox)) {
+        //#Unity
+        /*if (operatingSystem == OperatingSystem.macOs && (isSafari || isFirefox)) {
           // Safari and Firefox seem to report delta in logical pixels while
           // Chrome uses physical pixels.
           deltaX *= ui.window.devicePixelRatio;
           deltaY *= ui.window.devicePixelRatio;
-        }
+        }*/
         break;
       default:
         break;
@@ -400,9 +400,7 @@ mixin _WheelEventListenerMixin on _BaseAdapter {
       print(event.type);
     }
     _callback(_convertWheelEventToPointerData(event));
-    if (event.getModifierState('Control') &&
-        operatingSystem != OperatingSystem.macOs &&
-        operatingSystem != OperatingSystem.iOs) {
+    if (event.getModifierState('Control') && operatingSystem != OperatingSystem.macOs && operatingSystem != OperatingSystem.iOs) {
       // Ignore Control+wheel events since the default handler
       // will change browser zoom level instead of scrolling.
       // The exception is MacOs where Control+wheel will still scroll and zoom.
@@ -422,14 +420,14 @@ mixin _WheelEventListenerMixin on _BaseAdapter {
     const double kFallbackFontHeight = 16.0;
     final DomHTMLDivElement probe = createDomHTMLDivElement();
     probe.style
-        ..fontSize = 'initial'
-        ..display = 'none';
+      ..fontSize = 'initial'
+      ..display = 'none';
     domDocument.body!.append(probe);
     String fontSize = domWindow.getComputedStyle(probe).fontSize;
     double? res;
     if (fontSize.contains('px')) {
-       fontSize = fontSize.replaceAll('px', '');
-       res = double.tryParse(fontSize);
+      fontSize = fontSize.replaceAll('px', '');
+      res = double.tryParse(fontSize);
     }
     probe.remove();
     return res == null ? kFallbackFontHeight : res / 4.0;
@@ -505,9 +503,7 @@ class _ButtonSanitizer {
     _pressedButtons = newPressedButtons;
 
     return _SanitizedDetails(
-      change: _pressedButtons == 0
-          ? ui.PointerChange.hover
-          : ui.PointerChange.move,
+      change: _pressedButtons == 0 ? ui.PointerChange.hover : ui.PointerChange.move,
       buttons: _pressedButtons,
     );
   }
@@ -646,16 +642,14 @@ class _PointerAdapter extends _BaseAdapter with _WheelEventListenerMixin {
       final int device = _getPointerId(event);
       final List<ui.PointerData> pointerData = <ui.PointerData>[];
       final _ButtonSanitizer sanitizer = _ensureSanitizer(device);
-      final _SanitizedDetails? up =
-          sanitizer.sanitizeMissingRightClickUp(buttons: event.buttons!);
+      final _SanitizedDetails? up = sanitizer.sanitizeMissingRightClickUp(buttons: event.buttons!);
       if (up != null) {
         _convertEventsToPointerData(data: pointerData, event: event, details: up);
       }
-      final _SanitizedDetails down =
-        sanitizer.sanitizeDownEvent(
-          button: event.button,
-          buttons: event.buttons!,
-        );
+      final _SanitizedDetails down = sanitizer.sanitizeDownEvent(
+        button: event.button,
+        buttons: event.buttons!,
+      );
       _convertEventsToPointerData(data: pointerData, event: event, details: down);
       _callback(pointerData);
     });
@@ -742,7 +736,7 @@ class _PointerAdapter extends _BaseAdapter with _WheelEventListenerMixin {
       physicalX: event.clientX.toDouble() * ui.window.devicePixelRatio,
       physicalY: event.clientY.toDouble() * ui.window.devicePixelRatio,
       buttons: details.buttons,
-      pressure:  pressure == null ? 0.0 : pressure.toDouble(),
+      pressure: pressure == null ? 0.0 : pressure.toDouble(),
       pressureMax: 1.0,
       tilt: tilt,
     );
@@ -752,8 +746,7 @@ class _PointerAdapter extends _BaseAdapter with _WheelEventListenerMixin {
     // For browsers that don't support `getCoalescedEvents`, we fallback to
     // using the original event.
     if (hasJsProperty(event, 'getCoalescedEvents')) {
-      final List<DomPointerEvent> coalescedEvents =
-          event.getCoalescedEvents().cast<DomPointerEvent>();
+      final List<DomPointerEvent> coalescedEvents = event.getCoalescedEvents().cast<DomPointerEvent>();
       // Some events don't perform coalescing, so they return an empty list. In
       // that case, we also fallback to using the original event.
       if (coalescedEvents.isNotEmpty) {
@@ -785,10 +778,7 @@ class _PointerAdapter extends _BaseAdapter with _WheelEventListenerMixin {
   }
 
   /// Tilt angle is -90 to + 90. Take maximum deflection and convert to radians.
-  double _computeHighestTilt(DomPointerEvent e) =>
-      (e.tiltX!.abs() > e.tiltY!.abs() ? e.tiltX : e.tiltY)!.toDouble() /
-      180.0 *
-      math.pi;
+  double _computeHighestTilt(DomPointerEvent e) => (e.tiltX!.abs() > e.tiltY!.abs() ? e.tiltX : e.tiltY)!.toDouble() / 180.0 * math.pi;
 }
 
 typedef _TouchEventListener = dynamic Function(DomTouchEvent event);
@@ -804,10 +794,20 @@ class _TouchAdapter extends _BaseAdapter {
 
   final Set<int> _pressedTouches = <int>{};
   bool _isTouchPressed(int identifier) => _pressedTouches.contains(identifier);
-  void _pressTouch(int identifier) { _pressedTouches.add(identifier); }
-  void _unpressTouch(int identifier) { _pressedTouches.remove(identifier); }
+  void _pressTouch(int identifier) {
+    _pressedTouches.add(identifier);
+  }
 
-  void _addTouchEventListener(DomEventTarget target, String eventName, _TouchEventListener handler, {bool checkModifiers = true,}) {
+  void _unpressTouch(int identifier) {
+    _pressedTouches.remove(identifier);
+  }
+
+  void _addTouchEventListener(
+    DomEventTarget target,
+    String eventName,
+    _TouchEventListener handler, {
+    bool checkModifiers = true,
+  }) {
     addEventListener(target, eventName, (DomEvent event) {
       final DomTouchEvent touchEvent = event as DomTouchEvent;
       if (checkModifiers) {
@@ -991,16 +991,14 @@ class _MouseAdapter extends _BaseAdapter with _WheelEventListenerMixin {
   void setup() {
     _addMouseEventListener(glassPaneElement, 'mousedown', (DomMouseEvent event) {
       final List<ui.PointerData> pointerData = <ui.PointerData>[];
-      final _SanitizedDetails? up =
-          _sanitizer.sanitizeMissingRightClickUp(buttons: event.buttons!);
+      final _SanitizedDetails? up = _sanitizer.sanitizeMissingRightClickUp(buttons: event.buttons!);
       if (up != null) {
         _convertEventsToPointerData(data: pointerData, event: event, details: up);
       }
-      final _SanitizedDetails sanitizedDetails =
-        _sanitizer.sanitizeDownEvent(
-          button: event.button,
-          buttons: event.buttons!,
-        );
+      final _SanitizedDetails sanitizedDetails = _sanitizer.sanitizeDownEvent(
+        button: event.button,
+        buttons: event.buttons!,
+      );
       _convertEventsToPointerData(data: pointerData, event: event, details: sanitizedDetails);
       _callback(pointerData);
     });

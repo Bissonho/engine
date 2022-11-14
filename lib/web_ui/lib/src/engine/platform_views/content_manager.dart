@@ -66,10 +66,8 @@ class PlatformViewManager {
   /// it's been set.
   ///
   /// `factoryFunction` needs to be a [PlatformViewFactory].
-  bool registerFactory(String viewType, Function factoryFunction,
-      {bool isVisible = true}) {
-    assert(factoryFunction is PlatformViewFactory ||
-        factoryFunction is ParameterizedPlatformViewFactory);
+  bool registerFactory(String viewType, Function factoryFunction, {bool isVisible = true}) {
+    assert(factoryFunction is PlatformViewFactory || factoryFunction is ParameterizedPlatformViewFactory);
 
     if (_factories.containsKey(viewType)) {
       return false;
@@ -107,16 +105,13 @@ class PlatformViewManager {
     int viewId,
     Object? params,
   ) {
-    assert(knowsViewType(viewType),
-        'Attempted to render contents of unregistered viewType: $viewType');
+    assert(knowsViewType(viewType), 'Attempted to render contents of unregistered viewType: $viewType');
 
     final String slotName = getPlatformViewSlotName(viewId);
     _viewIdToType[viewId] = viewType;
 
     return _contents.putIfAbsent(viewId, () {
-      final DomElement wrapper = domDocument
-          .createElement('flt-platform-view')
-            ..setAttribute('slot', slotName);
+      final DomElement wrapper = domDocument.createElement('flt-platform-view')..setAttribute('slot', slotName);
 
       final Function factoryFunction = _factories[viewType]!;
       late DomElement content;
@@ -148,7 +143,17 @@ class PlatformViewManager {
   // than its slot (after the slot is removed).
   //
   // TODO(web): Cleanup https://github.com/flutter/flutter/issues/85816
+
+  //Unity
   void _safelyRemoveSlottedElement(DomElement? element) {
+    if (element == null) {
+      return;
+    }
+    element.remove();
+    return;
+  }
+
+  /*void _safelyRemoveSlottedElement(DomElement? element) {
     if (element == null) {
       return;
     }
@@ -167,7 +172,7 @@ class PlatformViewManager {
     // Delete both the element, and the new slot
     element.remove();
     slot.remove();
-  }
+  }*/
 
   /// Attempt to ensure that the contents of the user-supplied DOM element will
   /// fill the space allocated for this platform view by the framework.

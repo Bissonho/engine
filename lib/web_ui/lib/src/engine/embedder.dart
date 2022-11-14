@@ -112,8 +112,7 @@ class FlutterViewEmbedder {
     _staleHotRestartState = getJsProperty<List<DomElement?>?>(domWindow, _staleHotRestartStore);
     if (_staleHotRestartState == null) {
       _staleHotRestartState = <DomElement?>[];
-      setJsProperty(
-          domWindow, _staleHotRestartStore, _staleHotRestartState);
+      setJsProperty(domWindow, _staleHotRestartStore, _staleHotRestartState);
     }
   }
 
@@ -176,11 +175,10 @@ class FlutterViewEmbedder {
   static const String defaultFontWeight = 'normal';
   static const double defaultFontSize = 14;
   static const String defaultFontFamily = 'sans-serif';
-  static const String defaultCssFont =
-      '$defaultFontStyle $defaultFontWeight ${defaultFontSize}px $defaultFontFamily';
+  static const String defaultCssFont = '$defaultFontStyle $defaultFontWeight ${defaultFontSize}px $defaultFontFamily';
 
   void reset() {
-    final bool isWebKit = browserEngine == BrowserEngine.webkit;
+    //final bool isWebKit = browserEngine == BrowserEngine.webkit;
 
     _styleElement?.remove();
     _styleElement = createDomHTMLStyleElement();
@@ -232,8 +230,7 @@ class FlutterViewEmbedder {
     // engine are complete.
     bodyElement.spellcheck = false;
 
-    for (final DomElement viewportMeta
-        in domDocument.head!.querySelectorAll('meta[name="viewport"]')) {
+    for (final DomElement viewportMeta in domDocument.head!.querySelectorAll('meta[name="viewport"]')) {
       if (assertionsEnabled) {
         // Filter out the meta tag that the engine placed on the page. This is
         // to avoid UI flicker during hot restart. Hot restart will clean up the
@@ -283,22 +280,18 @@ class FlutterViewEmbedder {
     _glassPaneShadow = glassPaneElementHostNode;
 
     // Don't allow the scene to receive pointer events.
-    _sceneHostElement = domDocument.createElement('flt-scene-host')
-      ..style.pointerEvents = 'none';
+    _sceneHostElement = domDocument.createElement('flt-scene-host')..style.pointerEvents = 'none';
 
     renderer.reset(this);
 
-    final DomElement semanticsHostElement =
-        domDocument.createElement('flt-semantics-host');
+    final DomElement semanticsHostElement = domDocument.createElement('flt-semantics-host');
     semanticsHostElement.style
       ..position = 'absolute'
       ..transformOrigin = '0 0 0';
     _semanticsHostElement = semanticsHostElement;
     updateSemanticsScreenProperties();
 
-    final DomElement accessibilityPlaceholder = EngineSemanticsOwner
-        .instance.semanticsHelper
-        .prepareAccessibilityPlaceholder();
+    final DomElement accessibilityPlaceholder = EngineSemanticsOwner.instance.semanticsHelper.prepareAccessibilityPlaceholder();
 
     glassPaneElementHostNode.appendAll(<DomNode>[
       accessibilityPlaceholder,
@@ -326,7 +319,8 @@ class FlutterViewEmbedder {
     KeyboardBinding.initInstance();
     PointerBinding.initInstance(glassPaneElement, KeyboardBinding.instance!.converter);
 
-    if (domWindow.visualViewport == null && isWebKit) {
+    // Unity Project Remove webkit
+    /*if (domWindow.visualViewport == null && isWebKit) {
       // Older Safari versions sometimes give us bogus innerWidth/innerHeight
       // values when the page loads. When it changes the values to correct ones
       // it does not notify of the change via `onResize`. As a workaround, we
@@ -355,17 +349,14 @@ class FlutterViewEmbedder {
           t.cancel();
         }
       });
-    }
+    }*/
 
     if (domWindow.visualViewport != null) {
-      _resizeSubscription = DomSubscription(domWindow.visualViewport!, 'resize',
-          allowInterop(_metricsDidChange));
+      _resizeSubscription = DomSubscription(domWindow.visualViewport!, 'resize', allowInterop(_metricsDidChange));
     } else {
-      _resizeSubscription = DomSubscription(domWindow, 'resize',
-          allowInterop(_metricsDidChange));
+      _resizeSubscription = DomSubscription(domWindow, 'resize', allowInterop(_metricsDidChange));
     }
-    _localeSubscription = DomSubscription(domWindow, 'languagechange',
-          allowInterop(_languageDidChange));
+    _localeSubscription = DomSubscription(domWindow, 'languagechange', allowInterop(_languageDidChange));
     EnginePlatformDispatcher.instance.updateLocales();
   }
 
@@ -383,8 +374,7 @@ class FlutterViewEmbedder {
   /// logical pixels. To compensate, an inverse scale is injected at the root
   /// level.
   void updateSemanticsScreenProperties() {
-    _semanticsHostElement!.style.setProperty('transform',
-        'scale(${1 / domWindow.devicePixelRatio})');
+    _semanticsHostElement!.style.setProperty('transform', 'scale(${1 / domWindow.devicePixelRatio})');
   }
 
   /// Called immediately after browser window metrics change.
@@ -420,11 +410,9 @@ class FlutterViewEmbedder {
   static const String orientationLockTypeLandscape = 'landscape';
   static const String orientationLockTypePortrait = 'portrait';
   static const String orientationLockTypePortraitPrimary = 'portrait-primary';
-  static const String orientationLockTypePortraitSecondary =
-      'portrait-secondary';
+  static const String orientationLockTypePortraitSecondary = 'portrait-secondary';
   static const String orientationLockTypeLandscapePrimary = 'landscape-primary';
-  static const String orientationLockTypeLandscapeSecondary =
-      'landscape-secondary';
+  static const String orientationLockTypeLandscapeSecondary = 'landscape-secondary';
 
   /// Sets preferred screen orientation.
   ///
@@ -445,8 +433,7 @@ class FlutterViewEmbedder {
           screenOrientation.unlock();
           return Future<bool>.value(true);
         } else {
-          final String? lockType =
-              _deviceOrientationToLockType(orientations.first as String?);
+          final String? lockType = _deviceOrientationToLockType(orientations.first as String?);
           if (lockType != null) {
             final Completer<bool> completer = Completer<bool>();
             try {
@@ -505,17 +492,10 @@ class FlutterViewEmbedder {
   /// glass pane element for other browsers to make sure url resolution
   /// works correctly when content is inside a shadow root.
   void addResource(DomElement element) {
-    final bool isWebKit = browserEngine == BrowserEngine.webkit;
+    // Unity Project Remove webkit
     if (_resourcesHost == null) {
-      _resourcesHost = createDomHTMLDivElement()
-        ..style.visibility = 'hidden';
-      if (isWebKit) {
-        final DomNode bodyNode = domDocument.body!;
-        bodyNode.insertBefore(_resourcesHost!, bodyNode.firstChild);
-      } else {
-        _glassPaneShadow!.node.insertBefore(
-            _resourcesHost!, _glassPaneShadow!.node.firstChild);
-      }
+      _resourcesHost = createDomHTMLDivElement()..style.visibility = 'hidden';
+      _glassPaneShadow!.node.insertBefore(_resourcesHost!, _glassPaneShadow!.node.firstChild);
     }
     _resourcesHost!.append(element);
   }
@@ -539,12 +519,11 @@ void applyGlobalCssRulesToSheet(
   required bool hasAutofillOverlay,
   String glassPaneTagName = FlutterViewEmbedder._glassPaneTagName,
 }) {
-  final bool isWebKit = browserEngine == BrowserEngine.webkit;
-  final bool isFirefox = browserEngine == BrowserEngine.firefox;
   // TODO(web): use more efficient CSS selectors; descendant selectors are slow.
   // More info: https://csswizardry.com/2011/09/writing-efficient-css-selectors
 
-  if (isFirefox) {
+  //#Unity
+  /*if (isFirefox) {
     // For firefox set line-height, otherwise textx at same font-size will
     // measure differently in ruler.
     //
@@ -553,7 +532,7 @@ void applyGlobalCssRulesToSheet(
       'flt-paragraph, flt-span {line-height: 100%;}',
       sheet.cssRules.length,
     );
-  }
+  }*/
 
   // This undoes browser's default painting and layout attributes of range
   // input, which is used in semantics.
@@ -574,15 +553,29 @@ void applyGlobalCssRulesToSheet(
     sheet.cssRules.length,
   );
 
-  if (isWebKit) {
+  // Unity Project Remove webkit
+  /*if (isWebKit) {
     sheet.insertRule(
         'flt-semantics input[type=range]::-webkit-slider-thumb {'
         '  -webkit-appearance: none;'
         '}',
         sheet.cssRules.length);
-  }
+  }*/
 
-  if (isFirefox) {
+  //#Unity
+
+  sheet.insertRule(
+      'input::selection {'
+      '  background-color: transparent;'
+      '}',
+      sheet.cssRules.length);
+  sheet.insertRule(
+      'textarea::selection {'
+      '  background-color: transparent;'
+      '}',
+      sheet.cssRules.length);
+
+  /*if (isFirefox) {
     sheet.insertRule(
         'input::-moz-selection {'
         '  background-color: transparent;'
@@ -607,7 +600,8 @@ void applyGlobalCssRulesToSheet(
         '  background-color: transparent;'
         '}',
         sheet.cssRules.length);
-  }
+  }*/
+
   sheet.insertRule('''
     flt-semantics input,
     flt-semantics textarea,
@@ -618,13 +612,15 @@ void applyGlobalCssRulesToSheet(
 
   // By default on iOS, Safari would highlight the element that's being tapped
   // on using gray background. This CSS rule disables that.
+
+  /* Unity Project Remove webkit 
   if (isWebKit) {
     sheet.insertRule('''
       $glassPaneTagName * {
       -webkit-tap-highlight-color: transparent;
     }
     ''', sheet.cssRules.length);
-  }
+  }*/
 
   // Hide placeholder text
   sheet.insertRule(
@@ -659,15 +655,14 @@ FlutterViewEmbedder get flutterViewEmbedder {
   final FlutterViewEmbedder? embedder = _flutterViewEmbedder;
   assert(() {
     if (embedder == null) {
-      throw StateError(
-        'FlutterViewEmbedder not initialized. Call `ensureFlutterViewEmbedderInitialized()` '
-        'prior to calling the `flutterViewEmbedder` getter.'
-      );
+      throw StateError('FlutterViewEmbedder not initialized. Call `ensureFlutterViewEmbedderInitialized()` '
+          'prior to calling the `flutterViewEmbedder` getter.');
     }
     return true;
   }());
   return embedder!;
 }
+
 FlutterViewEmbedder? _flutterViewEmbedder;
 
 /// Initializes the [FlutterViewEmbedder], if it's not already initialized.
