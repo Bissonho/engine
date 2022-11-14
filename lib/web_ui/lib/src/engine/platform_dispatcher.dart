@@ -14,7 +14,7 @@ import '../engine.dart' show platformViewManager, registerHotRestartListener;
 import 'clipboard.dart';
 import 'dom.dart';
 import 'embedder.dart';
-import 'mouse_cursor.dart';
+//import 'mouse_cursor.dart';
 import 'platform_views/message_handler.dart';
 import 'plugins.dart';
 import 'safe_browser_api.dart';
@@ -542,8 +542,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
             decoded.arguments as Map<dynamic, dynamic>;
         switch (decoded.method) {
           case 'activateSystemCursor':
-            MouseCursor.instance!
-                .activateSystemCursor(arguments.tryString('kind'));
+          //MouseCursor.instance!.activateSystemCursor(arguments.tryString('kind'));
         }
         return;
 
