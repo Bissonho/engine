@@ -8,7 +8,7 @@ import 'package:ui/ui.dart' as ui;
 
 import '../dom.dart';
 import '../safe_browser_api.dart';
-import 'js_url_strategy.dart';
+//import 'js_url_strategy.dart';
 
 /// Represents and reads route state from the browser's URL.
 ///
@@ -150,7 +150,7 @@ class HashUrlStrategy extends UrlStrategy {
 
 /// Wraps a custom implementation of [UrlStrategy] that was previously converted
 /// to a [JsUrlStrategy].
-class CustomUrlStrategy extends UrlStrategy {
+/*class CustomUrlStrategy extends UrlStrategy {
   /// Wraps the [delegate] in a [CustomUrlStrategy] instance.
   CustomUrlStrategy.fromJs(this.delegate);
 
@@ -180,7 +180,7 @@ class CustomUrlStrategy extends UrlStrategy {
 
   @override
   Future<void> go(int count) => delegate.go(count);
-}
+}*/
 
 /// Encapsulates all calls to DOM apis, which allows the [UrlStrategy] classes
 /// to be platform agnostic and testable.

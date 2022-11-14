@@ -16,7 +16,7 @@ import '../engine.dart' show registerHotRestartListener;
 import 'browser_detection.dart';
 import 'dom.dart';
 import 'navigation/history.dart';
-import 'navigation/js_url_strategy.dart';
+//import 'navigation/js_url_strategy.dart';
 import 'navigation/url_strategy.dart';
 import 'platform_dispatcher.dart';
 import 'services.dart';
@@ -48,7 +48,8 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     final EnginePlatformDispatcher engineDispatcher =
         platformDispatcher as EnginePlatformDispatcher;
     engineDispatcher.windows[_windowId] = this;
-    engineDispatcher.windowConfigurations[_windowId] = const ui.ViewConfiguration();
+    engineDispatcher.windowConfigurations[_windowId] =
+        const ui.ViewConfiguration();
     if (_isUrlStrategySet) {
       _browserHistory = createHistoryForExistingState(_customUrlStrategy);
     }
@@ -170,7 +171,8 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
   Future<bool> handleNavigationMessage(ByteData? data) async {
     return _waitInTheLine(() async {
       final MethodCall decoded = const JSONMethodCodec().decodeMethodCall(data);
-      final Map<String, dynamic>? arguments = decoded.arguments as Map<String, dynamic>?;
+      final Map<String, dynamic>? arguments =
+          decoded.arguments as Map<String, dynamic>?;
       switch (decoded.method) {
         case 'selectMultiEntryHistory':
           await _useMultiEntryBrowserHistory();
@@ -307,8 +309,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     double height = 0;
     double width = 0;
     if (domWindow.visualViewport != null) {
-      height =
-          domWindow.visualViewport!.height!.toDouble() * devicePixelRatio;
+      height = domWindow.visualViewport!.height!.toDouble() * devicePixelRatio;
       width = domWindow.visualViewport!.width!.toDouble() * devicePixelRatio;
     } else {
       height = domWindow.innerHeight! * devicePixelRatio;
@@ -343,7 +344,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
   ui.Size? webOnlyDebugPhysicalSizeOverride;
 }
 
-typedef _JsSetUrlStrategy = void Function(JsUrlStrategy?);
+//typedef _JsSetUrlStrategy = void Function(JsUrlStrategy?);
 
 /// A JavaScript hook to customize the URL strategy of a Flutter app.
 //
@@ -352,7 +353,7 @@ typedef _JsSetUrlStrategy = void Function(JsUrlStrategy?);
 //
 // TODO(mdebbar): Add integration test https://github.com/flutter/flutter/issues/66852
 @JS('_flutter_web_set_location_strategy')
-external set jsSetUrlStrategy(_JsSetUrlStrategy? newJsSetUrlStrategy);
+//external set jsSetUrlStrategy(_JsSetUrlStrategy? newJsSetUrlStrategy);
 
 UrlStrategy? _createDefaultUrlStrategy() {
   return ui.debugEmulateFlutterTesterEnvironment
@@ -362,8 +363,7 @@ UrlStrategy? _createDefaultUrlStrategy() {
 
 /// The Web implementation of [ui.SingletonFlutterWindow].
 class EngineSingletonFlutterWindow extends EngineFlutterWindow {
-  EngineSingletonFlutterWindow(
-      super.windowId, super.platformDispatcher);
+  EngineSingletonFlutterWindow(super.windowId, super.platformDispatcher);
 
   @override
   double get devicePixelRatio =>
