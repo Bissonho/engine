@@ -23,13 +23,14 @@ import 'dom.dart';
 
 /// The mode the app is running in.
 /// Keep these in sync with the same constants on the framework-side under foundation/constants.dart.
-const bool kReleaseMode =
-    bool.fromEnvironment('dart.vm.product');
+const bool kReleaseMode = bool.fromEnvironment('dart.vm.product');
+
 /// A constant that is true if the application was compiled in profile mode.
-const bool kProfileMode =
-    bool.fromEnvironment('dart.vm.profile');
+const bool kProfileMode = bool.fromEnvironment('dart.vm.profile');
+
 /// A constant that is true if the application was compiled in debug mode.
 const bool kDebugMode = !kReleaseMode && !kProfileMode;
+
 /// Returns mode of the app is running in as a string.
 String get buildMode => kReleaseMode
     ? 'release'
@@ -104,7 +105,8 @@ enum DebugEngineInitializationState {
 ///
 /// See [DebugEngineInitializationState] for possible states.
 DebugEngineInitializationState get initializationState => _initializationState;
-DebugEngineInitializationState _initializationState = DebugEngineInitializationState.uninitialized;
+DebugEngineInitializationState _initializationState =
+    DebugEngineInitializationState.uninitialized;
 
 /// Resets the state back to [DebugEngineInitializationState.uninitialized].
 ///
@@ -130,10 +132,9 @@ Future<void> initializeEngineServices({
   if (_initializationState != DebugEngineInitializationState.uninitialized) {
     assert(() {
       throw StateError(
-        'Invalid engine initialization state. `initializeEngineServices` was '
-        'called, but the engine has already started initialization and is '
-        'currently in state "$_initializationState".'
-      );
+          'Invalid engine initialization state. `initializeEngineServices` was '
+          'called, but the engine has already started initialization and is '
+          'currently in state "$_initializationState".');
     }());
     return;
   }
@@ -141,7 +142,7 @@ Future<void> initializeEngineServices({
 
   // Setup the hook that allows users to customize URL strategy before running
   // the app.
-  _addUrlStrategyListener();
+  //_addUrlStrategyListener();
 
   // Called by the Web runtime just before hot restarting the app.
   //
@@ -207,8 +208,9 @@ Future<void> initializeEngineServices({
   assetManager ??= const AssetManager();
   _setAssetManager(assetManager);
 
-  Future<void> initializeRendererCallback () async => renderer.initialize();
-  await Future.wait<void>(<Future<void>>[initializeRendererCallback(), _downloadAssetFonts()]);
+  Future<void> initializeRendererCallback() async => renderer.initialize();
+  await Future.wait<void>(
+      <Future<void>>[initializeRendererCallback(), _downloadAssetFonts()]);
   renderer.fontCollection.registerDownloadedFonts();
   _initializationState = DebugEngineInitializationState.initializedServices;
 }
@@ -221,15 +223,15 @@ Future<void> initializeEngineServices({
 /// in an add-to-app scenario, the host page is expected to prepare for Flutter
 /// UI appearing on screen prior to calling this function.
 Future<void> initializeEngineUi() async {
-  if (_initializationState != DebugEngineInitializationState.initializedServices) {
+  if (_initializationState !=
+      DebugEngineInitializationState.initializedServices) {
     assert(() {
       throw StateError(
-        'Invalid engine initialization state. `initializeEngineUi` was '
-        'called while the engine initialization state was '
-        '"$_initializationState". `initializeEngineUi` can only be called '
-        'when the engine is in state '
-        '"${DebugEngineInitializationState.initializedServices}".'
-      );
+          'Invalid engine initialization state. `initializeEngineUi` was '
+          'called while the engine initialization state was '
+          '"$_initializationState". `initializeEngineUi` can only be called '
+          'when the engine is in state '
+          '"${DebugEngineInitializationState.initializedServices}".');
     }());
     return;
   }
@@ -265,7 +267,7 @@ Future<void> _downloadAssetFonts() async {
   }
 }
 
-void _addUrlStrategyListener() {
+/*void _addUrlStrategyListener() {
   jsSetUrlStrategy = allowInterop((JsUrlStrategy? jsStrategy) {
     customUrlStrategy =
         jsStrategy == null ? null : CustomUrlStrategy.fromJs(jsStrategy);
@@ -273,7 +275,7 @@ void _addUrlStrategyListener() {
   registerHotRestartListener(() {
     jsSetUrlStrategy = null;
   });
-}
+}*/
 
 /// Whether to disable the font fallback system.
 ///
@@ -286,6 +288,7 @@ bool get debugDisableFontFallbacks => _debugDisableFontFallbacks;
 set debugDisableFontFallbacks(bool value) {
   _debugDisableFontFallbacks = value;
 }
+
 bool _debugDisableFontFallbacks = false;
 
 /// The shared instance of PlatformViewManager shared across the engine to handle
