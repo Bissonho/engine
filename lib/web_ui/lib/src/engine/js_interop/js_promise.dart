@@ -15,8 +15,11 @@ abstract class Promise<T> {
 }
 
 /// The type of function that is used to create a Promise<T>
-typedef PromiseExecutor<T> = void Function(PromiseResolver<T> resolve, PromiseRejecter reject);
+typedef PromiseExecutor<T> = void Function(
+    PromiseResolver<T> resolve, PromiseRejecter reject);
+
 /// The type of function used to resolve a Promise<T>
 typedef PromiseResolver<T> = void Function(T result);
+
 /// The type of function used to reject a Promise (of any <T>)
 typedef PromiseRejecter = void Function(Object? error);

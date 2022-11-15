@@ -83,7 +83,7 @@ class LayerSceneBuilder implements ui.SceneBuilder {
     double height = 0.0,
     Object? webOnlyPaintedBy,
   }) {
-    currentLayer.add(PlatformViewLayer(viewId, offset, width, height));
+    //currentLayer.add(PlatformViewLayer(viewId, offset, width, height));
   }
 
   @override

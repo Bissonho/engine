@@ -47,13 +47,13 @@ abstract class Layer implements ui.EngineLayer {
 
 /// A context shared by all layers during the preroll pass.
 class PrerollContext {
-  PrerollContext(this.rasterCache, this.viewEmbedder);
+  PrerollContext(this.rasterCache);
 
   /// A raster cache. Used to register candidates for caching.
   final RasterCache? rasterCache;
 
   /// A compositor for embedded HTML views.
-  final HtmlViewEmbedder? viewEmbedder;
+  //final HtmlViewEmbedder? viewEmbedder;
 
   final MutatorsStack mutatorsStack = MutatorsStack();
 
@@ -86,7 +86,6 @@ class PaintContext {
     this.internalNodesCanvas,
     this.leafNodesCanvas,
     this.rasterCache,
-    this.viewEmbedder,
   );
 
   /// A multi-canvas that applies clips, transforms, and opacity
@@ -101,7 +100,7 @@ class PaintContext {
   final RasterCache? rasterCache;
 
   /// A compositor for embedded HTML views.
-  final HtmlViewEmbedder? viewEmbedder;
+  //final HtmlViewEmbedder? viewEmbedder;
 }
 
 /// A layer that contains child layers.
@@ -495,7 +494,8 @@ class PhysicalShapeEngineLayer extends ContainerLayer
 
   final double _elevation;
   final ui.Color _color;
-  final ui.Color? _shadowColor; // ignore: use_late_for_private_fields_and_variables
+  final ui.Color?
+      _shadowColor; // ignore: use_late_for_private_fields_and_variables
   final CkPath _path;
   final ui.Clip _clipBehavior;
 
@@ -579,6 +579,7 @@ class ColorFilterEngineLayer extends ContainerLayer
   }
 }
 
+/*
 /// A layer which renders a platform view (an HTML element in this case).
 class PlatformViewLayer extends Layer {
   PlatformViewLayer(this.viewId, this.offset, this.width, this.height);
@@ -612,4 +613,4 @@ class PlatformViewLayer extends Layer {
       paintContext.leafNodesCanvas = canvas;
     }
   }
-}
+}*/

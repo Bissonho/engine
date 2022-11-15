@@ -1,7 +1,9 @@
+
+/*
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-@JS()
+
 library embedder_test; // We need this to mess with the ShadowDOM.
 
 import 'package:js/js.dart';
@@ -111,8 +113,8 @@ void testMain() {
   }, skip: browserEngine != BrowserEngine.firefox);
 }
 
-@JS('Element.prototype.attachShadow')
 external dynamic get attachShadow;
 
-@JS('Element.prototype.attachShadow')
+
 external set attachShadow(dynamic x);
+*/

@@ -26,13 +26,12 @@ void testMain() {
 
       // Monkey-patch the getH5vccSkSurface function of
       // `window.h5vcc.canvasKit`.
-      js_util.setProperty(h5vcc!.canvasKit!, 'getH5vccSkSurface', allowInterop(() {
+      js_util.setProperty(h5vcc!.canvasKit!, 'getH5vccSkSurface',
+          allowInterop(() {
         getH5vccSkSurfaceCalledCount++;
 
         // Returns a fake [SkSurface] object with a minimal implementation.
-        return js_util.jsify(<String, dynamic>{
-          'dispose': allowInterop(() {})
-        });
+        return js_util.jsify(<String, dynamic>{'dispose': allowInterop(() {})});
       }));
     });
 
@@ -64,9 +63,6 @@ void testMain() {
   }, testOn: 'chrome');
 }
 
-@JS()
-@anonymous
-@staticInterop
 class PatchedH5vcc implements H5vcc {
   external factory PatchedH5vcc({CanvasKit canvasKit});
 }

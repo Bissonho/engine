@@ -31,15 +31,14 @@ class Rasterizer {
 
       final SurfaceFrame frame =
           SurfaceFactory.instance.baseSurface.acquireFrame(layerTree.frameSize);
-      HtmlViewEmbedder.instance.frameSize = layerTree.frameSize;
+      //HtmlViewEmbedder.instance.frameSize = layerTree.frameSize;
       final CkCanvas canvas = frame.skiaCanvas;
-      final Frame compositorFrame =
-          context.acquireFrame(canvas, HtmlViewEmbedder.instance);
+      final Frame compositorFrame = context.acquireFrame(canvas);
 
       compositorFrame.raster(layerTree, ignoreRasterCache: true);
       SurfaceFactory.instance.baseSurface.addToScene();
       frame.submit();
-      HtmlViewEmbedder.instance.submitFrame();
+      //HtmlViewEmbedder.instance.submitFrame();
     } finally {
       _runPostFrameCallbacks();
     }

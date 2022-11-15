@@ -21,6 +21,7 @@ import 'renderer.dart';
 import 'surface.dart';
 import 'surface_factory.dart';
 
+/*
 /// This composites HTML views into the [ui.Scene].
 class HtmlViewEmbedder {
   HtmlViewEmbedder._();
@@ -763,83 +764,8 @@ class EmbeddedViewParams {
   int get hashCode => Object.hash(offset, size, mutators);
 }
 
-enum MutatorType {
-  clipRect,
-  clipRRect,
-  clipPath,
-  transform,
-  opacity,
-}
 
-/// Stores mutation information like clipping or transform.
-class Mutator {
-  const Mutator.clipRect(ui.Rect rect)
-      : this._(MutatorType.clipRect, rect, null, null, null, null);
-  const Mutator.clipRRect(ui.RRect rrect)
-      : this._(MutatorType.clipRRect, null, rrect, null, null, null);
-  const Mutator.clipPath(ui.Path path)
-      : this._(MutatorType.clipPath, null, null, path, null, null);
-  const Mutator.transform(Matrix4 matrix)
-      : this._(MutatorType.transform, null, null, null, matrix, null);
-  const Mutator.opacity(int alpha)
-      : this._(MutatorType.opacity, null, null, null, null, alpha);
 
-  const Mutator._(
-    this.type,
-    this.rect,
-    this.rrect,
-    this.path,
-    this.matrix,
-    this.alpha,
-  );
-
-  final MutatorType type;
-  final ui.Rect? rect;
-  final ui.RRect? rrect;
-  final ui.Path? path;
-  final Matrix4? matrix;
-  final int? alpha;
-
-  bool get isClipType =>
-      type == MutatorType.clipRect ||
-      type == MutatorType.clipRRect ||
-      type == MutatorType.clipPath;
-
-  double get alphaFloat => alpha! / 255.0;
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Mutator) {
-      return false;
-    }
-
-    final Mutator typedOther = other;
-    if (type != typedOther.type) {
-      return false;
-    }
-
-    switch (type) {
-      case MutatorType.clipRect:
-        return rect == typedOther.rect;
-      case MutatorType.clipRRect:
-        return rrect == typedOther.rrect;
-      case MutatorType.clipPath:
-        return path == typedOther.path;
-      case MutatorType.transform:
-        return matrix == typedOther.matrix;
-      case MutatorType.opacity:
-        return alpha == typedOther.alpha;
-      default:
-        return false;
-    }
-  }
-
-  @override
-  int get hashCode => Object.hash(type, rect, rrect, path, matrix, alpha);
-}
 
 /// A stack of mutators that can be applied to an embedded view.
 class MutatorsStack extends Iterable<Mutator> {
@@ -914,4 +840,132 @@ class EmbedderFrameContext {
   ///
   /// These platform views will require overlays.
   int visibleViewCount = 0;
+}
+*/
+
+/// Stores mutation information like clipping or transform.
+
+enum MutatorType {
+  clipRect,
+  clipRRect,
+  clipPath,
+  transform,
+  opacity,
+}
+
+class Mutator {
+  const Mutator.clipRect(ui.Rect rect)
+      : this._(MutatorType.clipRect, rect, null, null, null, null);
+  const Mutator.clipRRect(ui.RRect rrect)
+      : this._(MutatorType.clipRRect, null, rrect, null, null, null);
+  const Mutator.clipPath(ui.Path path)
+      : this._(MutatorType.clipPath, null, null, path, null, null);
+  const Mutator.transform(Matrix4 matrix)
+      : this._(MutatorType.transform, null, null, null, matrix, null);
+  const Mutator.opacity(int alpha)
+      : this._(MutatorType.opacity, null, null, null, null, alpha);
+
+  const Mutator._(
+    this.type,
+    this.rect,
+    this.rrect,
+    this.path,
+    this.matrix,
+    this.alpha,
+  );
+
+  final MutatorType type;
+  final ui.Rect? rect;
+  final ui.RRect? rrect;
+  final ui.Path? path;
+  final Matrix4? matrix;
+  final int? alpha;
+
+  bool get isClipType =>
+      type == MutatorType.clipRect ||
+      type == MutatorType.clipRRect ||
+      type == MutatorType.clipPath;
+
+  double get alphaFloat => alpha! / 255.0;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Mutator) {
+      return false;
+    }
+
+    final Mutator typedOther = other;
+    if (type != typedOther.type) {
+      return false;
+    }
+
+    switch (type) {
+      case MutatorType.clipRect:
+        return rect == typedOther.rect;
+      case MutatorType.clipRRect:
+        return rrect == typedOther.rrect;
+      case MutatorType.clipPath:
+        return path == typedOther.path;
+      case MutatorType.transform:
+        return matrix == typedOther.matrix;
+      case MutatorType.opacity:
+        return alpha == typedOther.alpha;
+      default:
+        return false;
+    }
+  }
+
+  @override
+  int get hashCode => Object.hash(type, rect, rrect, path, matrix, alpha);
+}
+
+class MutatorsStack extends Iterable<Mutator> {
+  MutatorsStack() : _mutators = <Mutator>[];
+
+  MutatorsStack._copy(MutatorsStack original)
+      : _mutators = List<Mutator>.from(original._mutators);
+
+  final List<Mutator> _mutators;
+
+  void pushClipRect(ui.Rect rect) {
+    _mutators.add(Mutator.clipRect(rect));
+  }
+
+  void pushClipRRect(ui.RRect rrect) {
+    _mutators.add(Mutator.clipRRect(rrect));
+  }
+
+  void pushClipPath(ui.Path path) {
+    _mutators.add(Mutator.clipPath(path));
+  }
+
+  void pushTransform(Matrix4 matrix) {
+    _mutators.add(Mutator.transform(matrix));
+  }
+
+  void pushOpacity(int alpha) {
+    _mutators.add(Mutator.opacity(alpha));
+  }
+
+  void pop() {
+    _mutators.removeLast();
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) {
+      return true;
+    }
+    return other is MutatorsStack &&
+        listEquals<Mutator>(other._mutators, _mutators);
+  }
+
+  @override
+  int get hashCode => Object.hashAll(_mutators);
+
+  @override
+  Iterator<Mutator> get iterator => _mutators.reversed.iterator;
 }

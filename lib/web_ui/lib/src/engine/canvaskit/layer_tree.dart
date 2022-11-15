@@ -36,7 +36,6 @@ class LayerTree {
   void preroll(Frame frame, {bool ignoreRasterCache = false}) {
     final PrerollContext context = PrerollContext(
       ignoreRasterCache ? null : frame.rasterCache,
-      frame.viewEmbedder,
     );
     rootLayer.preroll(context, Matrix4.identity());
   }
@@ -48,16 +47,16 @@ class LayerTree {
   void paint(Frame frame, {bool ignoreRasterCache = false}) {
     final CkNWayCanvas internalNodesCanvas = CkNWayCanvas();
     internalNodesCanvas.addCanvas(frame.canvas);
-    final Iterable<CkCanvas> overlayCanvases =
-        frame.viewEmbedder!.getOverlayCanvases();
-    overlayCanvases.forEach(internalNodesCanvas.addCanvas);
+
+    //final Iterable<CkCanvas> overlayCanvases =
+    //    frame.viewEmbedder!.getOverlayCanvases();
+    //overlayCanvases.forEach(internalNodesCanvas.addCanvas);
     // Clear the canvases before painting
     internalNodesCanvas.clear(const ui.Color(0x00000000));
     final PaintContext context = PaintContext(
       internalNodesCanvas,
       frame.canvas,
       ignoreRasterCache ? null : frame.rasterCache,
-      frame.viewEmbedder,
     );
     if (rootLayer.needsPainting) {
       rootLayer.paint(context);
@@ -70,13 +69,13 @@ class LayerTree {
   ui.Picture flatten() {
     final CkPictureRecorder recorder = CkPictureRecorder();
     final CkCanvas canvas = recorder.beginRecording(ui.Rect.largest);
-    final PrerollContext prerollContext = PrerollContext(null, null);
+    final PrerollContext prerollContext = PrerollContext(null);
     rootLayer.preroll(prerollContext, Matrix4.identity());
 
     final CkNWayCanvas internalNodesCanvas = CkNWayCanvas();
     internalNodesCanvas.addCanvas(canvas);
     final PaintContext paintContext =
-        PaintContext(internalNodesCanvas, canvas, null, null);
+        PaintContext(internalNodesCanvas, canvas, null);
     if (rootLayer.needsPainting) {
       rootLayer.paint(paintContext);
     }
@@ -86,7 +85,7 @@ class LayerTree {
 
 /// A single frame to be rendered.
 class Frame {
-  Frame(this.canvas, this.rasterCache, this.viewEmbedder);
+  Frame(this.canvas, this.rasterCache);
 
   /// The canvas to render this frame to.
   final CkCanvas canvas;
@@ -95,7 +94,7 @@ class Frame {
   final RasterCache? rasterCache;
 
   /// The platform view embedder.
-  final HtmlViewEmbedder? viewEmbedder;
+  // final HtmlViewEmbedder? viewEmbedder;
 
   /// Rasterize the given layer tree into this frame.
   bool raster(LayerTree layerTree, {bool ignoreRasterCache = false}) {
@@ -115,7 +114,7 @@ class CompositorContext {
   RasterCache? rasterCache;
 
   /// Acquire a frame using this compositor's settings.
-  Frame acquireFrame(CkCanvas canvas, HtmlViewEmbedder? viewEmbedder) {
-    return Frame(canvas, rasterCache, viewEmbedder);
+  Frame acquireFrame(CkCanvas canvas) {
+    return Frame(canvas, rasterCache);
   }
 }

@@ -141,9 +141,7 @@ void _tests() {
         spy.fakeAsync.elapse(const Duration(seconds: 2));
         expect(
           spy.printLog,
-          <String>[
-            'Engine counters:\n  TestSkDeletable created: 1\n'
-          ],
+          <String>['Engine counters:\n  TestSkDeletable created: 1\n'],
         );
 
         expect(clone.box.debugGetStackTraces().length, 1);
@@ -366,9 +364,6 @@ class TestSkDeletableMock {
   JsConstructor get constructor => TestJsConstructor(name: 'TestSkDeletable');
 }
 
-@JS()
-@anonymous
-@staticInterop
 class TestSkDeletable implements SkDeletable {
   factory TestSkDeletable() {
     final TestSkDeletableMock mock = TestSkDeletableMock();
@@ -378,15 +373,12 @@ class TestSkDeletable implements SkDeletable {
         constructor: mock.constructor);
   }
 
-  external factory TestSkDeletable._({
-    bool Function() isDeleted,
-    void Function() delete,
-    JsConstructor constructor});
+  external factory TestSkDeletable._(
+      {bool Function() isDeleted,
+      void Function() delete,
+      JsConstructor constructor});
 }
 
-@JS()
-@anonymous
-@staticInterop
 class TestJsConstructor implements JsConstructor {
   external factory TestJsConstructor({String name});
 }
