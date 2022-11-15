@@ -8,11 +8,11 @@ library window;*/
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:js/js.dart';
-import 'package:meta/meta.dart';
+//import 'package:js/js.dart';
+//import 'package:meta/meta.dart';
 import 'package:ui/ui.dart' as ui;
 
-import '../engine.dart' show registerHotRestartListener;
+//import '../engine.dart' show registerHotRestartListener;
 import 'browser_detection.dart';
 import 'dom.dart';
 //import 'navigation/history.dart';
@@ -21,7 +21,7 @@ import 'dom.dart';
 import 'platform_dispatcher.dart';
 import 'services.dart';
 //import 'test_embedding.dart';
-import 'util.dart';
+//import 'util.dart';
 
 typedef _HandleMessageCallBack = Future<bool> Function();
 

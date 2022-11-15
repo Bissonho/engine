@@ -612,7 +612,7 @@ class BitmapCanvas extends EngineCanvas {
   @override
   void drawShadow(ui.Path path, ui.Color color, double elevation,
       bool transparentOccluder) {
-    _canvasPool.drawShadow(path, color, elevation, transparentOccluder);
+    //_canvasPool.drawShadow(path, color, elevation, transparentOccluder);
   }
 
   @override

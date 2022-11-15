@@ -5,7 +5,7 @@
 import 'package:ui/ui.dart' as ui;
 
 import '../dom.dart';
-import '../shadow.dart';
+//import '../shadow.dart';
 import '../svg.dart';
 import '../util.dart';
 import 'dom_canvas.dart';
@@ -78,7 +78,8 @@ mixin _DomClip on PersistedContainerSurface {
 class PersistedClipRect extends PersistedContainerSurface
     with _DomClip
     implements ui.ClipRectEngineLayer {
-  PersistedClipRect(PersistedClipRect? super.oldLayer, this.rect, this.clipBehavior);
+  PersistedClipRect(
+      PersistedClipRect? super.oldLayer, this.rect, this.clipBehavior);
   final ui.Clip? clipBehavior;
   final ui.Rect rect;
 
@@ -275,7 +276,7 @@ class PersistedPhysicalShape extends PersistedContainerSurface
       if (clipBehavior != ui.Clip.none) {
         style.overflow = 'hidden';
       }
-      applyCssShadow(rootElement, pathBounds, elevation, shadowColor);
+      //applyCssShadow(rootElement, pathBounds, elevation, shadowColor);
       return;
     } else {
       final ui.Rect? rect = path.toRect();
@@ -293,7 +294,7 @@ class PersistedPhysicalShape extends PersistedContainerSurface
         if (clipBehavior != ui.Clip.none) {
           style.overflow = 'hidden';
         }
-        applyCssShadow(rootElement, pathBounds, elevation, shadowColor);
+        //applyCssShadow(rootElement, pathBounds, elevation, shadowColor);
         return;
       } else {
         final ui.Rect? ovalRect = path.toCircle();
@@ -317,7 +318,7 @@ class PersistedPhysicalShape extends PersistedContainerSurface
           if (clipBehavior != ui.Clip.none) {
             style.overflow = 'hidden';
           }
-          applyCssShadow(rootElement, pathBounds, elevation, shadowColor);
+          //applyCssShadow(rootElement, pathBounds, elevation, shadowColor);
           return;
         }
       }
@@ -347,8 +348,7 @@ class PersistedPhysicalShape extends PersistedContainerSurface
             scaleX: 1.0 / pathBounds.width,
             scaleY: 1.0 / pathBounds.height)
         : pathToSvgClipPath(path,
-            scaleX: 1.0 / pathBounds.right,
-            scaleY: 1.0 / pathBounds.bottom);
+            scaleX: 1.0 / pathBounds.right, scaleY: 1.0 / pathBounds.bottom);
 
     /// If apply is called multiple times (without update), remove prior
     /// svg clip and render elements.
@@ -399,14 +399,14 @@ class PersistedPhysicalShape extends PersistedContainerSurface
     /// Render element behind the clipped content.
     rootElement!.insertBefore(_svgElement!, childContainer);
 
-    final SurfaceShadowData shadow = computeShadow(pathBounds, elevation)!;
-    final ui.Color boxShadowColor = toShadowColor(shadowColor);
-    _svgElement!.style
+    //final SurfaceShadowData shadow = computeShadow(pathBounds, elevation)!;
+    //final ui.Color boxShadowColor = toShadowColor(shadowColor);
+    /*_svgElement!.style
       ..filter = 'drop-shadow(${shadow.offset.dx}px ${shadow.offset.dy}px '
           '${shadow.blurWidth}px '
           'rgba(${boxShadowColor.red}, ${boxShadowColor.green}, '
           '${boxShadowColor.blue}, ${boxShadowColor.alpha / 255}))'
-      ..transform = 'translate(-${pathBounds2.left}px, -${pathBounds2.top}px)';
+      ..transform = 'translate(-${pathBounds2.left}px, -${pathBounds2.top}px)';*/
 
     rootElement!.style.backgroundColor = '';
   }
