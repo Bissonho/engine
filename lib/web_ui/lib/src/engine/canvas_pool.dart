@@ -8,7 +8,7 @@ import 'dart:typed_data';
 import 'package:meta/meta.dart';
 import 'package:ui/ui.dart' as ui;
 
-import 'browser_detection.dart';
+//import 'browser_detection.dart';
 import 'dom.dart';
 import 'engine_canvas.dart';
 import 'html/bitmap_canvas.dart';

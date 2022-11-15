@@ -11,7 +11,7 @@ import 'package:ui/src/engine/renderer.dart';
 import 'package:ui/ui.dart' as ui;
 
 import '../engine.dart' show platformViewManager, registerHotRestartListener;
-import 'clipboard.dart';
+//import 'clipboard.dart';
 //import 'dom.dart';
 import 'embedder.dart';
 //import 'mouse_cursor.dart';
@@ -520,10 +520,10 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
             replyToPlatformMessage(callback, codec.encodeSuccessEnvelope(true));
             return;
           case 'Clipboard.setData':
-            ClipboardMessageHandler().setDataMethodCall(decoded, callback);
+            //ClipboardMessageHandler().setDataMethodCall(decoded, callback);
             return;
           case 'Clipboard.getData':
-            ClipboardMessageHandler().getDataMethodCall(callback);
+            //ClipboardMessageHandler().getDataMethodCall(callback);
             return;
         }
         break;
