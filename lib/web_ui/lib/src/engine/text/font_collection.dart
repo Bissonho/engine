@@ -26,7 +26,7 @@ class HtmlFontCollection implements FontCollection {
 
   /// Reads the font manifest using the [assetManager] and downloads all of the
   /// fonts declared within.
-  @override
+  /*@override
   Future<void> downloadAssetFonts(AssetManager assetManager) async {
     ByteData byteData;
 
@@ -72,12 +72,13 @@ class HtmlFontCollection implements FontCollection {
       }
     }
     await _assetFontManager!.downloadAllFonts();
-  }
+  }*/
 
   @override
   Future<void> loadFontFromList(Uint8List list, {String? fontFamily}) {
     if (fontFamily == null) {
-      throw AssertionError('Font family must be provided to HtmlFontCollection.');
+      throw AssertionError(
+          'Font family must be provided to HtmlFontCollection.');
     }
     return _assetFontManager!._loadFontFaceBytes(fontFamily, list);
   }
@@ -88,8 +89,8 @@ class HtmlFontCollection implements FontCollection {
     _testFontManager = FontManager();
     _testFontManager!.downloadAsset(
         ahemFontFamily, 'url($ahemFontUrl)', const <String, String>{});
-    _testFontManager!.downloadAsset(robotoFontFamily,
-        'url($robotoTestFontUrl)', const <String, String>{});
+    _testFontManager!.downloadAsset(
+        robotoFontFamily, 'url($robotoTestFontUrl)', const <String, String>{});
     _testFontManager!.downloadAsset(robotoVariableFontFamily,
         'url($robotoVariableTestFontUrl)', const <String, String>{});
     await _testFontManager!.downloadAllFonts();
@@ -127,7 +128,8 @@ class FontManager {
   /// Fonts that started the downloading process. Once the fonts have downloaded
   /// without error, they are moved to [_downloadedFonts]. Those fonts
   /// are subsequently registered by [registerDownloadedFonts].
-  final List<Future<DomFontFace?>> _fontLoadingFutures = <Future<DomFontFace?>>[];
+  final List<Future<DomFontFace?>> _fontLoadingFutures =
+      <Future<DomFontFace?>>[];
 
   final List<DomFontFace> _downloadedFonts = <DomFontFace>[];
 
@@ -201,9 +203,11 @@ class FontManager {
         return null;
       }
     }
+
     // try/catch because `new FontFace` can crash with an improper font family.
     try {
-      final DomFontFace fontFace = createDomFontFace(family, asset, descriptors);
+      final DomFontFace fontFace =
+          createDomFontFace(family, asset, descriptors);
       _fontLoadingFutures.add(fontFaceLoad(fontFace));
     } catch (e) {
       printWarning('Error while loading font family "$family":\n$e');
@@ -217,9 +221,9 @@ class FontManager {
     _downloadedFonts.forEach(domDocument.fonts!.add);
   }
 
-
   Future<void> downloadAllFonts() async {
-    final List<DomFontFace?> loadedFonts = await Future.wait(_fontLoadingFutures);
+    final List<DomFontFace?> loadedFonts =
+        await Future.wait(_fontLoadingFutures);
     _downloadedFonts.addAll(loadedFonts.whereType<DomFontFace>());
   }
 

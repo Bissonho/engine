@@ -258,13 +258,14 @@ void _setAssetManager(AssetManager assetManager) {
 Future<void> _downloadAssetFonts() async {
   renderer.fontCollection.clear();
 
-  if (_assetManager != null) {
+  await renderer.fontCollection.debugDownloadTestFonts();
+  // Disable Font URL Download
+  /*if (_assetManager != null) {
     await renderer.fontCollection.downloadAssetFonts(_assetManager!);
-  }
-
-  if (ui.debugEmulateFlutterTesterEnvironment) {
+  }*/
+  /*if (ui.debugEmulateFlutterTesterEnvironment) {
     await renderer.fontCollection.debugDownloadTestFonts();
-  }
+  }*/
 }
 
 /*void _addUrlStrategyListener() {

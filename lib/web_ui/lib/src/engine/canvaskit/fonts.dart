@@ -92,7 +92,7 @@ class SkiaFontCollection implements FontCollection {
 
   /// Loads fonts from `FontManifest.json`.
   @override
-  Future<void> downloadAssetFonts(AssetManager assetManager) async {
+  /*Future<void> downloadAssetFonts(AssetManager assetManager) async {
     ByteData byteData;
 
     try {
@@ -136,11 +136,12 @@ class SkiaFontCollection implements FontCollection {
 
     final List<UnregisteredFont?> completedPendingFonts = await Future.wait(pendingFonts);
     _unregisteredFonts.addAll(completedPendingFonts.whereType<UnregisteredFont>());
-  }
+  }*/
 
   @override
   void registerDownloadedFonts() {
-    RegisteredFont? makeRegisterFont(ByteBuffer buffer, String url, String family) {
+    RegisteredFont? makeRegisterFont(
+        ByteBuffer buffer, String url, String family) {
       final Uint8List bytes = buffer.asUint8List();
       final SkTypeface? typeface =
           canvasKit.Typeface.MakeFreeTypeFaceFromData(bytes.buffer);
@@ -155,10 +156,9 @@ class SkiaFontCollection implements FontCollection {
 
     for (final UnregisteredFont unregisteredFont in _unregisteredFonts) {
       final RegisteredFont? registeredFont = makeRegisterFont(
-        unregisteredFont.bytes,
-        unregisteredFont.url,
-        unregisteredFont.family
-      );
+          unregisteredFont.bytes,
+          unregisteredFont.url,
+          unregisteredFont.family);
       if (registeredFont != null) {
         _registeredFonts.add(registeredFont);
       }
@@ -181,7 +181,8 @@ class SkiaFontCollection implements FontCollection {
   /// different URLs.
   @override
   Future<void> debugDownloadTestFonts() async {
-    final List<Future<UnregisteredFont?>> pendingFonts = <Future<UnregisteredFont?>>[];
+    final List<Future<UnregisteredFont?>> pendingFonts =
+        <Future<UnregisteredFont?>>[];
     if (!_isFontFamilyDownloaded(ahemFontFamily)) {
       _downloadFont(pendingFonts, ahemFontUrl, ahemFontFamily);
     }
@@ -189,22 +190,22 @@ class SkiaFontCollection implements FontCollection {
       _downloadFont(pendingFonts, robotoTestFontUrl, robotoFontFamily);
     }
     if (!_isFontFamilyDownloaded(robotoVariableFontFamily)) {
-      _downloadFont(pendingFonts, robotoVariableTestFontUrl, robotoVariableFontFamily);
+      _downloadFont(
+          pendingFonts, robotoVariableTestFontUrl, robotoVariableFontFamily);
     }
 
-    final List<UnregisteredFont?> completedPendingFonts = await Future.wait(pendingFonts);
-    _unregisteredFonts.addAll(completedPendingFonts.whereType<UnregisteredFont>());
+    final List<UnregisteredFont?> completedPendingFonts =
+        await Future.wait(pendingFonts);
+    _unregisteredFonts
+        .addAll(completedPendingFonts.whereType<UnregisteredFont>());
 
     // Ahem must be added to font fallbacks list regardless of where it was
     // downloaded from.
     FontFallbackData.instance.globalFontFallbacks.add(ahemFontFamily);
   }
 
-  void _downloadFont(
-    List<Future<UnregisteredFont?>> waitUnregisteredFonts,
-    String url,
-    String family
-  ) {
+  void _downloadFont(List<Future<UnregisteredFont?>> waitUnregisteredFonts,
+      String url, String family) {
     Future<UnregisteredFont?> downloadFont() async {
       ByteBuffer buffer;
       try {
@@ -220,7 +221,6 @@ class SkiaFontCollection implements FontCollection {
     _downloadedFontFamilies.add(family);
     waitUnregisteredFonts.add(downloadFont());
   }
-
 
   String? _readActualFamilyName(Uint8List bytes) {
     final SkFontMgr tmpFontMgr =
