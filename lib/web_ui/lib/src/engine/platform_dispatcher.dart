@@ -20,7 +20,7 @@ import 'plugins.dart';
 import 'safe_browser_api.dart';
 import 'semantics.dart';
 import 'services.dart';
-import 'text_editing/text_editing.dart';
+//import 'text_editing/text_editing.dart';
 import 'util.dart';
 import 'window.dart';
 
@@ -534,7 +534,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         return;
 
       case 'flutter/textinput':
-        textEditing.channel.handleTextInput(data, callback);
+        //textEditing.channel.handleTextInput(data, callback);
         return;
 
       case 'flutter/mousecursor':

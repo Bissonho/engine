@@ -16,7 +16,7 @@ import 'platform_dispatcher.dart';
 //import 'pointer_binding.dart';
 import 'safe_browser_api.dart';
 import 'semantics.dart';
-import 'text_editing/text_editing.dart';
+//import 'text_editing/text_editing.dart';
 import 'util.dart';
 import 'window.dart';
 
@@ -188,11 +188,11 @@ class FlutterViewEmbedder {
     _resourcesHost = null;
     domDocument.head!.append(_styleElement!);
     final DomCSSStyleSheet sheet = _styleElement!.sheet! as DomCSSStyleSheet;
-    applyGlobalCssRulesToSheet(
+    /*applyGlobalCssRulesToSheet(
       sheet,
       browserEngine: browserEngine,
       hasAutofillOverlay: browserHasAutofillOverlay(),
-    );
+    );*/
 
     final DomHTMLBodyElement bodyElement = domDocument.body!;
 
@@ -401,7 +401,7 @@ class FlutterViewEmbedder {
   /// size if the change is caused by a rotation.
   void _metricsDidChange(DomEvent? event) {
     updateSemanticsScreenProperties();
-    if (isMobile && !window.isRotation() && textEditing.isEditing) {
+    if (isMobile && !window.isRotation() /*&& textEditing.isEditing*/) {
       window.computeOnScreenKeyboardInsets(true);
       EnginePlatformDispatcher.instance.invokeOnMetricsChanged();
     } else {
@@ -642,7 +642,7 @@ void applyGlobalCssRulesToSheet(
   // This css prevents an autofill overlay brought by the browser during
   // text field autofill by delaying the transition effect.
   // See: https://github.com/flutter/flutter/issues/61132.
-  if (browserHasAutofillOverlay()) {
+  /*if (browserHasAutofillOverlay()) {
     sheet.insertRule('''
       .transparentTextEditing:-webkit-autofill,
       .transparentTextEditing:-webkit-autofill:hover,
@@ -651,7 +651,7 @@ void applyGlobalCssRulesToSheet(
         -webkit-transition-delay: 99999s;
       }
     ''', sheet.cssRules.length);
-  }
+  }*/
 }
 
 /// The embedder singleton.
