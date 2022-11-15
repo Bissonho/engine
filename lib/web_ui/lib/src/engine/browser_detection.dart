@@ -60,30 +60,6 @@ BrowserEngine _detectBrowserEngine() {
 ///
 /// Used for testing this library.
 
-//#Unity
-/*@visibleForTesting
-BrowserEngine detectBrowserEngineByVendorAgent(String vendor, String agent) {
-  if (vendor == 'Google Inc.') {
-    return BrowserEngine.blink;
-  } 
-  else if (vendor == 'Apple Computer, Inc.') {
-    return BrowserEngine.webkit;
-  } else if (agent.contains('Edg/')) {
-    // Chromium based Microsoft Edge has `Edg` in the user-agent.
-    // https://docs.microsoft.com/en-us/microsoft-edge/web-platform/user-agent-string
-    return BrowserEngine.blink;
-  } else if (vendor == '' && agent.contains('firefox')) {
-    // An empty string means firefox:
-    // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vendor
-    return BrowserEngine.firefox;
-  }
-
-  // Assume Blink otherwise, but issue a warning.
-  print('WARNING: failed to detect current browser engine. Assuming this is a Chromium-compatible browser.');
-  return BrowserEngine.blink;
-}*/
-
-//#Unity
 @visibleForTesting
 BrowserEngine detectBrowserEngineByVendorAgent(String vendor, String agent) {
   return BrowserEngine.blink;
@@ -196,7 +172,9 @@ bool get isMobile => !isDesktop;
 ///
 /// - See [operatingSystem].
 /// - See [OperatingSystem].
-bool get isMacOrIOS => operatingSystem == OperatingSystem.iOs || operatingSystem == OperatingSystem.macOs;
+bool get isMacOrIOS =>
+    operatingSystem == OperatingSystem.iOs ||
+    operatingSystem == OperatingSystem.macOs;
 
 /// Detect iOS 15.
 /*bool get isIOS15 {
@@ -235,7 +213,8 @@ int? _cachedWebGLVersion;
 
 /// The highest WebGL version supported by the current browser, or -1 if WebGL
 /// is not supported.
-int get webGLVersion => _cachedWebGLVersion ?? (_cachedWebGLVersion = _detectWebGLVersion());
+int get webGLVersion =>
+    _cachedWebGLVersion ?? (_cachedWebGLVersion = _detectWebGLVersion());
 
 /// Detects the highest WebGL version supported by the current browser, or
 /// -1 if WebGL is not supported.

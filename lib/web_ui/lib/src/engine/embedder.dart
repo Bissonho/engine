@@ -629,16 +629,6 @@ void applyGlobalCssRulesToSheet(
 
   // By default on iOS, Safari would highlight the element that's being tapped
   // on using gray background. This CSS rule disables that.
-
-  /* Unity Project Remove webkit 
-  if (isWebKit) {
-    sheet.insertRule('''
-      $glassPaneTagName * {
-      -webkit-tap-highlight-color: transparent;
-    }
-    ''', sheet.cssRules.length);
-  }*/
-
   // Hide placeholder text
   sheet.insertRule(
     '''
