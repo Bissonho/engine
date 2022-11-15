@@ -11,7 +11,7 @@ import 'browser_detection.dart';
 import 'configuration.dart';
 import 'dom.dart';
 import 'host_node.dart';
-import 'keyboard_binding.dart';
+//import 'keyboard_binding.dart';
 import 'platform_dispatcher.dart';
 //import 'pointer_binding.dart';
 import 'safe_browser_api.dart';
@@ -324,7 +324,7 @@ class FlutterViewEmbedder {
       _sceneHostElement!.style.opacity = '0.3';
     }
 
-    KeyboardBinding.initInstance();
+    //KeyboardBinding.initInstance();
     /*PointerBinding.initInstance(
         glassPaneElement, KeyboardBinding.instance!.converter);*/
 
