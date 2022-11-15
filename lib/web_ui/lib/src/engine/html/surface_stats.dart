@@ -217,6 +217,7 @@ void debugRepaintSurfaceStatsOverlay(PersistedScene scene) {
   }
 }
 
+/*
 /// Prints debug statistics for the current frame to the console.
 void debugPrintSurfaceStats(PersistedScene scene, int frameNumber) {
   int pictureCount = 0;
@@ -325,4 +326,4 @@ void debugPrintSurfaceStats(PersistedScene scene, int frameNumber) {
     }
     print(buf);
   });
-}
+}*/

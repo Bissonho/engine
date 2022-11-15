@@ -1459,9 +1459,9 @@ List<DomElement> _clipContent(List<SaveClipEntry> clipStack, DomElement content,
         curElement.style
           ..transform = matrix4ToCssTransform(newClipTransform)
           ..transformOrigin = '0 0 0';
-        final DomElement clipElement =
-            createSvgClipDef(curElement, entry.path!);
-        clipDefs.add(clipElement);
+        //final DomElement clipElement =
+        //    createSvgClipDef(curElement, entry.path!);
+        //clipDefs.add(clipElement);
       }
     }
     // Reverse the transform of the clipping element so children can use

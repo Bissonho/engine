@@ -15,6 +15,7 @@ import 'path_to_svg_clip.dart';
 import 'surface.dart';
 import 'surface_stats.dart';
 
+/*
 /// Mixin used by surfaces that clip their contents using an overflowing DOM
 /// element.
 mixin _DomClip on PersistedContainerSurface {
@@ -522,3 +523,4 @@ SVGSVGElement createSvgClipDef(DomElement element, ui.Path clipPath) {
     ..height = '${pathBounds.bottom}px';
   return svgClipPath;
 }
+*/

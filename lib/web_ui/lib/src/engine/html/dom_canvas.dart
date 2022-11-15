@@ -20,6 +20,8 @@ import 'path/path_to_svg.dart';
 import 'shaders/image_shader.dart';
 import 'shaders/shader.dart';
 
+/*
+
 /// A canvas that renders to DOM elements and CSS properties.
 class DomCanvas extends EngineCanvas with SaveElementStackTracking {
   DomCanvas(this.rootElement);
@@ -366,3 +368,5 @@ SVGSVGElement pathToSvgElement(
   svgPath.setAttribute('d', pathToSvg(path.pathRef));
   return root;
 }
+
+*/

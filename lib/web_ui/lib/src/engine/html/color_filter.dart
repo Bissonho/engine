@@ -14,6 +14,7 @@ import '../util.dart';
 import 'bitmap_canvas.dart';
 import 'path_to_svg_clip.dart';
 import 'surface.dart';
+/*
 
 /// A surface that applies an [ColorFilter] to its children.
 class PersistedColorFilter extends PersistedContainerSurface implements ui.ColorFilterEngineLayer {
@@ -583,3 +584,4 @@ SvgFilter _blendColorFilterToSvg(ui.Color? color, SvgBlendMode svgBlendMode, {bo
   }
   return builder.build();
 }
+*/
