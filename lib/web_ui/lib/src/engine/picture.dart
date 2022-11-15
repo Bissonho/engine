@@ -6,11 +6,11 @@ import 'dart:async';
 
 import 'package:ui/ui.dart' as ui;
 
-import 'dom.dart';
+//import 'dom.dart';
 import 'html/bitmap_canvas.dart';
 import 'html/recording_canvas.dart';
-import 'html_image_codec.dart';
-import 'safe_browser_api.dart';
+//import 'html_image_codec.dart';
+//import 'safe_browser_api.dart';
 import 'util.dart';
 
 /// An implementation of [ui.PictureRecorder] backed by a [RecordingCanvas].
@@ -58,14 +58,15 @@ class EnginePicture implements ui.Picture {
 
   @override
   Future<ui.Image> toImage(int width, int height) async {
-    final ui.Rect imageRect = ui.Rect.fromLTRB(0, 0, width.toDouble(), height.toDouble());
+    final ui.Rect imageRect =
+        ui.Rect.fromLTRB(0, 0, width.toDouble(), height.toDouble());
     final BitmapCanvas canvas = BitmapCanvas.imageData(imageRect);
     recordingCanvas!.apply(canvas, imageRect);
     final String imageDataUrl = canvas.toDataUrl();
-    final DomHTMLImageElement imageElement = createDomHTMLImageElement()
+    /*final DomHTMLImageElement imageElement = createDomHTMLImageElement()
       ..src = imageDataUrl
       ..width = width
-      ..height = height;
+      ..height = height;*/
 
     // The image loads asynchronously. We need to wait before returning,
     // otherwise the returned HtmlImage will be temporarily unusable.
@@ -73,12 +74,12 @@ class EnginePicture implements ui.Picture {
 
     // Ignoring the returned futures from onError and onLoad because we're
     // communicating through the `onImageLoaded` completer.
-    late final DomEventListener errorListener;
+    /*late final DomEventListener errorListener;
     errorListener = allowInterop((DomEvent event) {
       onImageLoaded.completeError(event);
       imageElement.removeEventListener('error', errorListener);
-    });
-    imageElement.addEventListener('error', errorListener);
+    });*/
+    /*imageElement.addEventListener('error', errorListener);
     late final DomEventListener loadListener;
     loadListener = allowInterop((DomEvent event) {
       onImageLoaded.complete(HtmlImage(
@@ -88,13 +89,14 @@ class EnginePicture implements ui.Picture {
       ));
       imageElement.removeEventListener('load', loadListener);
     });
-    imageElement.addEventListener('load', loadListener);
+    imageElement.addEventListener('load', loadListener);*/
     return onImageLoaded.future;
   }
 
   @override
   ui.Image toImageSync(int width, int height) {
-    throw UnsupportedError('toImageSync is not supported on the HTML backend. Use drawPicture instead, or toImage.');
+    throw UnsupportedError(
+        'toImageSync is not supported on the HTML backend. Use drawPicture instead, or toImage.');
   }
 
   bool _disposed = false;
@@ -110,9 +112,9 @@ class EnginePicture implements ui.Picture {
     if (assertionsEnabled) {
       return _disposed;
     }
-    throw StateError('Picture.debugDisposed is only available when asserts are enabled.');
+    throw StateError(
+        'Picture.debugDisposed is only available when asserts are enabled.');
   }
-
 
   @override
   int get approximateBytesUsed => 0;
