@@ -977,8 +977,8 @@ class BitmapCanvas extends EngineCanvas {
       return;
     }
 
-    final DomElement paragraphElement = drawParagraphElement(paragraph, offset);
-    if (_canvasPool.isClipped) {
+    //final DomElement paragraphElement = drawParagraphElement(paragraph, offset);
+    /*if (_canvasPool.isClipped) {
       final List<DomElement> clipElements = _clipContent(_canvasPool.clipStack!,
           paragraphElement, offset, _canvasPool.currentTransform);
       for (final DomElement clipElement in clipElements) {
@@ -996,7 +996,7 @@ class BitmapCanvas extends EngineCanvas {
     // If there is a prior sibling such as img prevent left/top shift.
     paragraphElement.style
       ..left = '0px'
-      ..top = '0px';
+      ..top = '0px';*/
     _closeCanvas();
   }
 

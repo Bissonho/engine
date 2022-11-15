@@ -4,12 +4,11 @@
 
 import 'package:ui/ui.dart' as ui;
 
-import '../dom.dart';
 import '../embedder.dart';
 import '../html/bitmap_canvas.dart';
 import '../profiler.dart';
 import '../util.dart';
-import 'layout_fragmenter.dart';
+//import 'layout_fragmenter.dart';
 import 'layout_service.dart';
 import 'paint_service.dart';
 import 'paragraph.dart';
@@ -118,7 +117,7 @@ class CanvasParagraph implements ui.Paragraph {
 
     isLaidOut = true;
     _lastUsedConstraints = constraints;
-    _cachedDomElement = null;
+    //_cachedDomElement = null;
   }
 
   // TODO(mdebbar): Returning true means we always require a bitmap canvas. Revisit
@@ -132,7 +131,7 @@ class CanvasParagraph implements ui.Paragraph {
     _paintService.paint(canvas, offset);
   }
 
-  DomElement? _cachedDomElement;
+  /*DomElement? _cachedDomElement;
 
   /// Returns a DOM element that represents the entire paragraph and its
   /// children.
@@ -145,9 +144,9 @@ class CanvasParagraph implements ui.Paragraph {
       return _cachedDomElement ??= _createDomElement();
     }
     return domElement.cloneNode(true) as DomElement;
-  }
+  }*/
 
-  DomElement _createDomElement() {
+  /*DomElement _createDomElement() {
     final DomElement rootElement = domDocument.createElement('flt-paragraph');
 
     // 1. Set paragraph-level styles.
@@ -183,7 +182,7 @@ class CanvasParagraph implements ui.Paragraph {
     }
 
     return rootElement;
-  }
+  }*/
 
   @override
   List<ui.TextBox> getBoxesForPlaceholders() {
@@ -197,7 +196,8 @@ class CanvasParagraph implements ui.Paragraph {
     ui.BoxHeightStyle boxHeightStyle = ui.BoxHeightStyle.tight,
     ui.BoxWidthStyle boxWidthStyle = ui.BoxWidthStyle.tight,
   }) {
-    return _layoutService.getBoxesForRange(start, end, boxHeightStyle, boxWidthStyle);
+    return _layoutService.getBoxesForRange(
+        start, end, boxHeightStyle, boxWidthStyle);
   }
 
   @override
@@ -216,7 +216,8 @@ class CanvasParagraph implements ui.Paragraph {
         characterPosition = position.offset;
         break;
     }
-    final int start = WordBreaker.prevBreakIndex(plainText, characterPosition + 1);
+    final int start =
+        WordBreaker.prevBreakIndex(plainText, characterPosition + 1);
     final int end = WordBreaker.nextBreakIndex(plainText, characterPosition);
     return ui.TextRange(start: start, end: end);
   }
@@ -257,11 +258,12 @@ class CanvasParagraph implements ui.Paragraph {
     if (assertionsEnabled) {
       return _disposed;
     }
-    throw StateError('Paragraph.debugDisposed is only avialalbe when asserts are enabled.');
+    throw StateError(
+        'Paragraph.debugDisposed is only avialalbe when asserts are enabled.');
   }
 }
 
-void _positionSpanElement(DomElement element, ParagraphLine line, LayoutFragment fragment) {
+/*void _positionSpanElement(DomElement element, ParagraphLine line, LayoutFragment fragment) {
   final ui.Rect boxRect = fragment.toPaintingTextBox().toRect();
   element.style
     ..position = 'absolute'
@@ -271,7 +273,7 @@ void _positionSpanElement(DomElement element, ParagraphLine line, LayoutFragment
     ..width = '${boxRect.width}px'
     // Makes sure the baseline of each span is positioned as expected.
     ..lineHeight = '${boxRect.height}px';
-}
+}*/
 
 /// Represents a span in the paragraph.
 ///
@@ -415,19 +417,23 @@ class ChildStyleNode extends StyleNode {
   // property isn't defined, go to the parent node.
 
   @override
-  ui.Color? get _color => style.color ?? (_foreground == null ? parent._color : null);
+  ui.Color? get _color =>
+      style.color ?? (_foreground == null ? parent._color : null);
 
   @override
   ui.TextDecoration? get _decoration => style.decoration ?? parent._decoration;
 
   @override
-  ui.Color? get _decorationColor => style.decorationColor ?? parent._decorationColor;
+  ui.Color? get _decorationColor =>
+      style.decorationColor ?? parent._decorationColor;
 
   @override
-  ui.TextDecorationStyle? get _decorationStyle => style.decorationStyle ?? parent._decorationStyle;
+  ui.TextDecorationStyle? get _decorationStyle =>
+      style.decorationStyle ?? parent._decorationStyle;
 
   @override
-  double? get _decorationThickness => style.decorationThickness ?? parent._decorationThickness;
+  double? get _decorationThickness =>
+      style.decorationThickness ?? parent._decorationThickness;
 
   @override
   ui.FontWeight? get _fontWeight => style.fontWeight ?? parent._fontWeight;
@@ -436,16 +442,20 @@ class ChildStyleNode extends StyleNode {
   ui.FontStyle? get _fontStyle => style.fontStyle ?? parent._fontStyle;
 
   @override
-  ui.TextBaseline? get _textBaseline => style.textBaseline ?? parent._textBaseline;
+  ui.TextBaseline? get _textBaseline =>
+      style.textBaseline ?? parent._textBaseline;
 
   @override
-  List<String>? get _fontFamilyFallback => style.fontFamilyFallback ?? parent._fontFamilyFallback;
+  List<String>? get _fontFamilyFallback =>
+      style.fontFamilyFallback ?? parent._fontFamilyFallback;
 
   @override
-  List<ui.FontFeature>? get _fontFeatures => style.fontFeatures ?? parent._fontFeatures;
+  List<ui.FontFeature>? get _fontFeatures =>
+      style.fontFeatures ?? parent._fontFeatures;
 
   @override
-  List<ui.FontVariation>? get _fontVariations => style.fontVariations ?? parent._fontVariations;
+  List<ui.FontVariation>? get _fontVariations =>
+      style.fontVariations ?? parent._fontVariations;
 
   @override
   double get _fontSize => style.fontSize ?? parent._fontSize;
@@ -475,7 +485,8 @@ class ChildStyleNode extends StyleNode {
   // never null on the TextStyle object, so we use `isFontFamilyProvided` to
   // check if font family is defined or not.
   @override
-  String get _fontFamily => style.isFontFamilyProvided ? style.fontFamily : parent._fontFamily;
+  String get _fontFamily =>
+      style.isFontFamilyProvided ? style.fontFamily : parent._fontFamily;
 }
 
 /// The root style node for the paragraph.
@@ -513,7 +524,8 @@ class RootStyleNode extends StyleNode {
   ui.TextBaseline? get _textBaseline => null;
 
   @override
-  String get _fontFamily => paragraphStyle.fontFamily ?? FlutterViewEmbedder.defaultFontFamily;
+  String get _fontFamily =>
+      paragraphStyle.fontFamily ?? FlutterViewEmbedder.defaultFontFamily;
 
   @override
   List<String>? get _fontFamilyFallback => null;
@@ -525,7 +537,8 @@ class RootStyleNode extends StyleNode {
   List<ui.FontVariation>? get _fontVariations => null;
 
   @override
-  double get _fontSize => paragraphStyle.fontSize ?? FlutterViewEmbedder.defaultFontSize;
+  double get _fontSize =>
+      paragraphStyle.fontSize ?? FlutterViewEmbedder.defaultFontSize;
 
   @override
   double? get _letterSpacing => null;
@@ -589,7 +602,8 @@ class CanvasParagraphBuilder implements ui.ParagraphBuilder {
     // Require a baseline to be specified if using a baseline-based alignment.
     assert(!(alignment == ui.PlaceholderAlignment.aboveBaseline ||
             alignment == ui.PlaceholderAlignment.belowBaseline ||
-            alignment == ui.PlaceholderAlignment.baseline) || baseline != null);
+            alignment == ui.PlaceholderAlignment.baseline) ||
+        baseline != null);
 
     final int start = _plainTextBuffer.length;
     _plainTextBuffer.write(placeholderChar);

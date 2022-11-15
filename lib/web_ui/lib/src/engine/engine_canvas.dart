@@ -80,7 +80,8 @@ abstract class EngineCanvas {
   void drawVertices(
       SurfaceVertices vertices, ui.BlendMode blendMode, SurfacePaintData paint);
 
-  void drawPoints(ui.PointMode pointMode, Float32List points, SurfacePaintData paint);
+  void drawPoints(
+      ui.PointMode pointMode, Float32List points, SurfacePaintData paint);
 
   /// Extension of Canvas API to mark the end of a stream of painting commands
   /// to enable re-use/dispose optimizations.
@@ -257,7 +258,7 @@ mixin SaveStackTracking on EngineCanvas {
   }
 }
 
-DomElement drawParagraphElement(
+/*DomElement drawParagraphElement(
   CanvasParagraph paragraph,
   ui.Offset offset, {
   Matrix4? transform,
@@ -273,7 +274,7 @@ DomElement drawParagraphElement(
     );
   }
   return paragraphElement;
-}
+}*/
 
 class _SaveElementStackEntry {
   _SaveElementStackEntry({
