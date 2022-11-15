@@ -32,17 +32,17 @@ import 'surface_stats.dart';
 const int _kCanvasCacheSize = 30;
 
 /// Canvases available for reuse, capped at [_kCanvasCacheSize].
-List<BitmapCanvas> get recycledCanvases => _recycledCanvases;
-final List<BitmapCanvas> _recycledCanvases = <BitmapCanvas>[];
+//List<BitmapCanvas> get recycledCanvases => _recycledCanvases;
+//final List<BitmapCanvas> _recycledCanvases = <BitmapCanvas>[];
 
 /// Reduces recycled canvas list by 50% to reduce bitmap canvas memory use.
-void reduceCanvasMemoryUsage() {
+/*void reduceCanvasMemoryUsage() {
   final int canvasCount = _recycledCanvases.length;
   for (int i = 0; i < canvasCount; i++) {
     _recycledCanvases[i].dispose();
   }
   _recycledCanvases.clear();
-}
+}*/
 
 /// A request to repaint a canvas.
 ///
@@ -66,7 +66,7 @@ class PaintRequest {
 /// the number of reusable canvases.
 List<PaintRequest> paintQueue = <PaintRequest>[];
 
-void _recycleCanvas(EngineCanvas? canvas) {
+/*void _recycleCanvas(EngineCanvas? canvas) {
   // If a canvas is in the paint queue it maybe be recycled. To
   // prevent subsequent dispose recycling again check.
   if (canvas != null && _recycledCanvases.contains(canvas)) {
@@ -91,7 +91,7 @@ void _recycleCanvas(EngineCanvas? canvas) {
       canvas.dispose();
     }
   }
-}
+}*/
 
 /// A surface that uses a combination of `<canvas>`, `<div>` and `<p>` elements
 /// to draw shapes and text.
@@ -229,8 +229,7 @@ class PersistedPicture extends PersistedLeafSurface {
     if (parent!.projectedClip == null) {
       _exactLocalCullRect = localPaintBounds;
     } else {
-      _exactLocalCullRect =
-          localPaintBounds!.intersect(parent!.projectedClip!);
+      _exactLocalCullRect = localPaintBounds!.intersect(parent!.projectedClip!);
     }
     if (_exactLocalCullRect!.width <= 0 || _exactLocalCullRect!.height <= 0) {
       _exactLocalCullRect = ui.Rect.zero;
@@ -340,16 +339,16 @@ class PersistedPicture extends PersistedLeafSurface {
   ///
   /// If the implementation does not paint onto a bitmap canvas, it should
   /// return zero.
-  int get bitmapPixelCount {
+  /*int get bitmapPixelCount {
     if (_canvas is! BitmapCanvas) {
       return 0;
     }
 
     final BitmapCanvas bitmapCanvas = _canvas! as BitmapCanvas;
     return bitmapCanvas.bitmapPixelCount;
-  }
+  }*/
 
-  void _applyPaint(PersistedPicture? oldSurface) {
+  /*void _applyPaint(PersistedPicture? oldSurface) {
     final EngineCanvas? oldCanvas = oldSurface?._canvas;
     _requiresRepaint = false;
     if (!picture.recordingCanvas!.didDraw || _optimalLocalCullRect!.isEmpty) {
@@ -377,9 +376,9 @@ class PersistedPicture extends PersistedLeafSurface {
 
     assert(_optimalLocalCullRect != null);
     applyPaint(oldCanvas);
-  }
+  }*/
 
-  @override
+  /*@override
   double matchForUpdate(PersistedPicture existingSurface) {
     if (existingSurface.picture == picture) {
       // Picture is the same, return perfect score.
@@ -430,25 +429,25 @@ class PersistedPicture extends PersistedLeafSurface {
         return 1.0 - pixelCountRatio;
       }
     }
-  }
+  }*/
 
-  void applyPaint(EngineCanvas? oldCanvas) {
+  /*void applyPaint(EngineCanvas? oldCanvas) {
     if (picture.recordingCanvas!.renderStrategy.hasArbitraryPaint) {
       _applyBitmapPaint(oldCanvas);
     } else {
       _applyDomPaint(oldCanvas);
     }
-  }
+  }*/
 
-  void _applyDomPaint(EngineCanvas? oldCanvas) {
+  /*void _applyDomPaint(EngineCanvas? oldCanvas) {
     _recycleCanvas(_canvas);
     final DomCanvas domCanvas = DomCanvas(rootElement!);
     _canvas = domCanvas;
     removeAllChildren(rootElement!);
     picture.recordingCanvas!.apply(domCanvas, _optimalLocalCullRect!);
-  }
+  }*/
 
-  void _applyBitmapPaint(EngineCanvas? oldCanvas) {
+  /*void _applyBitmapPaint(EngineCanvas? oldCanvas) {
     if (oldCanvas is BitmapCanvas &&
         oldCanvas.doesFitBounds(_optimalLocalCullRect!, _density) &&
         oldCanvas.isReusable()) {
@@ -492,7 +491,7 @@ class PersistedPicture extends PersistedLeafSurface {
         },
       ));
     }
-  }
+  }*/
 
   /// Attempts to reuse a canvas from the [_recycledCanvases]. Allocates a new
   /// one if unable to reuse.
@@ -505,7 +504,7 @@ class PersistedPicture extends PersistedLeafSurface {
   ///   reuse more efficient.
   /// - Contains no more than twice the number of requested pixels. This makes
   ///   sure we do not use too much memory for small canvases.
-  BitmapCanvas _findOrCreateCanvas(ui.Rect bounds) {
+  /*BitmapCanvas _findOrCreateCanvas(ui.Rect bounds) {
     final ui.Size canvasSize = bounds.size;
     BitmapCanvas? bestRecycledCanvas;
     double lastPixelCount = double.infinity;
@@ -622,23 +621,23 @@ class PersistedPicture extends PersistedLeafSurface {
       // We have a new picture. Repaint.
       _applyPaint(oldSurface);
     }
-  }
+  }*/
 
   @override
-  void retain() {
+  /*void retain() {
     super.retain();
     _computeOptimalCullRect(this);
     if (_requiresRepaint) {
       _applyPaint(this);
     }
-  }
+  }*/
 
   @override
-  void discard() {
+  /*void discard() {
     _recycleCanvas(_canvas);
     _canvas = null;
     super.discard();
-  }
+  }*/
 
   @override
   void debugPrintChildren(StringBuffer buffer, int indent) {
@@ -675,6 +674,17 @@ class PersistedPicture extends PersistedLeafSurface {
         validationErrors.add('$runtimeType has null _exactLocalCullRect');
       }
     }
+  }
+
+  @override
+  void apply() {
+    // TODO: implement apply
+  }
+
+  @override
+  double matchForUpdate(covariant PersistedSurface? existingSurface) {
+    // TODO: implement matchForUpdate
+    throw UnimplementedError();
   }
 }
 

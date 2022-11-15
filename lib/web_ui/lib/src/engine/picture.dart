@@ -57,7 +57,7 @@ class EnginePicture implements ui.Picture {
   EnginePicture(this.recordingCanvas, this.cullRect);
 
   @override
-  Future<ui.Image> toImage(int width, int height) async {
+  /*Future<ui.Image> toImage(int width, int height) async {
     final ui.Rect imageRect =
         ui.Rect.fromLTRB(0, 0, width.toDouble(), height.toDouble());
     final BitmapCanvas canvas = BitmapCanvas.imageData(imageRect);
@@ -91,7 +91,7 @@ class EnginePicture implements ui.Picture {
     });
     imageElement.addEventListener('load', loadListener);*/
     return onImageLoaded.future;
-  }
+  }*/
 
   @override
   ui.Image toImageSync(int width, int height) {
@@ -121,4 +121,10 @@ class EnginePicture implements ui.Picture {
 
   final RecordingCanvas? recordingCanvas;
   final ui.Rect? cullRect;
+
+  @override
+  Future<ui.Image> toImage(int width, int height) {
+    // TODO: implement toImage
+    throw UnimplementedError();
+  }
 }

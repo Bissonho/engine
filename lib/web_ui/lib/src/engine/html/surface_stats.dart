@@ -6,7 +6,7 @@ import 'dart:async';
 
 import '../dom.dart';
 import '../platform_dispatcher.dart';
-import 'bitmap_canvas.dart';
+//import 'bitmap_canvas.dart';
 import 'dom_canvas.dart';
 import 'picture.dart';
 import 'scene.dart';
@@ -147,8 +147,9 @@ void debugRepaintSurfaceStatsOverlay(PersistedScene scene) {
     for (final DebugSurfaceStats oneSurfaceStats in statsMap.values) {
       totals.aggregate(oneSurfaceStats);
       if (oneSurfaceStats.surface is PersistedPicture) {
-        final PersistedPicture picture = oneSurfaceStats.surface! as PersistedPicture;
-        pixelCount += picture.bitmapPixelCount;
+        final PersistedPicture picture =
+            oneSurfaceStats.surface! as PersistedPicture;
+        //pixelCount += picture.bitmapPixelCount;
       }
     }
 
@@ -252,10 +253,10 @@ void debugPrintSurfaceStats(PersistedScene scene, int frameNumber) {
         domPaintCount += stats.paintCount;
       }
 
-      if (surface.canvas is BitmapCanvas) {
+      /*if (surface.canvas is BitmapCanvas) {
         bitmapCanvasCount++;
         bitmapPaintCount += stats.paintCount;
-      }
+      }*/
 
       bitmapReuseCount += stats.reuseCanvasCount;
       bitmapAllocationCount += stats.allocateBitmapCanvasCount;
@@ -285,25 +286,25 @@ void debugPrintSurfaceStats(PersistedScene scene, int frameNumber) {
     ..writeln('  Skipped painting: ${bitmapCanvasCount - bitmapPaintCount}')
     ..writeln('  Reused: $bitmapReuseCount')
     ..writeln('  Allocated: $bitmapAllocationCount')
-    ..writeln('  Allocated pixels: $bitmapPixelsAllocated')
-    ..writeln('  Available for reuse: ${recycledCanvases.length}');
+    ..writeln('  Allocated pixels: $bitmapPixelsAllocated');
+  //..writeln('  Available for reuse: ${recycledCanvases.length}'
 
   // A microtask will fire after the DOM is flushed, letting us probe into
   // actual <canvas> tags.
   scheduleMicrotask(() {
-    final Iterable<DomElement> canvasElements = domDocument.querySelectorAll('canvas');
+    final Iterable<DomElement> canvasElements =
+        domDocument.querySelectorAll('canvas');
     final StringBuffer canvasInfo = StringBuffer();
-    final int pixelCount = canvasElements
-        .cast<DomCanvasElement>()
-        .map<int>((DomCanvasElement e) {
+    final int pixelCount =
+        canvasElements.cast<DomCanvasElement>().map<int>((DomCanvasElement e) {
       final int pixels = e.width! * e.height!;
       canvasInfo.writeln('    - ${e.width!} x ${e.height!} = $pixels pixels');
       return pixels;
     }).fold(0, (int total, int pixels) => total + pixels);
-    final double physicalScreenWidth =
-        domWindow.innerWidth! * EnginePlatformDispatcher.browserDevicePixelRatio;
-    final double physicalScreenHeight =
-        domWindow.innerHeight! * EnginePlatformDispatcher.browserDevicePixelRatio;
+    final double physicalScreenWidth = domWindow.innerWidth! *
+        EnginePlatformDispatcher.browserDevicePixelRatio;
+    final double physicalScreenHeight = domWindow.innerHeight! *
+        EnginePlatformDispatcher.browserDevicePixelRatio;
     final double physicsScreenPixelCount =
         physicalScreenWidth * physicalScreenHeight;
     final double screenPixelRatio = pixelCount / physicsScreenPixelCount;

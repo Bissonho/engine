@@ -8,7 +8,7 @@ import 'dart:typed_data';
 import 'package:ui/ui.dart' as ui;
 
 //import '../browser_detection.dart';
-import '../canvas_pool.dart';
+//import '../canvas_pool.dart';
 import '../canvaskit/color_filter.dart';
 import '../color_filter.dart';
 import '../dom.dart';
@@ -30,7 +30,7 @@ import 'render_vertices.dart';
 import 'shaders/image_shader.dart';
 
 /// A raw HTML canvas that is directly written to.
-class BitmapCanvas extends EngineCanvas {
+/*class BitmapCanvas extends EngineCanvas {
   /// Allocates a canvas with enough memory to paint a picture within the given
   /// [bounds].
   ///
@@ -1133,6 +1133,7 @@ class BitmapCanvas extends EngineCanvas {
   }
 }
 
+*/
 /// The CSS value for the `mix-blend-mode` CSS property.
 ///
 /// This list includes values supposrted by SVG, but it's not the same.

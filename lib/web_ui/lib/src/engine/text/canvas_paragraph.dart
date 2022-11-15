@@ -10,7 +10,7 @@ import '../profiler.dart';
 import '../util.dart';
 //import 'layout_fragmenter.dart';
 import 'layout_service.dart';
-import 'paint_service.dart';
+//import 'paint_service.dart';
 import 'paragraph.dart';
 import 'word_breaker.dart';
 
@@ -85,7 +85,7 @@ class CanvasParagraph implements ui.Paragraph {
   ui.ParagraphConstraints? _lastUsedConstraints;
 
   late final TextLayoutService _layoutService = TextLayoutService(this);
-  late final TextPaintService _paintService = TextPaintService(this);
+  //late final TextPaintService _paintService = TextPaintService(this);
 
   @override
   void layout(ui.ParagraphConstraints constraints) {
@@ -127,9 +127,9 @@ class CanvasParagraph implements ui.Paragraph {
   bool get hasArbitraryPaint => true;
 
   /// Paints this paragraph instance on a [canvas] at the given [offset].
-  void paint(BitmapCanvas canvas, ui.Offset offset) {
+  /*void paint(BitmapCanvas canvas, ui.Offset offset) {
     _paintService.paint(canvas, offset);
-  }
+  }*/
 
   /*DomElement? _cachedDomElement;
 
