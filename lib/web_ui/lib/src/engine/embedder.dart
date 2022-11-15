@@ -13,7 +13,7 @@ import 'dom.dart';
 import 'host_node.dart';
 import 'keyboard_binding.dart';
 import 'platform_dispatcher.dart';
-import 'pointer_binding.dart';
+//import 'pointer_binding.dart';
 import 'safe_browser_api.dart';
 import 'semantics.dart';
 import 'text_editing/text_editing.dart';
@@ -325,8 +325,8 @@ class FlutterViewEmbedder {
     }
 
     KeyboardBinding.initInstance();
-    PointerBinding.initInstance(
-        glassPaneElement, KeyboardBinding.instance!.converter);
+    /*PointerBinding.initInstance(
+        glassPaneElement, KeyboardBinding.instance!.converter);*/
 
     // Unity Project Remove webkit
     /*if (domWindow.visualViewport == null && isWebKit) {

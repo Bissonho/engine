@@ -1,11 +1,11 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
+/*// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'dom.dart';
+//import 'dom.dart';
 import 'platform_dispatcher.dart';
 import 'safe_browser_api.dart';
 import 'services.dart';
@@ -32,4 +32,4 @@ FutureOr<void> sendFontChangeMessage() async {
       );
     }));
   }
-}
+}*/

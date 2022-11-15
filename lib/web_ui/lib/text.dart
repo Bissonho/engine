@@ -184,9 +184,10 @@ class FontVariation {
   const FontVariation(
     this.axis,
     this.value,
-  ) : assert(axis != null),
-      assert(axis.length == 4, 'Axis tag must be exactly four characters long.'),
-      assert(value != null);
+  )   : assert(axis != null),
+        assert(
+            axis.length == 4, 'Axis tag must be exactly four characters long.'),
+        assert(value != null);
 
   final String axis;
   final double value;
@@ -196,9 +197,7 @@ class FontVariation {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is FontVariation
-        && other.axis == axis
-        && other.value == value;
+    return other is FontVariation && other.axis == axis && other.value == value;
   }
 
   @override
@@ -342,29 +341,30 @@ abstract class TextStyle {
     List<Shadow>? shadows,
     List<FontFeature>? fontFeatures,
     List<FontVariation>? fontVariations,
-  }) => engine.renderer.createTextStyle(
-    color: color,
-    decoration: decoration,
-    decorationColor: decorationColor,
-    decorationStyle: decorationStyle,
-    decorationThickness: decorationThickness,
-    fontWeight: fontWeight,
-    fontStyle: fontStyle,
-    textBaseline: textBaseline,
-    fontFamily: fontFamily,
-    fontFamilyFallback: fontFamilyFallback,
-    fontSize: fontSize,
-    letterSpacing: letterSpacing,
-    wordSpacing: wordSpacing,
-    height: height,
-    leadingDistribution: leadingDistribution,
-    locale: locale,
-    background: background,
-    foreground: foreground,
-    shadows: shadows,
-    fontFeatures: fontFeatures,
-    fontVariations: fontVariations,
-  );
+  }) =>
+      engine.renderer.createTextStyle(
+        color: color,
+        decoration: decoration,
+        decorationColor: decorationColor,
+        decorationStyle: decorationStyle,
+        decorationThickness: decorationThickness,
+        fontWeight: fontWeight,
+        fontStyle: fontStyle,
+        textBaseline: textBaseline,
+        fontFamily: fontFamily,
+        fontFamilyFallback: fontFamilyFallback,
+        fontSize: fontSize,
+        letterSpacing: letterSpacing,
+        wordSpacing: wordSpacing,
+        height: height,
+        leadingDistribution: leadingDistribution,
+        locale: locale,
+        background: background,
+        foreground: foreground,
+        shadows: shadows,
+        fontFeatures: fontFeatures,
+        fontVariations: fontVariations,
+      );
 }
 
 abstract class ParagraphStyle {
@@ -382,20 +382,21 @@ abstract class ParagraphStyle {
     StrutStyle? strutStyle,
     String? ellipsis,
     Locale? locale,
-  }) => engine.renderer.createParagraphStyle(
-    textAlign: textAlign,
-    textDirection: textDirection,
-    maxLines: maxLines,
-    fontFamily: fontFamily,
-    fontSize: fontSize,
-    height: height,
-    textHeightBehavior: textHeightBehavior,
-    fontWeight: fontWeight,
-    fontStyle: fontStyle,
-    strutStyle: strutStyle,
-    ellipsis: ellipsis,
-    locale: locale,
-  );
+  }) =>
+      engine.renderer.createParagraphStyle(
+        textAlign: textAlign,
+        textDirection: textDirection,
+        maxLines: maxLines,
+        fontFamily: fontFamily,
+        fontSize: fontSize,
+        height: height,
+        textHeightBehavior: textHeightBehavior,
+        fontWeight: fontWeight,
+        fontStyle: fontStyle,
+        strutStyle: strutStyle,
+        ellipsis: ellipsis,
+        locale: locale,
+      );
 }
 
 abstract class StrutStyle {
@@ -444,17 +445,18 @@ abstract class StrutStyle {
     FontWeight? fontWeight,
     FontStyle? fontStyle,
     bool? forceStrutHeight,
-  }) => engine.renderer.createStrutStyle(
-    fontFamily: fontFamily,
-    fontFamilyFallback: fontFamilyFallback,
-    fontSize: fontSize,
-    height: height,
-    leadingDistribution: leadingDistribution,
-    leading: leading,
-    fontWeight: fontWeight,
-    fontStyle: fontStyle,
-    forceStrutHeight: forceStrutHeight,
-  );
+  }) =>
+      engine.renderer.createStrutStyle(
+        fontFamily: fontFamily,
+        fontFamilyFallback: fontFamilyFallback,
+        fontSize: fontSize,
+        height: height,
+        leadingDistribution: leadingDistribution,
+        leading: leading,
+        fontWeight: fontWeight,
+        fontStyle: fontStyle,
+        forceStrutHeight: forceStrutHeight,
+      );
 }
 
 // The order of this enum must match the order of the values in TextDirection.h's TextDirection.
@@ -676,7 +678,7 @@ abstract class Paragraph {
 
 abstract class ParagraphBuilder {
   factory ParagraphBuilder(ParagraphStyle style) =>
-    engine.renderer.createParagraphBuilder(style);
+      engine.renderer.createParagraphBuilder(style);
   void pushStyle(TextStyle style);
   void pop();
   void addText(String text);
@@ -694,6 +696,7 @@ abstract class ParagraphBuilder {
 }
 
 Future<void> loadFontFromList(Uint8List list, {String? fontFamily}) async {
-  await engine.renderer.fontCollection.loadFontFromList(list, fontFamily: fontFamily);
-  engine.sendFontChangeMessage();
+  await engine.renderer.fontCollection
+      .loadFontFromList(list, fontFamily: fontFamily);
+  //engine.sendFontChangeMessage();
 }

@@ -114,7 +114,7 @@ class FontFallbackData {
     final List<SkFont> fonts = <SkFont>[];
     for (final String font in fontFamilies) {
       final List<SkFont>? typefacesForFamily =
-        CanvasKitRenderer.instance.fontCollection.familyToFontMap[font];
+          CanvasKitRenderer.instance.fontCollection.familyToFontMap[font];
       if (typefacesForFamily != null) {
         fonts.addAll(typefacesForFamily);
       }
@@ -140,7 +140,8 @@ class FontFallbackData {
       _codeUnitsToCheckAgainstFallbackFonts.addAll(missingCodeUnits);
       if (!_scheduledCodeUnitCheck) {
         _scheduledCodeUnitCheck = true;
-        CanvasKitRenderer.instance.rasterizer.addPostFrameCallback(_ensureFallbackFonts);
+        CanvasKitRenderer.instance.rasterizer
+            .addPostFrameCallback(_ensureFallbackFonts);
       }
     }
   }
@@ -364,14 +365,26 @@ Set<NotoFont> findMinimumFontsForCodeUnits(
   return minimumFonts;
 }
 
-NotoFont _notoSansSC = fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans SC');
-NotoFont _notoSansTC = fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans TC');
-NotoFont _notoSansHK = fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans HK');
-NotoFont _notoSansJP = fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans JP');
-NotoFont _notoSansKR = fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans KR');
-List<NotoFont> _cjkFonts = <NotoFont>[_notoSansSC, _notoSansTC, _notoSansHK, _notoSansJP, _notoSansKR];
+NotoFont _notoSansSC =
+    fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans SC');
+NotoFont _notoSansTC =
+    fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans TC');
+NotoFont _notoSansHK =
+    fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans HK');
+NotoFont _notoSansJP =
+    fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans JP');
+NotoFont _notoSansKR =
+    fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans KR');
+List<NotoFont> _cjkFonts = <NotoFont>[
+  _notoSansSC,
+  _notoSansTC,
+  _notoSansHK,
+  _notoSansJP,
+  _notoSansKR
+];
 
-NotoFont _notoSymbols = fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans Symbols');
+NotoFont _notoSymbols = fallbackFonts
+    .singleWhere((NotoFont font) => font.name == 'Noto Sans Symbols');
 
 class FallbackFontDownloadQueue {
   NotoDownloader downloader = NotoDownloader();
@@ -404,8 +417,7 @@ class FallbackFontDownloadQueue {
   }
 
   void add(NotoFont font) {
-    if (downloadedFonts.contains(font) ||
-        pendingFonts.containsKey(font.url)) {
+    if (downloadedFonts.contains(font) || pendingFonts.containsKey(font.url)) {
       return;
     }
     final bool firstInBatch = pendingFonts.isEmpty;
@@ -448,7 +460,7 @@ class FallbackFontDownloadQueue {
       FontFallbackData.instance.registerFallbackFont(font.name, bytes);
       if (pendingFonts.isEmpty) {
         renderer.fontCollection.registerDownloadedFonts();
-        sendFontChangeMessage();
+        //sendFontChangeMessage();
       }
     }
 
