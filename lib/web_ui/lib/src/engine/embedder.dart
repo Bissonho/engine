@@ -109,7 +109,8 @@ class FlutterViewEmbedder {
   /// If a contains already exists, reuses the existing one.
   void _setupHotRestart() {
     // This persists across hot restarts to clear stale DOM.
-    _staleHotRestartState = getJsProperty<List<DomElement?>?>(domWindow, _staleHotRestartStore);
+    _staleHotRestartState =
+        getJsProperty<List<DomElement?>?>(domWindow, _staleHotRestartStore);
     if (_staleHotRestartState == null) {
       _staleHotRestartState = <DomElement?>[];
       setJsProperty(domWindow, _staleHotRestartStore, _staleHotRestartState);
@@ -175,7 +176,8 @@ class FlutterViewEmbedder {
   static const String defaultFontWeight = 'normal';
   static const double defaultFontSize = 14;
   static const String defaultFontFamily = 'sans-serif';
-  static const String defaultCssFont = '$defaultFontStyle $defaultFontWeight ${defaultFontSize}px $defaultFontFamily';
+  static const String defaultCssFont =
+      '$defaultFontStyle $defaultFontWeight ${defaultFontSize}px $defaultFontFamily';
 
   void reset() {
     //final bool isWebKit = browserEngine == BrowserEngine.webkit;
@@ -230,7 +232,8 @@ class FlutterViewEmbedder {
     // engine are complete.
     bodyElement.spellcheck = false;
 
-    for (final DomElement viewportMeta in domDocument.head!.querySelectorAll('meta[name="viewport"]')) {
+    for (final DomElement viewportMeta
+        in domDocument.head!.querySelectorAll('meta[name="viewport"]')) {
       if (assertionsEnabled) {
         // Filter out the meta tag that the engine placed on the page. This is
         // to avoid UI flicker during hot restart. Hot restart will clean up the
@@ -261,7 +264,8 @@ class FlutterViewEmbedder {
     // IMPORTANT: the glass pane element must come after the scene element in the DOM node list so
     //            it can intercept input events.
     _glassPaneElement?.remove();
-    final DomElement glassPaneElement = domDocument.createElement(_glassPaneTagName);
+    final DomElement glassPaneElement =
+        domDocument.createElement(_glassPaneTagName);
     _glassPaneElement = glassPaneElement;
     glassPaneElement.style
       ..position = 'absolute'
@@ -280,18 +284,22 @@ class FlutterViewEmbedder {
     _glassPaneShadow = glassPaneElementHostNode;
 
     // Don't allow the scene to receive pointer events.
-    _sceneHostElement = domDocument.createElement('flt-scene-host')..style.pointerEvents = 'none';
+    _sceneHostElement = domDocument.createElement('flt-scene-host')
+      ..style.pointerEvents = 'none';
 
     renderer.reset(this);
 
-    final DomElement semanticsHostElement = domDocument.createElement('flt-semantics-host');
+    final DomElement semanticsHostElement =
+        domDocument.createElement('flt-semantics-host');
     semanticsHostElement.style
       ..position = 'absolute'
       ..transformOrigin = '0 0 0';
     _semanticsHostElement = semanticsHostElement;
     updateSemanticsScreenProperties();
 
-    final DomElement accessibilityPlaceholder = EngineSemanticsOwner.instance.semanticsHelper.prepareAccessibilityPlaceholder();
+    final DomElement accessibilityPlaceholder = EngineSemanticsOwner
+        .instance.semanticsHelper
+        .prepareAccessibilityPlaceholder();
 
     glassPaneElementHostNode.appendAll(<DomNode>[
       accessibilityPlaceholder,
@@ -317,7 +325,8 @@ class FlutterViewEmbedder {
     }
 
     KeyboardBinding.initInstance();
-    PointerBinding.initInstance(glassPaneElement, KeyboardBinding.instance!.converter);
+    PointerBinding.initInstance(
+        glassPaneElement, KeyboardBinding.instance!.converter);
 
     // Unity Project Remove webkit
     /*if (domWindow.visualViewport == null && isWebKit) {
@@ -352,12 +361,15 @@ class FlutterViewEmbedder {
     }*/
 
     if (domWindow.visualViewport != null) {
-      _resizeSubscription = DomSubscription(domWindow.visualViewport!, 'resize', allowInterop(_metricsDidChange));
+      _resizeSubscription = DomSubscription(
+          domWindow.visualViewport!, 'resize', allowInterop(_metricsDidChange));
     } else {
-      _resizeSubscription = DomSubscription(domWindow, 'resize', allowInterop(_metricsDidChange));
+      _resizeSubscription =
+          DomSubscription(domWindow, 'resize', allowInterop(_metricsDidChange));
     }
-    _localeSubscription = DomSubscription(domWindow, 'languagechange', allowInterop(_languageDidChange));
-    EnginePlatformDispatcher.instance.updateLocales();
+    _localeSubscription = DomSubscription(
+        domWindow, 'languagechange', allowInterop(_languageDidChange));
+    //EnginePlatformDispatcher.instance.updateLocales();
   }
 
   // Creates a [HostNode] into a `root` [DomElement].
@@ -374,7 +386,8 @@ class FlutterViewEmbedder {
   /// logical pixels. To compensate, an inverse scale is injected at the root
   /// level.
   void updateSemanticsScreenProperties() {
-    _semanticsHostElement!.style.setProperty('transform', 'scale(${1 / domWindow.devicePixelRatio})');
+    _semanticsHostElement!.style
+        .setProperty('transform', 'scale(${1 / domWindow.devicePixelRatio})');
   }
 
   /// Called immediately after browser window metrics change.
@@ -401,7 +414,7 @@ class FlutterViewEmbedder {
 
   /// Called immediately after browser window language change.
   void _languageDidChange(DomEvent event) {
-    EnginePlatformDispatcher.instance.updateLocales();
+    //EnginePlatformDispatcher.instance.updateLocales();
     ui.window.onLocaleChanged?.call();
   }
 
@@ -410,9 +423,11 @@ class FlutterViewEmbedder {
   static const String orientationLockTypeLandscape = 'landscape';
   static const String orientationLockTypePortrait = 'portrait';
   static const String orientationLockTypePortraitPrimary = 'portrait-primary';
-  static const String orientationLockTypePortraitSecondary = 'portrait-secondary';
+  static const String orientationLockTypePortraitSecondary =
+      'portrait-secondary';
   static const String orientationLockTypeLandscapePrimary = 'landscape-primary';
-  static const String orientationLockTypeLandscapeSecondary = 'landscape-secondary';
+  static const String orientationLockTypeLandscapeSecondary =
+      'landscape-secondary';
 
   /// Sets preferred screen orientation.
   ///
@@ -433,7 +448,8 @@ class FlutterViewEmbedder {
           screenOrientation.unlock();
           return Future<bool>.value(true);
         } else {
-          final String? lockType = _deviceOrientationToLockType(orientations.first as String?);
+          final String? lockType =
+              _deviceOrientationToLockType(orientations.first as String?);
           if (lockType != null) {
             final Completer<bool> completer = Completer<bool>();
             try {
@@ -495,7 +511,8 @@ class FlutterViewEmbedder {
     // Unity Project Remove webkit
     if (_resourcesHost == null) {
       _resourcesHost = createDomHTMLDivElement()..style.visibility = 'hidden';
-      _glassPaneShadow!.node.insertBefore(_resourcesHost!, _glassPaneShadow!.node.firstChild);
+      _glassPaneShadow!.node
+          .insertBefore(_resourcesHost!, _glassPaneShadow!.node.firstChild);
     }
     _resourcesHost!.append(element);
   }
@@ -655,7 +672,8 @@ FlutterViewEmbedder get flutterViewEmbedder {
   final FlutterViewEmbedder? embedder = _flutterViewEmbedder;
   assert(() {
     if (embedder == null) {
-      throw StateError('FlutterViewEmbedder not initialized. Call `ensureFlutterViewEmbedderInitialized()` '
+      throw StateError(
+          'FlutterViewEmbedder not initialized. Call `ensureFlutterViewEmbedderInitialized()` '
           'prior to calling the `flutterViewEmbedder` getter.');
     }
     return true;
@@ -666,4 +684,5 @@ FlutterViewEmbedder get flutterViewEmbedder {
 FlutterViewEmbedder? _flutterViewEmbedder;
 
 /// Initializes the [FlutterViewEmbedder], if it's not already initialized.
-FlutterViewEmbedder ensureFlutterViewEmbedderInitialized() => _flutterViewEmbedder ??= FlutterViewEmbedder();
+FlutterViewEmbedder ensureFlutterViewEmbedderInitialized() =>
+    _flutterViewEmbedder ??= FlutterViewEmbedder();

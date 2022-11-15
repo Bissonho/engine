@@ -12,7 +12,7 @@ import 'package:ui/ui.dart' as ui;
 
 import '../engine.dart' show platformViewManager, registerHotRestartListener;
 import 'clipboard.dart';
-import 'dom.dart';
+//import 'dom.dart';
 import 'embedder.dart';
 //import 'mouse_cursor.dart';
 import 'platform_views/message_handler.dart';
@@ -41,15 +41,15 @@ class HighContrastSupport {
   final List<HighContrastListener> _listeners = <HighContrastListener>[];
 
   /// Reference to css media query that indicates whether high contrast is on.
-  final DomMediaQueryList _highContrastMediaQuery =
+  /*final DomMediaQueryList _highContrastMediaQuery =
       domWindow.matchMedia(_highContrastMediaQueryString);
   late final DomEventListener _onHighContrastChangeListener =
-      allowInterop(_onHighContrastChange);
+      allowInterop(_onHighContrastChange);*/
 
-  bool get isHighContrastEnabled => _highContrastMediaQuery.matches;
+  //bool get isHighContrastEnabled => _highContrastMediaQuery.matches;
 
   /// Adds function to the list of listeners on high contrast changes
-  void addListener(HighContrastListener listener) {
+  /*void addListener(HighContrastListener listener) {
     if (_listeners.isEmpty) {
       _highContrastMediaQuery.addListener(_onHighContrastChangeListener);
     }
@@ -70,7 +70,7 @@ class HighContrastSupport {
     for (final HighContrastListener listener in _listeners) {
       listener(isHighContrastEnabled);
     }
-  }
+  }*/
 }
 
 /// Platform event dispatcher.
@@ -81,9 +81,9 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   /// Private constructor, since only dart:ui is supposed to create one of
   /// these.
   EnginePlatformDispatcher() {
-    _addBrightnessMediaQueryListener();
-    HighContrastSupport.instance.addListener(_updateHighContrast);
-    _addFontSizeObserver();
+    //_addBrightnessMediaQueryListener();
+    //HighContrastSupport.instance.addListener(_updateHighContrast);
+    //_addFontSizeObserver();
     registerHotRestartListener(dispose);
   }
 
@@ -94,8 +94,8 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   /// The current platform configuration.
   @override
   ui.PlatformConfiguration configuration = ui.PlatformConfiguration(
-    locales: parseBrowserLanguages(),
-    textScaleFactor: findBrowserTextScaleFactor(),
+    //locales: parseBrowserLanguages(),
+    //textScaleFactor: findBrowserTextScaleFactor(),
     accessibilityFeatures: computeAccessibilityFeatures(),
   );
 
@@ -103,16 +103,16 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   static EngineAccessibilityFeatures computeAccessibilityFeatures() {
     final EngineAccessibilityFeaturesBuilder builder =
         EngineAccessibilityFeaturesBuilder(0);
-    if (HighContrastSupport.instance.isHighContrastEnabled) {
+    /*if (HighContrastSupport.instance.isHighContrastEnabled) {
       builder.highContrast = true;
-    }
+    }*/
     return builder.build();
   }
 
   void dispose() {
-    _removeBrightnessMediaQueryListener();
-    _disconnectFontSizeObserver();
-    HighContrastSupport.instance.removeListener(_updateHighContrast);
+    //_removeBrightnessMediaQueryListener();
+    //_disconnectFontSizeObserver();
+    //HighContrastSupport.instance.removeListener(_updateHighContrast);
   }
 
   /// Receives all events related to platform configuration changes.
@@ -186,9 +186,11 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
 
   /// Returns device pixel ratio returned by browser.
   static double get browserDevicePixelRatio {
-    final double? ratio = domWindow.devicePixelRatio as double?;
+    final double ratioMock = 1.0;
+    /*final double? ratio = domWindow.devicePixelRatio as double?;
     // Guard against WebOS returning 0 and other browsers returning null.
-    return (ratio == null || ratio == 0.0) ? 1.0 : ratio;
+    return (ratio == null || ratio == 0.0) ? 1.0 : ratio;*/
+    return ratioMock;
   }
 
   /// A callback invoked when any window begins a frame.
@@ -500,7 +502,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
             final String label = arguments['label'] as String? ?? '';
             final int primaryColor =
                 arguments['primaryColor'] as int? ?? 0xFF000000;
-            domDocument.title = label;
+            //domDocument.title = label;
             setThemeColor(ui.Color(primaryColor));
             replyToPlatformMessage(callback, codec.encodeSuccessEnvelope(true));
             return;
@@ -528,7 +530,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
 
       // Dispatched by the bindings to delay service worker initialization.
       case 'flutter/service_worker':
-        domWindow.dispatchEvent(createDomEvent('Event', 'flutter-first-frame'));
+        //domWindow.dispatchEvent(createDomEvent('Event', 'flutter-first-frame'));
         return;
 
       case 'flutter/textinput':
@@ -557,9 +559,9 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
       case 'flutter/platform_views':
         _platformViewMessageHandler ??= PlatformViewMessageHandler(
           contentManager: platformViewManager,
-          contentHandler: (DomElement content) {
+          /*contentHandler: (DomElement content) {
             flutterViewEmbedder.glassPaneElement!.append(content);
-          },
+          },*/
         );
         _platformViewMessageHandler!.handlePlatformViewCall(data, callback!);
         return;
@@ -794,13 +796,13 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   }
 
   // Called by FlutterViewEmbedder when browser languages change.
-  void updateLocales() {
+  /*void updateLocales() {
     configuration = configuration.copyWith(locales: parseBrowserLanguages());
-  }
+  }*/
 
-  static List<ui.Locale> parseBrowserLanguages() {
+  /*static List<ui.Locale> parseBrowserLanguages() {
     // TODO(yjbanov): find a solution for IE
-    final List<String>? languages = domWindow.navigator.languages;
+    //final List<String>? languages = domWindow.navigator.languages;
     if (languages == null || languages.isEmpty) {
       // To make it easier for the app code, let's not leave the locales list
       // empty. This way there's fewer corner cases for apps to handle.
@@ -819,7 +821,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
 
     assert(locales.isNotEmpty);
     return locales;
-  }
+  }*/
 
   /// Engine code should use this method instead of the callback directly.
   /// Otherwise zones won't work properly.
@@ -863,11 +865,11 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   /// recalculate [textScaleFactor].
   ///
   /// Updates [textScaleFactor] with the new value.
-  DomMutationObserver? _fontSizeObserver;
+  //DomMutationObserver? _fontSizeObserver;
 
   /// Set the callback function for updating [textScaleFactor] based on
   /// font-size changes in the browser's <html> element.
-  void _addFontSizeObserver() {
+  /*void _addFontSizeObserver() {
     const String styleAttribute = 'style';
 
     _fontSizeObserver = createDomMutationObserver(
@@ -892,7 +894,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   void _disconnectFontSizeObserver() {
     _fontSizeObserver?.disconnect();
     _fontSizeObserver = null;
-  }
+  }*/
 
   /// A callback that is invoked whenever [textScaleFactor] changes value.
   ///
@@ -961,7 +963,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   }
 
   /// Reference to css media query that indicates the user theme preference on the web.
-  final DomMediaQueryList _brightnessMediaQuery =
+  /*final DomMediaQueryList _brightnessMediaQuery =
       domWindow.matchMedia('(prefers-color-scheme: dark)');
 
   /// A callback that is invoked whenever [_brightnessMediaQuery] changes value.
@@ -981,13 +983,13 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
           mqEvent.matches! ? ui.Brightness.dark : ui.Brightness.light);
     });
     _brightnessMediaQuery.addListener(_brightnessMediaQueryListener);
-  }
+  }*/
 
   /// Remove the callback function for listening changes in [_brightnessMediaQuery] value.
-  void _removeBrightnessMediaQueryListener() {
+  /* void _removeBrightnessMediaQueryListener() {
     _brightnessMediaQuery.removeListener(_brightnessMediaQueryListener);
     _brightnessMediaQueryListener = null;
-  }
+  }*/
 
   /// A callback that is invoked whenever [platformBrightness] changes value.
   ///
@@ -1248,8 +1250,8 @@ const double _defaultRootFontSize = 16.0;
 
 /// Finds the text scale factor of the browser by looking at the computed style
 /// of the browser's <html> element.
-double findBrowserTextScaleFactor() {
+/*double findBrowserTextScaleFactor() {
   final num fontSize =
       parseFontSize(domDocument.documentElement!) ?? _defaultRootFontSize;
   return fontSize / _defaultRootFontSize;
-}
+}*/
