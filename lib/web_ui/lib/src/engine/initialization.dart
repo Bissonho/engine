@@ -9,7 +9,7 @@ import 'package:ui/src/engine/assets.dart';
 import 'package:ui/src/engine/browser_detection.dart';
 import 'package:ui/src/engine/embedder.dart';
 //import 'package:ui/src/engine/mouse_cursor.dart';
-//import 'package:ui/src/engine/navigation.dart';
+import 'package:ui/src/engine/navigation.dart';
 import 'package:ui/src/engine/platform_dispatcher.dart';
 import 'package:ui/src/engine/platform_views/content_manager.dart';
 import 'package:ui/src/engine/profiler.dart';
@@ -258,14 +258,13 @@ void _setAssetManager(AssetManager assetManager) {
 Future<void> _downloadAssetFonts() async {
   renderer.fontCollection.clear();
 
-  await renderer.fontCollection.debugDownloadTestFonts();
-  // Disable Font URL Download
-  /*if (_assetManager != null) {
+  if (_assetManager != null) {
     await renderer.fontCollection.downloadAssetFonts(_assetManager!);
-  }*/
-  /*if (ui.debugEmulateFlutterTesterEnvironment) {
+  }
+
+  if (ui.debugEmulateFlutterTesterEnvironment) {
     await renderer.fontCollection.debugDownloadTestFonts();
-  }*/
+  }
 }
 
 /*void _addUrlStrategyListener() {

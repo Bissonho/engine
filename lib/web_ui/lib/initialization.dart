@@ -68,8 +68,7 @@ Future<void> webOnlyWarmupEngine({
   final engine.AppBootstrap bootstrap = engine.AppBootstrap(
     initEngine: () async {
       await engine.initializeEngineServices();
-    },
-    runApp: () async {
+    }, runApp: () async {
       if (registerPlugins != null) {
         registerPlugins();
       }
@@ -120,15 +119,13 @@ bool _debugEmulateFlutterTesterEnvironment = false;
 //                should create a public interface for the returned value that's
 //                implemented by the engine.
 //                https://github.com/flutter/flutter/issues/100394
-//engine.AssetManager get webOnlyAssetManager => engine.assetManager;
+engine.AssetManager get webOnlyAssetManager => engine.assetManager;
 
 /// Sets the handler that forwards platform messages to web plugins.
 ///
 /// This function exists because unlike mobile, on the web plugins are also
 /// implemented using Dart code, and that code needs a way to receive messages.
-void webOnlySetPluginHandler(
-    Future<void> Function(String, ByteData?, PlatformMessageResponseCallback?)
-        handler) {
+void webOnlySetPluginHandler(Future<void> Function(String, ByteData?, PlatformMessageResponseCallback?) handler) {
   engine.pluginMessageCallHandler = handler;
 }
 
@@ -137,8 +134,8 @@ class PlatformViewRegistry {
   /// Register [viewTypeId] as being creating by the given [viewFactory].
   /// [viewFactory] can be any function that takes an integer and returns an
   /// `HTMLElement` DOM object.
-  bool registerViewFactory(
-      String viewTypeId, Object Function(int viewId) viewFactory,
+  bool registerViewFactory(String viewTypeId,
+      Object Function(int viewId) viewFactory,
       {bool isVisible = true}) {
     // TODO(web): Deprecate this once there's another way of calling `registerFactory` (js interop?)
     return engine.platformViewManager

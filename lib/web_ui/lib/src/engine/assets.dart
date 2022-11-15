@@ -5,7 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-//import 'dom.dart';
+import 'dom.dart';
 import 'util.dart';
 
 const String ahemFontFamily = 'Ahem';
@@ -13,8 +13,7 @@ const String ahemFontUrl = '/assets/fonts/ahem.ttf';
 const String robotoFontFamily = 'Roboto';
 const String robotoTestFontUrl = '/assets/fonts/Roboto-Regular.ttf';
 const String robotoVariableFontFamily = 'RobotoVariable';
-const String robotoVariableTestFontUrl =
-    '/assets/fonts/RobotoSlab-VariableFont_wght.ttf';
+const String robotoVariableTestFontUrl = '/assets/fonts/RobotoSlab-VariableFont_wght.ttf';
 
 /// This class downloads assets over the network.
 ///
@@ -29,7 +28,7 @@ class AssetManager {
   /// The directory containing the assets.
   final String assetsDir;
 
-  /*String? get _baseUrl {
+  String? get _baseUrl {
     return domWindow.document
         .querySelectorAll('meta')
         .where((DomElement domNode) => domInstanceOfString(domNode,
@@ -38,7 +37,7 @@ class AssetManager {
         .firstWhereOrNull(
             (DomHTMLMetaElement element) => element.name == 'assetBase')
         ?.content;
-  }*/
+  }
 
   /// Returns the URL to load the asset from, given the asset key.
   ///
@@ -57,15 +56,15 @@ class AssetManager {
   /// request "assets/hello world.png", and the request will 404. Therefore, we
   /// must URL-encode the asset key *again* so when it is decoded, it is
   /// requesting the once-URL-encoded asset key.
-  /*String getAssetUrl(String asset) {
+  String getAssetUrl(String asset) {
     if (Uri.parse(asset).hasScheme) {
       return Uri.encodeFull(asset);
     }
     return Uri.encodeFull('${_baseUrl ?? ''}$assetsDir/$asset');
-  }*/
+  }
 
   /// Loads an asset using an [DomXMLHttpRequest] and returns data as [ByteData].
-  /*Future<ByteData> load(String asset) async {
+  Future<ByteData> load(String asset) async {
     final String url = getAssetUrl(asset);
     try {
       final DomXMLHttpRequest request =
@@ -95,10 +94,10 @@ class AssetManager {
       rethrow;
     }
   }
-}*/
+}
 
-  /// Thrown to indicate http failure during asset loading.
-/*class AssetManagerException implements Exception {
+/// Thrown to indicate http failure during asset loading.
+class AssetManagerException implements Exception {
   /// Initializes exception with request url and http status.
   AssetManagerException(this.url, this.httpStatus);
 
@@ -109,7 +108,7 @@ class AssetManager {
   final int httpStatus;
 
   @override
-  String toString() => 'Failed to load asset at "$url" ($httpStatus)';*/
+  String toString() => 'Failed to load asset at "$url" ($httpStatus)';
 }
 
 /// An asset manager that gives fake empty responses for assets.
@@ -142,7 +141,7 @@ class WebOnlyMockAssetManager implements AssetManager {
   @override
   String getAssetUrl(String asset) => asset;
 
-  /*@override
+  @override
   Future<ByteData> load(String asset) {
     if (asset == getAssetUrl('AssetManifest.json')) {
       return Future<ByteData>.value(
@@ -152,8 +151,8 @@ class WebOnlyMockAssetManager implements AssetManager {
       return Future<ByteData>.value(
           _toByteData(utf8.encode(defaultFontManifest)));
     }
-    //throw AssetManagerException(asset, 404);
-  }*/
+    throw AssetManagerException(asset, 404);
+  }
 
   ByteData _toByteData(List<int> bytes) {
     final ByteData byteData = ByteData(bytes.length);

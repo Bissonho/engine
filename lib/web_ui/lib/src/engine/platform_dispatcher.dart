@@ -464,12 +464,12 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
 
       case 'flutter/assets':
         final String url = utf8.decode(data!.buffer.asUint8List());
-        /*ui.webOnlyAssetManager.load(url).then((ByteData assetData) {
+        ui.webOnlyAssetManager.load(url).then((ByteData assetData) {
           replyToPlatformMessage(callback, assetData);
         }, onError: (dynamic error) {
           printWarning('Error while trying to load an asset: $error');
           replyToPlatformMessage(callback, null);
-        });*/
+        });
         return;
 
       case 'flutter/platform':
