@@ -30,7 +30,7 @@ class AssetManager {
   /// The directory containing the assets.
   final String assetsDir;
 
-  String? get _baseUrl {
+  /*String? get _baseUrl {
     return domWindow.document
         .querySelectorAll('meta')
         .where((DomElement domNode) =>
@@ -39,7 +39,7 @@ class AssetManager {
         .firstWhereOrNull(
             (DomHTMLMetaElement element) => element.name == 'assetBase')
         ?.content;
-  }
+  }*/
 
   /// Returns the URL to load the asset from, given the asset key.
   ///
@@ -58,15 +58,15 @@ class AssetManager {
   /// request "assets/hello world.png", and the request will 404. Therefore, we
   /// must URL-encode the asset key *again* so when it is decoded, it is
   /// requesting the once-URL-encoded asset key.
-  String getAssetUrl(String asset) {
+  /*String getAssetUrl(String asset) {
     if (Uri.parse(asset).hasScheme) {
       return Uri.encodeFull(asset);
     }
     return Uri.encodeFull('${_baseUrl ?? ''}$assetsDir/$asset');
-  }
+  }*/
 
   /// Loads an asset using an [DomXMLHttpRequest] and returns data as [ByteData].
-  Future<ByteData> load(String asset) async {
+  /*Future<ByteData> load(String asset) async {
     final String url = getAssetUrl(asset);
     try {
       final DomXMLHttpRequest request =
@@ -95,7 +95,7 @@ class AssetManager {
           '$constructorName');
       rethrow;
     }
-  }
+  }*/
 }
 
 /// Thrown to indicate http failure during asset loading.
@@ -116,7 +116,7 @@ class AssetManagerException implements Exception {
 /// An asset manager that gives fake empty responses for assets.
 class WebOnlyMockAssetManager implements AssetManager {
   /// Mock asset directory relative to base url.
-  String defaultAssetsDir = '';
+  String defaultAssetsDir = 'assets';
 
   /// Mock empty asset manifest.
   String defaultAssetManifest = '{}';
@@ -144,7 +144,7 @@ class WebOnlyMockAssetManager implements AssetManager {
   String getAssetUrl(String asset) => asset;
 
   @override
-  Future<ByteData> load(String asset) {
+  Future<ByteData> load(String asset) async {
     if (asset == getAssetUrl('AssetManifest.json')) {
       return Future<ByteData>.value(
           _toByteData(utf8.encode(defaultAssetManifest)));

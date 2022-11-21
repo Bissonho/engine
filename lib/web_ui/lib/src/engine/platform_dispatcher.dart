@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:convert';
+//import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:ui/src/engine/canvaskit/renderer.dart';
@@ -18,7 +18,7 @@ import 'embedder.dart';
 import 'platform_views/message_handler.dart';
 import 'plugins.dart';
 import 'safe_browser_api.dart';
-import 'semantics.dart';
+//import 'semantics.dart';
 import 'services.dart';
 //import 'text_editing/text_editing.dart';
 import 'util.dart';
@@ -94,11 +94,10 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   /// The current platform configuration.
   @override
   ui.PlatformConfiguration configuration = ui.PlatformConfiguration(
-    //locales: parseBrowserLanguages(),
-    //textScaleFactor: findBrowserTextScaleFactor(),
-    //accessibilityFeatures: computeAccessibilityFeatures(),
-  );
-
+      //locales: parseBrowserLanguages(),
+      //textScaleFactor: findBrowserTextScaleFactor(),
+      //accessibilityFeatures: computeAccessibilityFeatures(),
+      );
 
   void dispose() {
     //_removeBrightnessMediaQueryListener();
@@ -449,8 +448,8 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
 
             // Also respond in HTML mode. Otherwise, apps would have to detect
             // CanvasKit vs HTML before invoking this method.
-            replyToPlatformMessage(
-                callback, codec.encodeSuccessEnvelope(<bool>[true]));
+            /*replyToPlatformMessage(
+                callback, codec.encodeSuccessEnvelope(<bool>[true]));*/
             break;
         }
         return;
@@ -530,14 +529,14 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         return;
 
       case 'flutter/mousecursor':
-        const MethodCodec codec = StandardMethodCodec();
+        /*const MethodCodec codec = StandardMethodCodec();
         final MethodCall decoded = codec.decodeMethodCall(data);
         final Map<dynamic, dynamic> arguments =
             decoded.arguments as Map<dynamic, dynamic>;
         switch (decoded.method) {
           case 'activateSystemCursor':
           //MouseCursor.instance!.activateSystemCursor(arguments.tryString('kind'));
-        }
+        }*/
         return;
 
       case 'flutter/web_test_e2e':
@@ -946,10 +945,10 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   /// callback if [_highContrast] changed.
   void _updateHighContrast(bool value) {
     if (configuration.accessibilityFeatures.highContrast != value) {
-     // final EngineAccessibilityFeatures original =
-     //     configuration.accessibilityFeatures as EngineAccessibilityFeatures;
-     // configuration = configuration.copyWith(
-     //     accessibilityFeatures: original.copyWith(highContrast: value));
+      // final EngineAccessibilityFeatures original =
+      //     configuration.accessibilityFeatures as EngineAccessibilityFeatures;
+      // configuration = configuration.copyWith(
+      //     accessibilityFeatures: original.copyWith(highContrast: value));
       invokeOnPlatformConfigurationChanged();
     }
   }

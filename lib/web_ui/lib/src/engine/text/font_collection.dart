@@ -27,7 +27,7 @@ class HtmlFontCollection implements FontCollection {
   /// Reads the font manifest using the [assetManager] and downloads all of the
   /// fonts declared within.
   @override
-  Future<void> downloadAssetFonts(AssetManager assetManager) async {
+  Future<void> downloadAssetFonts(WebOnlyMockAssetManager assetManager) async {
     ByteData byteData;
 
     try {
@@ -41,8 +41,8 @@ class HtmlFontCollection implements FontCollection {
       }
     }
 
-    final List<dynamic>? fontManifest =
-        json.decode(utf8.decode(byteData.buffer.asUint8List())) as List<dynamic>?;
+    final List<dynamic>? fontManifest = json
+        .decode(utf8.decode(byteData.buffer.asUint8List())) as List<dynamic>?;
     if (fontManifest == null) {
       throw AssertionError(
           'There was a problem trying to load FontManifest.json');
@@ -57,7 +57,8 @@ class HtmlFontCollection implements FontCollection {
     for (final Map<String, dynamic> fontFamily
         in fontManifest.cast<Map<String, dynamic>>()) {
       final String? family = fontFamily.tryString('family');
-      final List<Map<String, dynamic>> fontAssets = fontFamily.castList<Map<String, dynamic>>('fonts');
+      final List<Map<String, dynamic>> fontAssets =
+          fontFamily.castList<Map<String, dynamic>>('fonts');
 
       for (final Map<String, dynamic> fontAsset in fontAssets) {
         final String asset = fontAsset.readString('asset');
@@ -77,7 +78,8 @@ class HtmlFontCollection implements FontCollection {
   @override
   Future<void> loadFontFromList(Uint8List list, {String? fontFamily}) {
     if (fontFamily == null) {
-      throw AssertionError('Font family must be provided to HtmlFontCollection.');
+      throw AssertionError(
+          'Font family must be provided to HtmlFontCollection.');
     }
     return _assetFontManager!._loadFontFaceBytes(fontFamily, list);
   }
@@ -88,8 +90,8 @@ class HtmlFontCollection implements FontCollection {
     _testFontManager = FontManager();
     _testFontManager!.downloadAsset(
         ahemFontFamily, 'url($ahemFontUrl)', const <String, String>{});
-    _testFontManager!.downloadAsset(robotoFontFamily,
-        'url($robotoTestFontUrl)', const <String, String>{});
+    _testFontManager!.downloadAsset(
+        robotoFontFamily, 'url($robotoTestFontUrl)', const <String, String>{});
     _testFontManager!.downloadAsset(robotoVariableFontFamily,
         'url($robotoVariableTestFontUrl)', const <String, String>{});
     await _testFontManager!.downloadAllFonts();
@@ -127,7 +129,8 @@ class FontManager {
   /// Fonts that started the downloading process. Once the fonts have downloaded
   /// without error, they are moved to [_downloadedFonts]. Those fonts
   /// are subsequently registered by [registerDownloadedFonts].
-  final List<Future<DomFontFace?>> _fontLoadingFutures = <Future<DomFontFace?>>[];
+  final List<Future<DomFontFace?>> _fontLoadingFutures =
+      <Future<DomFontFace?>>[];
 
   final List<DomFontFace> _downloadedFonts = <DomFontFace>[];
 
@@ -201,9 +204,11 @@ class FontManager {
         return null;
       }
     }
+
     // try/catch because `new FontFace` can crash with an improper font family.
     try {
-      final DomFontFace fontFace = createDomFontFace(family, asset, descriptors);
+      final DomFontFace fontFace =
+          createDomFontFace(family, asset, descriptors);
       _fontLoadingFutures.add(fontFaceLoad(fontFace));
     } catch (e) {
       printWarning('Error while loading font family "$family":\n$e');
@@ -217,9 +222,9 @@ class FontManager {
     _downloadedFonts.forEach(domDocument.fonts!.add);
   }
 
-
   Future<void> downloadAllFonts() async {
-    final List<DomFontFace?> loadedFonts = await Future.wait(_fontLoadingFutures);
+    final List<DomFontFace?> loadedFonts =
+        await Future.wait(_fontLoadingFutures);
     _downloadedFonts.addAll(loadedFonts.whereType<DomFontFace>());
   }
 

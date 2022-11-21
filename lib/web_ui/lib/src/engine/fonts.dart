@@ -8,14 +8,13 @@ import 'dart:typed_data';
 import 'assets.dart';
 
 abstract class FontCollection {
-
   /// Fonts loaded with [loadFontFromList] do not need to be registered
   /// with [registerDownloadedFonts]. Fonts are both downloaded and registered
   /// with [loadFontFromList] calls.
   Future<void> loadFontFromList(Uint8List list, {String? fontFamily});
 
   /// Completes when fonts from FontManifest.json have been downloaded.
-  Future<void> downloadAssetFonts(AssetManager assetManager);
+  Future<void> downloadAssetFonts(WebOnlyMockAssetManager assetManager);
 
   /// Registers both downloaded fonts and fallback fonts with the TypefaceFontProvider.
   ///

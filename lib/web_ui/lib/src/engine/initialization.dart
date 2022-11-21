@@ -68,7 +68,7 @@ void debugEmulateHotRestart() {
 
 /// Fully initializes the engine, including services and UI.
 Future<void> initializeEngine({
-  AssetManager? assetManager,
+  WebOnlyMockAssetManager? assetManager,
 }) async {
   await initializeEngineServices(assetManager: assetManager);
   await initializeEngineUi();
@@ -127,7 +127,7 @@ void debugResetEngineInitializationState() {
 ///  * [initializeEngineUi], which is typically called after this function, and
 ///    puts UI elements on the page.
 Future<void> initializeEngineServices({
-  AssetManager? assetManager,
+  WebOnlyMockAssetManager? assetManager,
 }) async {
   if (_initializationState != DebugEngineInitializationState.uninitialized) {
     assert(() {
@@ -205,7 +205,7 @@ Future<void> initializeEngineServices({
     }
   };
 
-  assetManager ??= const AssetManager();
+  assetManager ??= WebOnlyMockAssetManager();
   _setAssetManager(assetManager);
 
   Future<void> initializeRendererCallback() async => renderer.initialize();
@@ -243,10 +243,10 @@ Future<void> initializeEngineUi() async {
   _initializationState = DebugEngineInitializationState.initialized;
 }
 
-AssetManager get assetManager => _assetManager!;
-AssetManager? _assetManager;
+WebOnlyMockAssetManager get assetManager => _assetManager!;
+WebOnlyMockAssetManager? _assetManager;
 
-void _setAssetManager(AssetManager assetManager) {
+void _setAssetManager(WebOnlyMockAssetManager assetManager) {
   assert(assetManager != null, 'Cannot set assetManager to null');
   if (assetManager == _assetManager) {
     return;
