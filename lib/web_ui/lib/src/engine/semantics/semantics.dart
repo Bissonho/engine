@@ -432,8 +432,9 @@ class SemanticsObject {
     element.style.position = 'absolute';
     element.setAttribute('id', 'flt-semantic-node-$id');
 
+    // if (id == 0 && !configuration.debugShowSemanticsNodes)
     // The root node has some properties that other nodes do not.
-    if (id == 0 && !configuration.debugShowSemanticsNodes) {
+    if (id == 0 /*&& !configuration.debugShowSemanticsNodes*/) {
       // Make all semantics transparent. Use `filter` instead of `opacity`
       // attribute because `filter` is stronger. `opacity` does not apply to
       // some elements, particularly on iOS, such as the slider thumb and track.
@@ -450,9 +451,9 @@ class SemanticsObject {
     // Make semantic elements visible for debugging by outlining them using a
     // green border. Do not use `border` attribute because it affects layout
     // (`outline` does not).
-    if (configuration.debugShowSemanticsNodes) {
+    /*if (configuration.debugShowSemanticsNodes) {
       element.style.outline = '1px solid green';
-    }
+    }*/
   }
 
   /// See [ui.SemanticsUpdateBuilder.updateNode].

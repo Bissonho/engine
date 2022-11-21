@@ -19,8 +19,7 @@ import 'util.dart';
 
 // Only supported in profile/release mode. Allows Flutter to use MSAA but
 // removes the ability for disabling AA on Paint objects.
-const bool _kUsingMSAA =
-    bool.fromEnvironment('flutter.canvaskit.msaa');
+const bool _kUsingMSAA = bool.fromEnvironment('flutter.canvaskit.msaa');
 
 typedef SubmitCallback = bool Function(SurfaceFrame, CkCanvas);
 
@@ -323,7 +322,8 @@ class Surface {
     _forceNewContext = false;
     _contextLost = false;
 
-    if (webGLVersion != -1 && !configuration.canvasKitForceCpuOnly) {
+    //if (webGLVersion != -1 && !configuration.canvasKitForceCpuOnly)
+    if (webGLVersion != -1) {
       final int glContext = canvasKit.GetWebGLContext(
         htmlCanvas,
         SkWebGLContextOptions(
@@ -351,14 +351,15 @@ class Surface {
     htmlElement.append(htmlCanvas);
   }
 
+  /*else if (configuration.canvasKitForceCpuOnly) {
+      return _makeSoftwareCanvasSurface(
+          htmlCanvas!, 'CPU rendering forced by application');
+    }*/
   CkSurface _createNewSurface(ui.Size size) {
     assert(htmlCanvas != null);
     if (webGLVersion == -1) {
       return _makeSoftwareCanvasSurface(
           htmlCanvas!, 'WebGL support not detected');
-    } else if (configuration.canvasKitForceCpuOnly) {
-      return _makeSoftwareCanvasSurface(
-          htmlCanvas!, 'CPU rendering forced by application');
     } else if (_glContext == 0) {
       return _makeSoftwareCanvasSurface(
           htmlCanvas!, 'Failed to initialize WebGL context');

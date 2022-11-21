@@ -1,4 +1,4 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
+/*// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -178,4 +178,4 @@ extension JsFlutterConfigurationExtension on JsFlutterConfiguration {
 /// A JavaScript entrypoint that allows developer to set rendering backend
 /// at runtime before launching the application.
 @JS('window.flutterWebRenderer')
-external String? get requestedRendererType;
+external String? get requestedRendererType;*/

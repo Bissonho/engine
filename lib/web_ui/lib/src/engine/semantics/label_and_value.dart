@@ -56,7 +56,8 @@ class LabelAndValue extends RoleManager {
 
     // If the node is incrementable the value is reported to the browser via
     // the respective role manager. We do not need to also render it again here.
-    final bool shouldDisplayValue = hasValue && !semanticsObject.isIncrementable;
+    final bool shouldDisplayValue =
+        hasValue && !semanticsObject.isIncrementable;
 
     if (!hasLabel && !shouldDisplayValue && !hasTooltip) {
       _cleanUpDom();
@@ -107,7 +108,9 @@ class LabelAndValue extends RoleManager {
       // Normally use a small font size so that text doesn't leave the scope
       // of the semantics node. When debugging semantics, use a font size
       // that's reasonably visible.
-      _auxiliaryValueElement!.style.fontSize = configuration.debugShowSemanticsNodes ? '12px' : '6px';
+      _auxiliaryValueElement!.style
+              .fontSize = /*configuration.debugShowSemanticsNodes ? '12px' :*/
+          '6px';
       semanticsObject.element.append(_auxiliaryValueElement!);
     }
     _auxiliaryValueElement!.text = combinedValue.toString();

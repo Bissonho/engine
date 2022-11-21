@@ -24,8 +24,10 @@ class SurfaceFactory {
   /// The lazy-initialized singleton surface factory.
   ///
   /// [debugClear] causes this singleton to be reinitialized.
-  static SurfaceFactory get instance =>
-      _instance ??= SurfaceFactory(configuration.canvasKitMaximumSurfaces);
+  ///
+  ///
+  /// configuration.canvasKitMaximumSurfaces = 8
+  static SurfaceFactory get instance => _instance ??= SurfaceFactory(8);
 
   /// Returns the raw (potentially uninitialized) value of the singleton.
   ///
@@ -142,8 +144,7 @@ class SurfaceFactory {
   /// If a surface is not live, then it must be in the cache and ready to be
   /// reused.
   bool isLive(Surface surface) {
-    if (surface == baseSurface ||
-        _liveSurfaces.contains(surface)) {
+    if (surface == baseSurface || _liveSurfaces.contains(surface)) {
       return true;
     }
     assert(_cache.contains(surface));

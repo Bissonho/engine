@@ -1536,9 +1536,7 @@ extension SkPathExtension on SkPath {
 @staticInterop
 class SkContourMeasureIter {
   external factory SkContourMeasureIter(
-      SkPath path,
-      bool forceClosed,
-      double resScale);
+      SkPath path, bool forceClosed, double resScale);
 }
 
 extension SkContourMeasureIterExtension on SkContourMeasureIter {
@@ -2230,7 +2228,8 @@ extension SkFontMgrNamespaceExtension on SkFontMgrNamespace {
 @staticInterop
 class TypefaceFontProviderNamespace {}
 
-extension TypefaceFontProviderNamespaceExtension on TypefaceFontProviderNamespace {
+extension TypefaceFontProviderNamespaceExtension
+    on TypefaceFontProviderNamespace {
   external TypefaceFontProvider Make();
 }
 
@@ -2463,7 +2462,8 @@ class SkObjectFinalizationRegistry {
   external factory SkObjectFinalizationRegistry(Function cleanup);
 }
 
-extension SkObjectFinalizationRegistryExtension on SkObjectFinalizationRegistry {
+extension SkObjectFinalizationRegistryExtension
+    on SkObjectFinalizationRegistry {
   external void register(Object ckObject, Object skObject);
 }
 
@@ -2599,8 +2599,8 @@ void patchCanvasKitModule(DomHTMLScriptElement canvasKitScript) {
       }),
       'configurable': true,
     });
-    js_util.callMethod(objectConstructor,
-        'defineProperty', <dynamic>[domWindow, 'exports', exportsAccessor]);
+    js_util.callMethod(objectConstructor, 'defineProperty',
+        <dynamic>[domWindow, 'exports', exportsAccessor]);
   }
   if (module == null) {
     final Object? moduleAccessor = js_util.jsify(<String, dynamic>{
@@ -2616,16 +2616,21 @@ void patchCanvasKitModule(DomHTMLScriptElement canvasKitScript) {
       }),
       'configurable': true,
     });
-    js_util.callMethod(objectConstructor,
-        'defineProperty', <dynamic>[domWindow, 'module', moduleAccessor]);
+    js_util.callMethod(objectConstructor, 'defineProperty',
+        <dynamic>[domWindow, 'module', moduleAccessor]);
   }
   domDocument.head!.appendChild(canvasKitScript);
 }
 
+const String _canvaskitVersion = '0.37.0';
+const String _defaultCanvasKitBaseUrl = String.fromEnvironment(
+  'FLUTTER_WEB_CANVASKIT_URL',
+  defaultValue: 'https://unpkg.com/canvaskit-wasm@$_canvaskitVersion/bin/',
+);
+
 String get canvasKitBuildUrl =>
-  configuration.canvasKitBaseUrl + (kProfileMode ? 'profiling/' : '');
-String get canvasKitJavaScriptBindingsUrl =>
-    '${canvasKitBuildUrl}canvaskit.js';
+    _defaultCanvasKitBaseUrl + (kProfileMode ? 'profiling/' : '');
+String get canvasKitJavaScriptBindingsUrl => '${canvasKitBuildUrl}canvaskit.js';
 String canvasKitWasmModuleUrl(String canvasKitBase, String file) =>
     canvasKitBase + file;
 
@@ -2660,6 +2665,7 @@ Future<void> _downloadCanvasKitJs() {
     canvasKitLoadCompleter.complete();
     canvasKitScript.removeEventListener('load', callback);
   }
+
   callback = allowInterop(loadEventHandler);
   canvasKitScript.addEventListener('load', callback);
 

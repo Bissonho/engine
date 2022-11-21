@@ -196,10 +196,10 @@ class FlutterViewEmbedder {
 
     final DomHTMLBodyElement bodyElement = domDocument.body!;
 
-    bodyElement.setAttribute(
+    /*bodyElement.setAttribute(
       'flt-renderer',
       '${renderer.rendererTag} (${FlutterConfiguration.flutterWebAutoDetect ? 'auto-selected' : 'requested explicitly'})',
-    );
+    );*/
     bodyElement.setAttribute('flt-build-mode', buildMode);
 
     setElementStyle(bodyElement, 'position', 'fixed');
@@ -320,9 +320,9 @@ class FlutterViewEmbedder {
 
     // When debugging semantics, make the scene semi-transparent so that the
     // semantics tree is more prominent.
-    if (configuration.debugShowSemanticsNodes) {
+    /*if (configuration.debugShowSemanticsNodes) {
       _sceneHostElement!.style.opacity = '0.3';
-    }
+    }*/
 
     //KeyboardBinding.initInstance();
     /*PointerBinding.initInstance(
