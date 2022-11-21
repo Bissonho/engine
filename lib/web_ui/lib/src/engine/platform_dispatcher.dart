@@ -96,18 +96,9 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   ui.PlatformConfiguration configuration = ui.PlatformConfiguration(
     //locales: parseBrowserLanguages(),
     //textScaleFactor: findBrowserTextScaleFactor(),
-    accessibilityFeatures: computeAccessibilityFeatures(),
+    //accessibilityFeatures: computeAccessibilityFeatures(),
   );
 
-  /// Compute accessibility features based on the current value of high contrast flag
-  static EngineAccessibilityFeatures computeAccessibilityFeatures() {
-    final EngineAccessibilityFeaturesBuilder builder =
-        EngineAccessibilityFeaturesBuilder(0);
-    /*if (HighContrastSupport.instance.isHighContrastEnabled) {
-      builder.highContrast = true;
-    }*/
-    return builder.build();
-  }
 
   void dispose() {
     //_removeBrightnessMediaQueryListener();
@@ -465,13 +456,14 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         return;
 
       case 'flutter/assets':
+        /*
         final String url = utf8.decode(data!.buffer.asUint8List());
         ui.webOnlyAssetManager.load(url).then((ByteData assetData) {
           replyToPlatformMessage(callback, assetData);
         }, onError: (dynamic error) {
           printWarning('Error while trying to load an asset: $error');
           replyToPlatformMessage(callback, null);
-        });
+        });*/
         return;
 
       case 'flutter/platform':
@@ -538,6 +530,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         return;
 
       case 'flutter/mousecursor':
+       
         const MethodCodec codec = StandardMethodCodec();
         final MethodCall decoded = codec.decodeMethodCall(data);
         final Map<dynamic, dynamic> arguments =
@@ -569,7 +562,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
       case 'flutter/accessibility':
         // In widget tests we want to bypass processing of platform messages.
         const StandardMessageCodec codec = StandardMessageCodec();
-        accessibilityAnnouncements.handleMessage(codec, data);
+        //accessibilityAnnouncements.handleMessage(codec, data);
         replyToPlatformMessage(callback, codec.encodeMessage(true));
         return;
 
@@ -715,7 +708,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
     call `updateSemantics`.
   ''')
   void updateSemantics(ui.SemanticsUpdate update) {
-    EngineSemanticsOwner.instance.updateSemantics(update);
+    //EngineSemanticsOwner.instance.updateSemantics(update);
   }
 
   /// This is equivalent to `locales.first`, except that it will provide an
@@ -954,10 +947,10 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   /// callback if [_highContrast] changed.
   void _updateHighContrast(bool value) {
     if (configuration.accessibilityFeatures.highContrast != value) {
-      final EngineAccessibilityFeatures original =
-          configuration.accessibilityFeatures as EngineAccessibilityFeatures;
-      configuration = configuration.copyWith(
-          accessibilityFeatures: original.copyWith(highContrast: value));
+     // final EngineAccessibilityFeatures original =
+     //     configuration.accessibilityFeatures as EngineAccessibilityFeatures;
+     // configuration = configuration.copyWith(
+     //     accessibilityFeatures: original.copyWith(highContrast: value));
       invokeOnPlatformConfigurationChanged();
     }
   }

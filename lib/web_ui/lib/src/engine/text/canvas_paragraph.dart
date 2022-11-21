@@ -5,7 +5,6 @@
 import 'package:ui/ui.dart' as ui;
 
 import '../embedder.dart';
-import '../html/bitmap_canvas.dart';
 import '../profiler.dart';
 import '../util.dart';
 //import 'layout_fragmenter.dart';
