@@ -530,7 +530,6 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         return;
 
       case 'flutter/mousecursor':
-       
         const MethodCodec codec = StandardMethodCodec();
         final MethodCall decoded = codec.decodeMethodCall(data);
         final Map<dynamic, dynamic> arguments =
