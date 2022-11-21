@@ -13,8 +13,8 @@ import 'dart:typed_data';
 import 'package:ui/ui.dart' as ui;
 
 //import '../engine.dart' show registerHotRestartListener;
-import 'browser_detection.dart';
-import 'dom.dart';
+//import 'browser_detection.dart';
+//import 'dom.dart';
 //import 'navigation/history.dart';
 //import 'navigation/js_url_strategy.dart';
 //import 'navigation/url_strategy.dart';
@@ -221,6 +221,8 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
   ///
   /// This function is expensive. It triggers browser layout if there are
   /// pending DOM writes.
+  ///
+
   void computePhysicalSize() {
     bool override = false;
 
@@ -235,32 +237,10 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     if (!override) {
       double windowInnerWidth;
       double windowInnerHeight;
-      final DomVisualViewport? viewport = domWindow.visualViewport;
 
-      if (viewport != null) {
-        if (operatingSystem == OperatingSystem.iOs) {
-          /// Chrome on iOS reports incorrect viewport.height when app
-          /// starts in portrait orientation and the phone is rotated to
-          /// landscape.
-          ///
-          /// We instead use documentElement clientWidth/Height to read
-          /// accurate physical size. VisualViewport api is only used during
-          /// text editing to make sure inset is correctly reported to
-          /// framework.
-          final double docWidth =
-              domDocument.documentElement!.clientWidth.toDouble();
-          final double docHeight =
-              domDocument.documentElement!.clientHeight.toDouble();
-          windowInnerWidth = docWidth * devicePixelRatio;
-          windowInnerHeight = docHeight * devicePixelRatio;
-        } else {
-          windowInnerWidth = viewport.width!.toDouble() * devicePixelRatio;
-          windowInnerHeight = viewport.height!.toDouble() * devicePixelRatio;
-        }
-      } else {
-        windowInnerWidth = domWindow.innerWidth! * devicePixelRatio;
-        windowInnerHeight = domWindow.innerHeight! * devicePixelRatio;
-      }
+      windowInnerWidth = 500 * devicePixelRatio;
+      windowInnerHeight = 500 * devicePixelRatio;
+
       _physicalSize = ui.Size(
         windowInnerWidth,
         windowInnerHeight,
@@ -275,17 +255,10 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
 
   void computeOnScreenKeyboardInsets(bool isEditingOnMobile) {
     double windowInnerHeight;
-    final DomVisualViewport? viewport = domWindow.visualViewport;
-    if (viewport != null) {
-      if (operatingSystem == OperatingSystem.iOs && !isEditingOnMobile) {
-        windowInnerHeight =
-            domDocument.documentElement!.clientHeight * devicePixelRatio;
-      } else {
-        windowInnerHeight = viewport.height!.toDouble() * devicePixelRatio;
-      }
-    } else {
-      windowInnerHeight = domWindow.innerHeight! * devicePixelRatio;
-    }
+    //final DomVisualViewport? viewport = domWindow.visualViewport;
+
+    windowInnerHeight = 500 * devicePixelRatio;
+
     final double bottomPadding = _physicalSize!.height - windowInnerHeight;
     _viewInsets =
         WindowPadding(bottom: bottomPadding, left: 0, right: 0, top: 0);
@@ -308,13 +281,9 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
   bool isRotation() {
     double height = 0;
     double width = 0;
-    if (domWindow.visualViewport != null) {
-      height = domWindow.visualViewport!.height!.toDouble() * devicePixelRatio;
-      width = domWindow.visualViewport!.width!.toDouble() * devicePixelRatio;
-    } else {
-      height = domWindow.innerHeight! * devicePixelRatio;
-      width = domWindow.innerWidth! * devicePixelRatio;
-    }
+
+    height = 500 * devicePixelRatio;
+    width = 500 * devicePixelRatio;
 
     // This method compares the new dimensions with the previous ones.
     // Return false if the previous dimensions are not set.
