@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import '../../engine.dart' show registerHotRestartListener;
-import '../dom.dart';
+//import '../dom.dart';
 import '../services.dart';
 import '../util.dart';
 
@@ -62,9 +62,9 @@ class AccessibilityAnnouncements {
   /// This element has aria-live attribute.
   ///
   /// It also has id 'accessibility-element' for testing purposes.
-  DomHTMLElement? _element;
+  //DomHTMLElement? _element;
 
-  DomHTMLElement get _domElement => _element ??= _createElement();
+  //DomHTMLElement get _domElement => _element ??= _createElement();
 
   /// Decodes the message coming from the 'flutter/accessibility' channel.
   void handleMessage(StandardMessageCodec codec, ByteData? data) {
@@ -75,22 +75,26 @@ class AccessibilityAnnouncements {
     if (message != null && message.isNotEmpty) {
       /// The default value for politeness is `polite`.
       final int ariaLivePolitenessIndex = dataMap.tryInt('assertiveness') ?? 0;
-      final Assertiveness ariaLivePoliteness = Assertiveness.values[ariaLivePolitenessIndex];
+      final Assertiveness ariaLivePoliteness =
+          Assertiveness.values[ariaLivePolitenessIndex];
       _initLiveRegion(message, ariaLivePoliteness);
       _removeElementTimer = Timer(durationA11yMessageIsOnDom, () {
-        _element!.remove();
+        //_element!.remove();
       });
     }
   }
 
   void _initLiveRegion(String message, Assertiveness ariaLivePoliteness) {
-    final String assertiveLevel = (ariaLivePoliteness == Assertiveness.assertive) ? 'assertive' : 'polite';
-    _domElement.setAttribute('aria-live', assertiveLevel);
-    _domElement.text = message;
-    domDocument.body!.append(_domElement);
+    final String assertiveLevel =
+        (ariaLivePoliteness == Assertiveness.assertive)
+            ? 'assertive'
+            : 'polite';
+    //_domElement.setAttribute('aria-live', assertiveLevel);
+    //_domElement.text = message;
+    //domDocument.body!.append(_domElement);
   }
 
-  DomHTMLLabelElement _createElement() {
+  /*DomHTMLLabelElement _createElement() {
     final DomHTMLLabelElement liveRegion = createDomHTMLLabelElement();
     liveRegion.setAttribute('id', 'accessibility-element');
     liveRegion.style
@@ -100,5 +104,5 @@ class AccessibilityAnnouncements {
       ..width = '1px'
       ..height = '1px';
     return liveRegion;
-  }
+  }*/
 }

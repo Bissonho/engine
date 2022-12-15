@@ -10,20 +10,20 @@ import 'package:ui/ui.dart' as ui;
 import '../../engine.dart' show registerHotRestartListener;
 import '../alarm_clock.dart';
 import '../browser_detection.dart';
-import '../configuration.dart';
+//import '../configuration.dart';
 import '../dom.dart';
 import '../embedder.dart';
 import '../platform_dispatcher.dart';
 import '../util.dart';
 import '../vector_math.dart';
-import 'checkable.dart';
+//import 'checkable.dart';
 //import 'image.dart';
-import 'incrementable.dart';
-import 'label_and_value.dart';
-import 'live_region.dart';
-import 'scrollable.dart';
+//import 'incrementable.dart';
+//import 'label_and_value.dart';
+//import 'live_region.dart';
+//import 'scrollable.dart';
 import 'semantics_helper.dart';
-import 'tappable.dart';
+//import 'tappable.dart';
 //import 'text_field.dart';
 
 class EngineAccessibilityFeatures implements ui.AccessibilityFeatures {
@@ -374,14 +374,14 @@ enum Role {
 typedef RoleManagerFactory = RoleManager Function(SemanticsObject object);
 
 final Map<Role, RoleManagerFactory> _roleFactories = <Role, RoleManagerFactory>{
-  Role.incrementable: (SemanticsObject object) => Incrementable(object),
-  Role.scrollable: (SemanticsObject object) => Scrollable(object),
-  Role.labelAndValue: (SemanticsObject object) => LabelAndValue(object),
-  Role.tappable: (SemanticsObject object) => Tappable(object),
+  //Role.incrementable: (SemanticsObject object) => Incrementable(object),
+  //Role.scrollable: (SemanticsObject object) => Scrollable(object),
+  //Role.labelAndValue: (SemanticsObject object) => LabelAndValue(object),
+  //Role.tappable: (SemanticsObject object) => Tappable(object),
   //Role.textField: (SemanticsObject object) => TextField(object),
-  Role.checkable: (SemanticsObject object) => Checkable(object),
+  //Role.checkable: (SemanticsObject object) => Checkable(object),
   //Role.image: (SemanticsObject object) => ImageRoleManager(object),
-  Role.liveRegion: (SemanticsObject object) => LiveRegion(object),
+  //Role.liveRegion: (SemanticsObject object) => LiveRegion(object),
 };
 
 /// Provides the functionality associated with the role of the given
