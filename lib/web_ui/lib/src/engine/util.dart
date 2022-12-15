@@ -11,7 +11,7 @@ import 'dart:typed_data';
 import 'package:ui/ui.dart' as ui;
 
 import 'browser_detection.dart';
-import 'dom.dart';
+//import 'dom.dart';
 import 'safe_browser_api.dart';
 import 'vector_math.dart';
 
@@ -78,11 +78,11 @@ String matrix4ToCssTransform(Matrix4 matrix) {
 /// Applies a transform to the [element].
 ///
 /// See [float64ListToCssTransform] for details on how the CSS value is chosen.
-void setElementTransform(DomElement element, Float32List matrix4) {
+/*void setElementTransform(DomElement element, Float32List matrix4) {
   element.style
     ..transformOrigin = '0 0 0'
     ..transform = float64ListToCssTransform(matrix4);
-}
+}*/
 
 /// Converts [matrix] to CSS transform value.
 ///
@@ -131,7 +131,8 @@ TransformKind transformKindOf(List<double> matrix) {
 
   // If matrix contains scaling, rotation, z translation or
   // perspective transform, it is not considered simple.
-  final bool isSimple2dTransform = m[15] == 1.0 && // start reading from the last element to eliminate range checks in subsequent reads.
+  final bool isSimple2dTransform = m[15] ==
+          1.0 && // start reading from the last element to eliminate range checks in subsequent reads.
       m[14] == 0.0 && // z translation is NOT simple
       // m[13] - y translation is simple
       // m[12] - x translation is simple
@@ -155,7 +156,12 @@ TransformKind transformKindOf(List<double> matrix) {
   // From this point on we're sure the transform is 2D, but we don't know if
   // it's identity or not. To check, we need to look at the remaining elements
   // that were not checked above.
-  final bool isIdentityTransform = m[0] == 1.0 && m[1] == 0.0 && m[4] == 0.0 && m[5] == 1.0 && m[12] == 0.0 && m[13] == 0.0;
+  final bool isIdentityTransform = m[0] == 1.0 &&
+      m[1] == 0.0 &&
+      m[4] == 0.0 &&
+      m[5] == 1.0 &&
+      m[12] == 0.0 &&
+      m[13] == 0.0;
 
   if (isIdentityTransform) {
     return TransformKind.identity;
@@ -298,10 +304,26 @@ void transformLTRB(Matrix4 transform, Float32List ltrb) {
     w = 1.0;
   }
 
-  ltrb[0] = math.min(math.min(math.min(_tempPointData[0], _tempPointData[1]), _tempPointData[2]), _tempPointData[3]) / w;
-  ltrb[1] = math.min(math.min(math.min(_tempPointData[4], _tempPointData[5]), _tempPointData[6]), _tempPointData[7]) / w;
-  ltrb[2] = math.max(math.max(math.max(_tempPointData[0], _tempPointData[1]), _tempPointData[2]), _tempPointData[3]) / w;
-  ltrb[3] = math.max(math.max(math.max(_tempPointData[4], _tempPointData[5]), _tempPointData[6]), _tempPointData[7]) / w;
+  ltrb[0] = math.min(
+          math.min(math.min(_tempPointData[0], _tempPointData[1]),
+              _tempPointData[2]),
+          _tempPointData[3]) /
+      w;
+  ltrb[1] = math.min(
+          math.min(math.min(_tempPointData[4], _tempPointData[5]),
+              _tempPointData[6]),
+          _tempPointData[7]) /
+      w;
+  ltrb[2] = math.max(
+          math.max(math.max(_tempPointData[0], _tempPointData[1]),
+              _tempPointData[2]),
+          _tempPointData[3]) /
+      w;
+  ltrb[3] = math.max(
+          math.max(math.max(_tempPointData[4], _tempPointData[5]),
+              _tempPointData[6]),
+          _tempPointData[7]) /
+      w;
 }
 
 /// Returns true if [rect] contains every point that is also contained by the
@@ -310,7 +332,10 @@ void transformLTRB(Matrix4 transform, Float32List ltrb) {
 /// Points on the edges of both rectangles are also considered. For example,
 /// this returns true when the two rects are equal to each other.
 bool rectContainsOther(ui.Rect rect, ui.Rect other) {
-  return rect.left <= other.left && rect.top <= other.top && rect.right >= other.right && rect.bottom >= other.bottom;
+  return rect.left <= other.left &&
+      rect.top <= other.top &&
+      rect.right >= other.right &&
+      rect.bottom >= other.bottom;
 }
 
 /// Converts color to a css compatible attribute value.
@@ -437,7 +462,10 @@ String? canonicalizeFontFamily(String? fontFamily) {
     // on sans-serif.
     // Map to San Francisco Text/Display fonts, use -apple-system,
     // BlinkMacSystemFont.
-    if (fontFamily == '.SF Pro Text' || fontFamily == '.SF Pro Display' || fontFamily == '.SF UI Text' || fontFamily == '.SF UI Display') {
+    if (fontFamily == '.SF Pro Text' ||
+        fontFamily == '.SF Pro Display' ||
+        fontFamily == '.SF UI Text' ||
+        fontFamily == '.SF UI Display') {
       return _fallbackFontFamily;
     }
   }
@@ -497,7 +525,9 @@ int clampInt(int value, int min, int max) {
 ///
 /// This function can be overridden in tests. This could be useful, for example,
 /// to verify that warnings are printed under certain circumstances.
-void Function(String) printWarning = domWindow.console.warn;
+void Function(String) printWarning = (p0) {
+  print(p0);
+};
 
 /// Determines if lists [a] and [b] are deep equivalent.
 ///
@@ -527,10 +557,7 @@ String blurSigmasToCssString(double sigmaX, double sigmaY) {
 }
 
 /// A typed variant of [domWindow.fetch].
-Future<DomResponse> httpFetch(String url) async {
-  final Object? result = await domWindow.fetch(url);
-  return result! as DomResponse;
-}
+httpFetch(String url) async {}
 
 /// Extensions to [Map] that make it easier to treat it as a JSON object. The
 /// keys are `dynamic` because when JSON is deserialized from method channels
@@ -616,70 +643,31 @@ extension JsonExtensions on Map<dynamic, dynamic> {
 ///     Input: [0, 1, 2, 3]
 ///     Output: 0x00 0x01 0x02 0x03
 String bytesToHexString(List<int> data) {
-  return data.map((int byte) => '0x${byte.toRadixString(16).padLeft(2, '0')}').join(' ');
+  return data
+      .map((int byte) => '0x${byte.toRadixString(16).padLeft(2, '0')}')
+      .join(' ');
 }
 
 /// Sets a style property on [element].
 ///
 /// [name] is the name of the property. [value] is the value of the property.
 /// If [value] is null, removes the style property.
-void setElementStyle(DomElement element, String name, String? value) {
-  if (value == null) {
-    element.style.removeProperty(name);
-  } else {
-    element.style.setProperty(name, value);
-  }
-}
-
-void setClipPath(DomElement element, String? value) {
-  /*if (browserEngine == BrowserEngine.webkit) {
-    if (value == null) {
-      element.style.removeProperty('-webkit-clip-path');
-    } else {
-      element.style.setProperty('-webkit-clip-path', value);
-    }
-  }*/
-  if (value == null) {
-    element.style.removeProperty('clip-path');
-  } else {
-    element.style.setProperty('clip-path', value);
-  }
-}
 
 void setThemeColor(ui.Color color) {
-  DomHTMLMetaElement? theme = domDocument.querySelector('#flutterweb-theme') as DomHTMLMetaElement?;
+  /*DomHTMLMetaElement? theme =
+      domDocument.querySelector('#flutterweb-theme') as DomHTMLMetaElement?;
   if (theme == null) {
     theme = createDomHTMLMetaElement()
       ..id = 'flutterweb-theme'
       ..name = 'theme-color';
     domDocument.head!.append(theme);
   }
-  theme.content = colorToCssString(color)!;
+  theme.content = colorToCssString(color)!;*/
 }
 
 bool? _ellipseFeatureDetected;
 
 /// Draws CanvasElement ellipse with fallback.
-void drawEllipse(DomCanvasRenderingContext2D context, double centerX, double centerY, double radiusX, double radiusY, double rotation, double startAngle, double endAngle, bool antiClockwise) {
-  _ellipseFeatureDetected ??= getJsProperty<Object?>(context, 'ellipse') != null;
-  if (_ellipseFeatureDetected!) {
-    context.ellipse(centerX, centerY, radiusX, radiusY, rotation, startAngle, endAngle, antiClockwise);
-  } else {
-    context.save();
-    context.translate(centerX, centerY);
-    context.rotate(rotation);
-    context.scale(radiusX, radiusY);
-    context.arc(0, 0, 1, startAngle, endAngle, antiClockwise);
-    context.restore();
-  }
-}
-
-/// Removes all children of a DOM node.
-void removeAllChildren(DomNode node) {
-  while (node.lastChild != null) {
-    node.lastChild!.remove();
-  }
-}
 
 /// A helper that finds an element in an iterable that satisfy a predicate, or
 /// returns null otherwise.
