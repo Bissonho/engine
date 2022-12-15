@@ -210,7 +210,7 @@ class SkiaFontCollection implements FontCollection {
 
   void _downloadFont(List<Future<UnregisteredFont?>> waitUnregisteredFonts,
       String url, String family) {
-    Future<UnregisteredFont?> downloadFont() async {
+    /*Future<UnregisteredFont?> downloadFont() async {
       ByteBuffer buffer;
       try {
         buffer = await httpFetch(url).then(_getArrayBuffer);
@@ -220,10 +220,10 @@ class SkiaFontCollection implements FontCollection {
         printWarning(e.toString());
         return null;
       }
-    }
+    }*/
 
     _downloadedFontFamilies.add(family);
-    waitUnregisteredFonts.add(downloadFont());
+    //waitUnregisteredFonts.add(downloadFont());
   }
 
   String? _readActualFamilyName(Uint8List bytes) {

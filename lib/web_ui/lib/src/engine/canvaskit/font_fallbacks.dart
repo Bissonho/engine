@@ -433,7 +433,7 @@ class FallbackFontDownloadQueue {
     for (final NotoFont font in pendingFonts.values) {
       downloads[font.url] = Future<void>(() async {
         ByteBuffer buffer;
-        try {
+        /*try {
           buffer = await downloader.downloadAsBytes(font.url,
               debugDescription: font.name);
         } catch (e) {
@@ -443,7 +443,7 @@ class FallbackFontDownloadQueue {
           return;
         }
         downloadedFonts.add(font);
-        downloadedData[font.url] = buffer.asUint8List();
+        downloadedData[font.url] = buffer.asUint8List();*/
       });
     }
 
@@ -500,38 +500,10 @@ class NotoDownloader {
   /// Downloads the [url] and returns it as a [ByteBuffer].
   ///
   /// Override this for testing.
-  Future<ByteBuffer> downloadAsBytes(String url, {String? debugDescription}) {
-    if (assertionsEnabled) {
-      _debugActiveDownloadCount += 1;
-    }
-    final Future<ByteBuffer> result = httpFetch(url).then(
-        (DomResponse fetchResult) => fetchResult
-            .arrayBuffer()
-            .then<ByteBuffer>((dynamic x) => x as ByteBuffer));
-    if (assertionsEnabled) {
-      result.whenComplete(() {
-        _debugActiveDownloadCount -= 1;
-      });
-    }
-    return result;
-  }
 
   /// Downloads the [url] and returns is as a [String].
   ///
   /// Override this for testing.
-  Future<String> downloadAsString(String url, {String? debugDescription}) {
-    if (assertionsEnabled) {
-      _debugActiveDownloadCount += 1;
-    }
-    final Future<String> result = httpFetch(url).then((DomResponse response) =>
-        response.text().then<String>((dynamic x) => x as String));
-    if (assertionsEnabled) {
-      result.whenComplete(() {
-        _debugActiveDownloadCount -= 1;
-      });
-    }
-    return result;
-  }
 }
 
 FallbackFontDownloadQueue notoDownloadQueue = FallbackFontDownloadQueue();
