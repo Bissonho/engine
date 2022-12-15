@@ -17,7 +17,7 @@ import 'dart:typed_data';
 import 'package:js/js.dart';
 import 'package:ui/ui.dart' as ui;
 
-import '../configuration.dart';
+//import '../configuration.dart';
 import '../dom.dart';
 import '../initialization.dart';
 import '../profiler.dart';

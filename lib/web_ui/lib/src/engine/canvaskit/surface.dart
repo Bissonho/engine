@@ -5,7 +5,7 @@
 import 'package:ui/ui.dart' as ui;
 
 import '../browser_detection.dart';
-import '../configuration.dart';
+//import '../configuration.dart';
 import '../dom.dart';
 import '../platform_dispatcher.dart';
 import '../safe_browser_api.dart';

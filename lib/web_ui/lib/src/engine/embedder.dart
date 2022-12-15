@@ -8,7 +8,6 @@ import 'package:ui/ui.dart' as ui;
 
 import '../engine.dart' show buildMode, registerHotRestartListener, renderer;
 import 'browser_detection.dart';
-import 'configuration.dart';
 import 'dom.dart';
 import 'host_node.dart';
 //import 'keyboard_binding.dart';
