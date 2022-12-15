@@ -13,7 +13,7 @@
 
 import 'package:ui/ui.dart' as ui;
 
-import '../dom.dart';
+//import '../dom.dart';
 import 'semantics.dart';
 
 /// The specific type of checkable control.
@@ -75,13 +75,13 @@ class Checkable extends RoleManager {
       /// technologies of disabled elements.
       _updateDisabledAttribute();
 
-      semanticsObject.element.setAttribute(
+      /*semanticsObject.element.setAttribute(
         'aria-checked',
         (semanticsObject.hasFlag(ui.SemanticsFlag.isChecked) ||
                 semanticsObject.hasFlag(ui.SemanticsFlag.isToggled))
             ? 'true'
             : 'false',
-      );
+      );*/
     }
   }
 
@@ -103,17 +103,17 @@ class Checkable extends RoleManager {
 
   void _updateDisabledAttribute() {
     if (semanticsObject.enabledState() == EnabledState.disabled) {
-      final DomElement element = semanticsObject.element;
-      element
+      //final DomElement element = semanticsObject.element;
+      /*element
         ..setAttribute('aria-disabled', 'true')
-        ..setAttribute('disabled', 'true');
+        ..setAttribute('disabled', 'true');*/
     } else {
       _removeDisabledAttribute();
     }
   }
 
   void _removeDisabledAttribute() {
-    final DomElement element = semanticsObject.element;
-    element..removeAttribute('aria-disabled')..removeAttribute('disabled');
+    //final DomElement element = semanticsObject.element;
+    //element..removeAttribute('aria-disabled')..removeAttribute('disabled');
   }
 }

@@ -17,7 +17,7 @@ import '../platform_dispatcher.dart';
 import '../util.dart';
 import '../vector_math.dart';
 import 'checkable.dart';
-import 'image.dart';
+//import 'image.dart';
 import 'incrementable.dart';
 import 'label_and_value.dart';
 import 'live_region.dart';
@@ -380,7 +380,7 @@ final Map<Role, RoleManagerFactory> _roleFactories = <Role, RoleManagerFactory>{
   Role.tappable: (SemanticsObject object) => Tappable(object),
   //Role.textField: (SemanticsObject object) => TextField(object),
   Role.checkable: (SemanticsObject object) => Checkable(object),
-  Role.image: (SemanticsObject object) => ImageRoleManager(object),
+  //Role.image: (SemanticsObject object) => ImageRoleManager(object),
   Role.liveRegion: (SemanticsObject object) => LiveRegion(object),
 };
 
