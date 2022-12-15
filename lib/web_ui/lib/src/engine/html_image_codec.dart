@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 import 'package:ui/ui.dart' as ui;
 
-import 'browser_detection.dart';
+//import 'browser_detection.dart';
 import 'dom.dart';
 import 'safe_browser_api.dart';
 import 'util.dart';
@@ -21,7 +21,8 @@ Object? get _jsImageDecodeFunction => getJsProperty<Object?>(
     );
 final bool _supportsDecode = _jsImageDecodeFunction != null;
 
-typedef WebOnlyImageCodecChunkCallback = void Function(int cumulativeBytesLoaded, int expectedTotalBytes);
+typedef WebOnlyImageCodecChunkCallback = void Function(
+    int cumulativeBytesLoaded, int expectedTotalBytes);
 
 class HtmlCodec implements ui.Codec {
   HtmlCodec(this.src, {this.chunkCallback});
@@ -160,7 +161,8 @@ class HtmlImage implements ui.Image {
     if (assertionsEnabled) {
       return _disposed;
     }
-    return throw StateError('Image.debugDisposed is only available when asserts are enabled.');
+    return throw StateError(
+        'Image.debugDisposed is only available when asserts are enabled.');
   }
 
   @override
@@ -179,7 +181,8 @@ class HtmlImage implements ui.Image {
   final int height;
 
   @override
-  Future<ByteData?> toByteData({ui.ImageByteFormat format = ui.ImageByteFormat.rawRgba}) {
+  Future<ByteData?> toByteData(
+      {ui.ImageByteFormat format = ui.ImageByteFormat.rawRgba}) {
     switch (format) {
       // TODO(ColdPaleLight): https://github.com/flutter/flutter/issues/89128
       // The format rawRgba always returns straight rather than premul currently.
@@ -195,7 +198,8 @@ class HtmlImage implements ui.Image {
       default:
         if (imgElement.src?.startsWith('data:') ?? false) {
           final UriData data = UriData.fromUri(Uri.parse(imgElement.src!));
-          return Future<ByteData?>.value(data.contentAsBytes().buffer.asByteData());
+          return Future<ByteData?>.value(
+              data.contentAsBytes().buffer.asByteData());
         } else {
           return Future<ByteData?>.value();
         }

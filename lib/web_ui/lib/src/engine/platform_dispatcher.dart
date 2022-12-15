@@ -17,7 +17,7 @@ import 'embedder.dart';
 //import 'mouse_cursor.dart';
 import 'platform_views/message_handler.dart';
 import 'plugins.dart';
-import 'safe_browser_api.dart';
+//import 'safe_browser_api.dart';
 //import 'semantics.dart';
 import 'services.dart';
 //import 'text_editing/text_editing.dart';

@@ -10,7 +10,7 @@ import 'package:ui/src/engine/fonts.dart';
 
 import '../assets.dart';
 import '../dom.dart';
-import '../safe_browser_api.dart';
+//import '../safe_browser_api.dart';
 import '../util.dart';
 import 'layout_service.dart';
 

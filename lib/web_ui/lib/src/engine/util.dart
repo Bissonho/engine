@@ -12,7 +12,7 @@ import 'package:ui/ui.dart' as ui;
 
 import 'browser_detection.dart';
 //import 'dom.dart';
-import 'safe_browser_api.dart';
+//import 'safe_browser_api.dart';
 import 'vector_math.dart';
 
 /// Generic callback signature, used by [_futurize].
@@ -402,9 +402,9 @@ String colorComponentsToCssString(int r, int g, int b, int a) {
 /// We need this in [BitmapCanvas] and [RecordingCanvas] to swallow this
 /// Firefox exception without interfering with others (potentially useful
 /// for the programmer).
-bool isNsErrorFailureException(Object e) {
+/*bool isNsErrorFailureException(Object e) {
   return getJsProperty<dynamic>(e, 'name') == 'NS_ERROR_FAILURE';
-}
+}*/
 
 /// From: https://developer.mozilla.org/en-US/docs/Web/CSS/font-family#Syntax
 ///

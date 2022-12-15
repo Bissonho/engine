@@ -8,7 +8,7 @@ import 'package:ui/ui.dart' as ui;
 
 import 'dom.dart';
 import 'platform_dispatcher.dart';
-import 'safe_browser_api.dart';
+//import 'safe_browser_api.dart';
 
 /// A function that computes a value of type [R].
 ///
@@ -105,12 +105,12 @@ class Profiler {
     // This is because the type cast in `getJsProperty<Object?>` is optimized
     // out at certain optimization levels in dart2js, leading to obscure errors
     // later on.
-    final Object? onBenchmark = getJsProperty<Object?>(
+    /*final Object? onBenchmark = getJsProperty<Object?>(
       domWindow,
       '_flutter_internal_on_benchmark',
-    );
-    onBenchmark as OnBenchmark?;
-    onBenchmark?.call(name, value);
+    );*/
+    //onBenchmark as OnBenchmark?;
+    //onBenchmark?.call(name, value);
   }
 }
 
@@ -251,6 +251,7 @@ class Instrumentation {
 
     _enabled = value;
   }
+
   static bool _enabled = const bool.fromEnvironment(
     'FLUTTER_WEB_ENABLE_INSTRUMENTATION',
   );
