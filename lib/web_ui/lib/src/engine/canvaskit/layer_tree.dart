@@ -8,7 +8,7 @@ import '../../engine.dart' show kProfileApplyFrame, kProfilePrerollFrame;
 import '../profiler.dart';
 import '../vector_math.dart';
 import 'canvas.dart';
-import 'embedded_views.dart';
+//import 'embedded_views.dart';
 import 'layer.dart';
 import 'n_way_canvas.dart';
 import 'picture_recorder.dart';

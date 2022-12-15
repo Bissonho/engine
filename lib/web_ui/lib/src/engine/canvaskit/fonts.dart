@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import '../assets.dart';
-//import '../dom.dart';
 import '../fonts.dart';
 import '../util.dart';
 import 'canvaskit_api.dart';

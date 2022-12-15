@@ -62,7 +62,7 @@ void skiaDecodeImageFromPixels(
     );
 
     if (skImage == null) {
-      domWindow.console.warn('Failed to create image from pixels.');
+      //domWindow.console.warn('Failed to create image from pixels.');
       return;
     }
 

@@ -12,7 +12,6 @@ import 'package:ui/ui.dart' as ui;
 
 import '../engine.dart' show platformViewManager, registerHotRestartListener;
 //import 'clipboard.dart';
-//import 'dom.dart';
 import 'embedder.dart';
 //import 'mouse_cursor.dart';
 import 'platform_views/message_handler.dart';

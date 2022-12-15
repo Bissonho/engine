@@ -19,8 +19,6 @@ import 'package:ui/src/engine/renderer.dart';
 //import 'package:ui/src/engine/window.dart';
 import 'package:ui/ui.dart' as ui;
 
-//import 'dom.dart';
-
 /// The mode the app is running in.
 /// Keep these in sync with the same constants on the framework-side under foundation/constants.dart.
 const bool kReleaseMode = bool.fromEnvironment('dart.vm.product');

@@ -7,7 +7,6 @@ import 'dart:typed_data';
 
 import 'package:ui/src/engine/canvaskit/renderer.dart';
 
-//import '../dom.dart';
 //import '../font_change_util.dart';
 import '../initialization.dart';
 import '../renderer.dart';

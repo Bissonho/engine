@@ -6,7 +6,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import '../../engine.dart' show registerHotRestartListener;
-//import '../dom.dart';
 import '../services.dart';
 import '../util.dart';
 
