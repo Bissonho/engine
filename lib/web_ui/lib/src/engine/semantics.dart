@@ -6,7 +6,7 @@ export 'semantics/accessibility.dart';
 //export 'semantics/checkable.dart';
 //export 'semantics/image.dart';
 //export 'semantics/incrementable.dart';
-export 'semantics/label_and_value.dart';
+//export 'semantics/label_and_value.dart';
 export 'semantics/live_region.dart';
 //export 'semantics/scrollable.dart';
 export 'semantics/semantics.dart';
