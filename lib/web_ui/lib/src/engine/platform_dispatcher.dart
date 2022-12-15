@@ -481,11 +481,11 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
                   callback, codec.encodeSuccessEnvelope(true));
             });*/
             return;
-          case 'HapticFeedback.vibrate':
+          /*case 'HapticFeedback.vibrate':
             final String? type = decoded.arguments as String?;
             vibrate(_getHapticFeedbackDuration(type));
             replyToPlatformMessage(callback, codec.encodeSuccessEnvelope(true));
-            return;
+            return;*/
           case 'SystemChrome.setApplicationSwitcherDescription':
             final Map<String, dynamic> arguments =
                 decoded.arguments as Map<String, dynamic>;

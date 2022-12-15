@@ -48,11 +48,12 @@ class HtmlFontCollection implements FontCollection {
           'There was a problem trying to load FontManifest.json');
     }
 
-    if (supportsFontLoadingApi) {
+    /*if (supportsFontLoadingApi) {
       _assetFontManager = FontManager();
     } else {
       _assetFontManager = _PolyfillFontManager();
-    }
+    }*/
+    _assetFontManager = FontManager();
 
     for (final Map<String, dynamic> fontFamily
         in fontManifest.cast<Map<String, dynamic>>()) {
@@ -108,20 +109,18 @@ class HtmlFontCollection implements FontCollection {
   void clear() {
     _assetFontManager = null;
     _testFontManager = null;
-    if (supportsFontsClearApi) {
-      domDocument.fonts!.clear();
-    }
   }
 }
 
 /// Manages a collection of fonts and ensures they are loaded.
 class FontManager {
   factory FontManager() {
-    if (supportsFontLoadingApi) {
+    /*if (supportsFontLoadingApi) {
       return FontManager._();
     } else {
       return _PolyfillFontManager();
-    }
+    }*/
+    return FontManager._();
   }
 
   FontManager._();
