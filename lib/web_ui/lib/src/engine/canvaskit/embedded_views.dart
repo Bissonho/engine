@@ -4,21 +4,21 @@
 
 import 'package:ui/ui.dart' as ui;
 
-import '../../engine.dart' show platformViewManager;
+//import '../../engine.dart' show platformViewManager;
 //import '../configuration.dart';
-import '../dom.dart';
-import '../platform_views/slots.dart';
-import '../svg.dart';
+//import '../dom.dart';
+//import '../platform_views/slots.dart';
+//import '../svg.dart';
 import '../util.dart';
 import '../vector_math.dart';
-import '../window.dart';
-import 'canvas.dart';
-import 'embedded_views_diff.dart';
-import 'path.dart';
-import 'picture_recorder.dart';
-import 'renderer.dart';
-import 'surface.dart';
-import 'surface_factory.dart';
+//import '../window.dart';
+//import 'canvas.dart';
+//import 'embedded_views_diff.dart';
+//import 'path.dart';
+//import 'picture_recorder.dart';
+//import 'renderer.dart';
+//import 'surface.dart';
+//import 'surface_factory.dart';
 
 /*
 /// This composites HTML views into the [ui.Scene].

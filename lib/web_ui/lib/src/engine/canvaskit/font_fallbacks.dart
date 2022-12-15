@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 import 'package:ui/src/engine/canvaskit/renderer.dart';
 
-import '../dom.dart';
+//import '../dom.dart';
 //import '../font_change_util.dart';
 import '../initialization.dart';
 import '../renderer.dart';
@@ -257,7 +257,7 @@ Future<void> findFontsForMissingCodeunits(List<int> codeUnits) async {
   // The call to `findMinimumFontsForCodeUnits` will remove all code units that
   // were matched by `fonts` from `unmatchedCodeUnits`.
   final Set<int> unmatchedCodeUnits = Set<int>.from(coveredCodeUnits);
-  fonts = findMinimumFontsForCodeUnits(unmatchedCodeUnits, fonts);
+  //fonts = findMinimumFontsForCodeUnits(unmatchedCodeUnits, fonts);
 
   fonts.forEach(notoDownloadQueue.add);
 
@@ -284,13 +284,13 @@ Future<void> findFontsForMissingCodeunits(List<int> codeUnits) async {
 /// which finds the font which covers the most code units. If multiple CJK
 /// fonts match the same number of code units, we choose one based on the user's
 /// locale.
-Set<NotoFont> findMinimumFontsForCodeUnits(
+/*Set<NotoFont> findMinimumFontsForCodeUnits(
     Set<int> codeUnits, Set<NotoFont> fonts) {
   assert(fonts.isNotEmpty || codeUnits.isEmpty);
   final Set<NotoFont> minimumFonts = <NotoFont>{};
   final List<NotoFont> bestFonts = <NotoFont>[];
 
-  final String language = domWindow.navigator.language;
+  //final String language = domWindow.navigator.language;
 
   while (codeUnits.isNotEmpty) {
     int maxCodeUnitsCovered = 0;
@@ -363,7 +363,7 @@ Set<NotoFont> findMinimumFontsForCodeUnits(
     minimumFonts.add(bestFont);
   }
   return minimumFonts;
-}
+}*/
 
 NotoFont _notoSansSC =
     fallbackFonts.singleWhere((NotoFont font) => font.name == 'Noto Sans SC');
