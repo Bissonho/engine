@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import '../assets.dart';
-import '../dom.dart';
+//import '../dom.dart';
 import '../fonts.dart';
 import '../util.dart';
 import 'canvaskit_api.dart';
@@ -234,11 +234,11 @@ class SkiaFontCollection implements FontCollection {
     return actualFamily;
   }
 
-  Future<ByteBuffer> _getArrayBuffer(DomResponse fetchResult) {
+  /*Future<ByteBuffer> _getArrayBuffer(DomResponse fetchResult) {
     return fetchResult
         .arrayBuffer()
         .then<ByteBuffer>((dynamic x) => x as ByteBuffer);
-  }
+  }*/
 
   TypefaceFontProvider? fontProvider;
 

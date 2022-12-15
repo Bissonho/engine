@@ -6,7 +6,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:ui/ui.dart' as ui;
-
 import '../dom.dart';
 import '../html_image_codec.dart';
 import '../safe_browser_api.dart';
@@ -52,7 +51,9 @@ void skiaDecodeImageFromPixels(
       SkImageInfo(
         width: width,
         height: height,
-        colorType: format == ui.PixelFormat.rgba8888 ? canvasKit.ColorType.RGBA_8888 : canvasKit.ColorType.BGRA_8888,
+        colorType: format == ui.PixelFormat.rgba8888
+            ? canvasKit.ColorType.RGBA_8888
+            : canvasKit.ColorType.BGRA_8888,
         alphaType: canvasKit.AlphaType.Premul,
         colorSpace: SkColorSpaceSRGB,
       ),
@@ -109,7 +110,7 @@ Future<Uint8List> fetchImage(
   request.open('GET', url, true);
   request.responseType = 'arraybuffer';
   if (chunkCallback != null) {
-    request.addEventListener('progress', allowInterop((DomEvent event)  {
+    request.addEventListener('progress', allowInterop((DomEvent event) {
       event = event as DomProgressEvent;
       chunkCallback.call(event.loaded!, event.total!);
     }));
@@ -148,7 +149,7 @@ Future<Uint8List> fetchImage(
 
 /// A [ui.Image] backed by an `SkImage` from Skia.
 class CkImage implements ui.Image, StackTraceDebugger {
-  CkImage(SkImage skImage, { this.videoFrame }) {
+  CkImage(SkImage skImage, {this.videoFrame}) {
     _init();
     if (browserSupportsFinalizationRegistry) {
       box = SkiaObjectBox<CkImage, SkImage>(this, skImage);
@@ -188,9 +189,7 @@ class CkImage implements ui.Image, StackTraceDebugger {
           4 * originalWidth,
         );
         if (skImage == null) {
-          throw ImageCodecException(
-            'Failed to resurrect image from pixels.'
-          );
+          throw ImageCodecException('Failed to resurrect image from pixels.');
         }
         return skImage;
       });
@@ -299,7 +298,9 @@ class CkImage implements ui.Image, StackTraceDebugger {
   }
 
   Future<ByteData> _readPixelsFromSkImage(ui.ImageByteFormat format) {
-    final SkAlphaType alphaType = format == ui.ImageByteFormat.rawStraightRgba ? canvasKit.AlphaType.Unpremul : canvasKit.AlphaType.Premul;
+    final SkAlphaType alphaType = format == ui.ImageByteFormat.rawStraightRgba
+        ? canvasKit.AlphaType.Unpremul
+        : canvasKit.AlphaType.Premul;
     final ByteData? data = _encodeImage(
       skImage: skImage,
       format: format,
@@ -323,7 +324,8 @@ class CkImage implements ui.Image, StackTraceDebugger {
   }) {
     Uint8List? bytes;
 
-    if (format == ui.ImageByteFormat.rawRgba || format == ui.ImageByteFormat.rawStraightRgba) {
+    if (format == ui.ImageByteFormat.rawRgba ||
+        format == ui.ImageByteFormat.rawStraightRgba) {
       final SkImageInfo imageInfo = SkImageInfo(
         alphaType: alphaType,
         colorType: colorType,
