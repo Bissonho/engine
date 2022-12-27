@@ -7,7 +7,6 @@ import 'package:ui/ui.dart' as ui;
 
 import '../frame_reference.dart';
 import 'canvas.dart';
-import 'embedded_views.dart';
 import 'layer_tree.dart';
 import 'surface.dart';
 import 'surface_factory.dart';

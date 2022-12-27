@@ -32,15 +32,17 @@ String getPlatformViewSlotName(int viewId) {
 ///
 /// (When the framework accesses a `slot`, it's really accessing its wrapper
 /// `flt-platform-view-slot` tag)
-DomElement createPlatformViewSlot(int viewId) {
-  final String slotName = getPlatformViewSlotName(viewId);
+/// /
+// DomElement createPlatformViewSlot(int viewId) {
+  
+//   final String slotName = getPlatformViewSlotName(viewId);
 
-  final DomElement wrapper = domDocument
-      .createElement('flt-platform-view-slot')
-      ..style.pointerEvents = 'auto';
+//   final DomElement wrapper = domDocument
+//       .createElement('flt-platform-view-slot')
+//       ..style.pointerEvents = 'auto';
 
-  final DomElement slot = domDocument.createElement('slot')
-    ..setAttribute('name', slotName);
+//   final DomElement slot = domDocument.createElement('slot')
+//     ..setAttribute('name', slotName);
 
-  return wrapper..append(slot);
-}
+//   return wrapper..append(slot);
+// }

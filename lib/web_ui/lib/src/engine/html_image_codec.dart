@@ -24,6 +24,9 @@ final bool _supportsDecode = _jsImageDecodeFunction != null;
 typedef WebOnlyImageCodecChunkCallback = void Function(
     int cumulativeBytesLoaded, int expectedTotalBytes);
 
+
+/*
+
 class HtmlCodec implements ui.Codec {
   HtmlCodec(this.src, {this.chunkCallback});
 
@@ -135,8 +138,9 @@ class SingleFrameInfo implements ui.FrameInfo {
 
   @override
   final ui.Image image;
-}
+}*/
 
+/*
 class HtmlImage implements ui.Image {
   HtmlImage(this.imgElement, this.width, this.height) {
     ui.Image.onCreate?.call(this);
@@ -220,4 +224,4 @@ class HtmlImage implements ui.Image {
 
   @override
   String toString() => '[$width\u00D7$height]';
-}
+}*/

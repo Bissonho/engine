@@ -704,7 +704,9 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
     semantics, use PlatformDispatcher.instance.views to get a [FlutterView] and
     call `updateSemantics`.
   ''')
-  void updateSemantics(ui.SemanticsUpdate update) {
+  
+  // void updateSemantics(ui.SemanticsUpdate update) {
+  void updateSemantics(String update) {
     //EngineSemanticsOwner.instance.updateSemantics(update);
   }
 

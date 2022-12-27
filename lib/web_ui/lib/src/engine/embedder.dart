@@ -50,14 +50,14 @@ class FlutterViewEmbedder {
   static const String _glassPaneTagName = 'flt-glass-pane';
 
   /// Listens to window resize events
-  DomSubscription? _resizeSubscription;
+  //DomSubscription? _resizeSubscription;
 
   /// Listens to window locale events.
-  DomSubscription? _localeSubscription;
+  //DomSubscription? _localeSubscription;
 
   /// Contains Flutter-specific CSS rules, such as default margins and
   /// paddings.
-  DomHTMLStyleElement? _styleElement;
+  //DomHTMLStyleElement? _styleElement;
 
   /// Configures the screen, such as scaling.
   DomHTMLMetaElement? _viewportMeta;
@@ -121,13 +121,13 @@ class FlutterViewEmbedder {
   /// [_setupHotRestart] must have been called prior to calling this method.
   void _registerHotRestartCleanUp() {
     registerHotRestartListener(() {
-      _resizeSubscription?.cancel();
-      _localeSubscription?.cancel();
-      _staleHotRestartState!.addAll(<DomElement?>[
-        _glassPaneElement,
-        _styleElement,
-        _viewportMeta,
-      ]);
+      //_resizeSubscription?.cancel();
+      //_localeSubscription?.cancel();
+      // _staleHotRestartState!.addAll(<DomElement?>[
+      //   _glassPaneElement,
+      //   _styleElement,
+      //   _viewportMeta,
+      // ]);
     });
   }
 
@@ -181,12 +181,12 @@ class FlutterViewEmbedder {
   void reset() {
     //final bool isWebKit = browserEngine == BrowserEngine.webkit;
 
-    _styleElement?.remove();
-    _styleElement = createDomHTMLStyleElement();
+    //_styleElement?.remove();
+    //styleElement = createDomHTMLStyleElement();
     _resourcesHost?.remove();
     _resourcesHost = null;
-    domDocument.head!.append(_styleElement!);
-    final DomCSSStyleSheet sheet = _styleElement!.sheet! as DomCSSStyleSheet;
+    //domDocument.head!.append(_styleElement!);
+    //final DomCSSStyleSheet sheet = _styleElement!.sheet! as DomCSSStyleSheet;
     /*applyGlobalCssRulesToSheet(
       sheet,
       browserEngine: browserEngine,
@@ -266,12 +266,15 @@ class FlutterViewEmbedder {
     final DomElement glassPaneElement =
         domDocument.createElement(_glassPaneTagName);
     _glassPaneElement = glassPaneElement;
+    
+    
+    /*
     glassPaneElement.style
       ..position = 'absolute'
       ..top = '0'
       ..right = '0'
       ..bottom = '0'
-      ..left = '0';
+      ..left = '0';*/
 
     // This must be appended to the body, so the engine can create a host node
     // properly.
@@ -283,25 +286,28 @@ class FlutterViewEmbedder {
     _glassPaneShadow = glassPaneElementHostNode;
 
     // Don't allow the scene to receive pointer events.
-    _sceneHostElement = domDocument.createElement('flt-scene-host')
-      ..style.pointerEvents = 'none';
+    _sceneHostElement = domDocument.createElement('flt-scene-host');
+    //  ..style.pointerEvents = 'none';
 
     renderer.reset(this);
 
     final DomElement semanticsHostElement =
         domDocument.createElement('flt-semantics-host');
+    
+    
+    /*
     semanticsHostElement.style
       ..position = 'absolute'
       ..transformOrigin = '0 0 0';
     _semanticsHostElement = semanticsHostElement;
-    updateSemanticsScreenProperties();
+    updateSemanticsScreenProperties();*/
 
-    final DomElement accessibilityPlaceholder = EngineSemanticsOwner
-        .instance.semanticsHelper
-        .prepareAccessibilityPlaceholder();
+    //final DomElement accessibilityPlaceholder = EngineSemanticsOwner
+    //    .instance.semanticsHelper
+    //    .prepareAccessibilityPlaceholder();
 
     glassPaneElementHostNode.appendAll(<DomNode>[
-      accessibilityPlaceholder,
+      
       _sceneHostElement!,
 
       // The semantic host goes last because hit-test order-wise it must be
@@ -359,6 +365,7 @@ class FlutterViewEmbedder {
       });
     }*/
 
+    /*
     if (domWindow.visualViewport != null) {
       _resizeSubscription = DomSubscription(
           domWindow.visualViewport!, 'resize', allowInterop(_metricsDidChange));
@@ -367,7 +374,7 @@ class FlutterViewEmbedder {
           DomSubscription(domWindow, 'resize', allowInterop(_metricsDidChange));
     }
     _localeSubscription = DomSubscription(
-        domWindow, 'languagechange', allowInterop(_languageDidChange));
+        domWindow, 'languagechange', allowInterop(_languageDidChange));*/
     //EnginePlatformDispatcher.instance.updateLocales();
   }
 
@@ -385,8 +392,8 @@ class FlutterViewEmbedder {
   /// logical pixels. To compensate, an inverse scale is injected at the root
   /// level.
   void updateSemanticsScreenProperties() {
-    _semanticsHostElement!.style
-        .setProperty('transform', 'scale(${1 / domWindow.devicePixelRatio})');
+    //_semanticsHostElement!.style
+    //    .setProperty('transform', 'scale(${1 / domWindow.devicePixelRatio})');
   }
 
   /// Called immediately after browser window metrics change.
@@ -439,6 +446,8 @@ class FlutterViewEmbedder {
   ///
   /// See w3c screen api: https://www.w3.org/TR/screen-orientation/
   Future<bool> setPreferredOrientation(List<dynamic> orientations) {
+    
+    /*
     final DomScreen? screen = domWindow.screen;
     if (screen != null) {
       final DomScreenOrientation? screenOrientation = screen.orientation;
@@ -466,7 +475,7 @@ class FlutterViewEmbedder {
           }
         }
       }
-    }
+    }*/
     // API is not supported on this browser return false.
     return Future<bool>.value(false);
   }
@@ -509,7 +518,7 @@ class FlutterViewEmbedder {
   void addResource(DomElement element) {
     // Unity Project Remove webkit
     if (_resourcesHost == null) {
-      _resourcesHost = createDomHTMLDivElement()..style.visibility = 'hidden';
+      _resourcesHost = createDomHTMLDivElement();//..style.visibility = 'hidden';
       _glassPaneShadow!.node
           .insertBefore(_resourcesHost!, _glassPaneShadow!.node.firstChild);
     }
@@ -530,7 +539,7 @@ class FlutterViewEmbedder {
 
 // Applies the required global CSS to an incoming [DomCSSStyleSheet] `sheet`.
 void applyGlobalCssRulesToSheet(
-  DomCSSStyleSheet sheet, {
+  {
   required BrowserEngine browserEngine,
   required bool hasAutofillOverlay,
   String glassPaneTagName = FlutterViewEmbedder._glassPaneTagName,
@@ -552,6 +561,8 @@ void applyGlobalCssRulesToSheet(
 
   // This undoes browser's default painting and layout attributes of range
   // input, which is used in semantics.
+  
+  /*
   sheet.insertRule(
     '''
     flt-semantics input[type=range] {
@@ -567,7 +578,7 @@ void applyGlobalCssRulesToSheet(
     }
     ''',
     sheet.cssRules.length,
-  );
+  );*/
 
   // Unity Project Remove webkit
   /*if (isWebKit) {
@@ -580,6 +591,8 @@ void applyGlobalCssRulesToSheet(
 
   //#Unity
 
+  /*
+  
   sheet.insertRule(
       'input::selection {'
       '  background-color: transparent;'
@@ -591,7 +604,7 @@ void applyGlobalCssRulesToSheet(
       '}',
       sheet.cssRules.length);
 
-  /*if (isFirefox) {
+  if (isFirefox) {
     sheet.insertRule(
         'input::-moz-selection {'
         '  background-color: transparent;'
@@ -616,7 +629,7 @@ void applyGlobalCssRulesToSheet(
         '  background-color: transparent;'
         '}',
         sheet.cssRules.length);
-  }*/
+  }
 
   sheet.insertRule('''
     flt-semantics input,
@@ -641,7 +654,7 @@ void applyGlobalCssRulesToSheet(
   // This css prevents an autofill overlay brought by the browser during
   // text field autofill by delaying the transition effect.
   // See: https://github.com/flutter/flutter/issues/61132.
-  /*if (browserHasAutofillOverlay()) {
+  if (browserHasAutofillOverlay()) {
     sheet.insertRule('''
       .transparentTextEditing:-webkit-autofill,
       .transparentTextEditing:-webkit-autofill:hover,

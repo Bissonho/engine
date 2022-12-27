@@ -70,8 +70,6 @@ void skiaDecodeImageFromPixels(
   });
 }
 
-/// Thrown when the web engine fails to decode an image, either due to a
-/// network issue, corrupted image contents, or missing codec.
 class ImageCodecException implements Exception {
   ImageCodecException(this._message);
 
@@ -80,6 +78,11 @@ class ImageCodecException implements Exception {
   @override
   String toString() => 'ImageCodecException: $_message';
 }
+
+/*
+/// Thrown when the web engine fails to decode an image, either due to a
+/// network issue, corrupted image contents, or missing codec.
+
 
 const String _kNetworkImageMessage = 'Failed to load network image.';
 
@@ -99,8 +102,9 @@ Future<ui.Codec> skiaInstantiateWebImageCodec(
   } else {
     return CkAnimatedImage.decodeFromBytes(list, url);
   }
-}
+}*/
 
+/*
 /// Sends a request to fetch image data.
 Future<Uint8List> fetchImage(
     String url, WebOnlyImageCodecChunkCallback? chunkCallback) {
@@ -145,11 +149,11 @@ Future<Uint8List> fetchImage(
 
   request.send();
   return completer.future;
-}
+}*/
 
 /// A [ui.Image] backed by an `SkImage` from Skia.
 class CkImage implements ui.Image, StackTraceDebugger {
-  CkImage(SkImage skImage, {this.videoFrame}) {
+  CkImage(SkImage skImage) {
     _init();
     if (browserSupportsFinalizationRegistry) {
       box = SkiaObjectBox<CkImage, SkImage>(this, skImage);
@@ -196,7 +200,7 @@ class CkImage implements ui.Image, StackTraceDebugger {
     }
   }
 
-  CkImage.cloneOf(this.box, {this.videoFrame}) {
+  CkImage.cloneOf(this.box ) {
     _init();
     box.ref(this);
   }
@@ -222,7 +226,7 @@ class CkImage implements ui.Image, StackTraceDebugger {
   /// Skia owns the video frame and will close it when it's no longer used.
   /// However, Flutter co-owns the [SkImage] and therefore it's safe to access
   /// the video frame until the image is [dispose]d of.
-  VideoFrame? videoFrame;
+  //VideoFrame? videoFrame;
 
   /// The underlying Skia image object.
   ///
@@ -260,7 +264,7 @@ class CkImage implements ui.Image, StackTraceDebugger {
   @override
   CkImage clone() {
     assert(_debugCheckIsNotDisposed());
-    return CkImage.cloneOf(box, videoFrame: videoFrame?.clone());
+    return CkImage.cloneOf(box);
   }
 
   @override
@@ -290,11 +294,11 @@ class CkImage implements ui.Image, StackTraceDebugger {
     ui.ImageByteFormat format = ui.ImageByteFormat.rawRgba,
   }) {
     assert(_debugCheckIsNotDisposed());
-    if (videoFrame != null) {
-      return readPixelsFromVideoFrame(videoFrame!, format);
-    } else {
+    //if (videoFrame != null) {
+      //return readPixelsFromVideoFrame(videoFrame!, format);
+    //} else {
       return _readPixelsFromSkImage(format);
-    }
+    //}
   }
 
   Future<ByteData> _readPixelsFromSkImage(ui.ImageByteFormat format) {

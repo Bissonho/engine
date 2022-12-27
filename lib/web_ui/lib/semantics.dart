@@ -339,6 +339,7 @@ class SemanticsUpdateBuilder {
   SemanticsUpdateBuilder();
 
   final List<engine.SemanticsNodeUpdate> _nodeUpdates = <engine.SemanticsNodeUpdate>[];
+  
   void updateNode({
     required int id,
     required int flags,
@@ -376,6 +377,8 @@ class SemanticsUpdateBuilder {
     if (transform.length != 16) {
       throw ArgumentError('transform argument must have 16 entries.');
     }
+    
+    /*
     _nodeUpdates.add(engine.SemanticsNodeUpdate(
       id: id,
       flags: flags,
@@ -409,7 +412,7 @@ class SemanticsUpdateBuilder {
       childrenInHitTestOrder: childrenInHitTestOrder,
       additionalActions: additionalActions,
       platformViewId: platformViewId,
-    ));
+    ));*/
   }
 
   void updateCustomAction({
@@ -420,12 +423,15 @@ class SemanticsUpdateBuilder {
   }) {
     // TODO(yjbanov): implement.
   }
+  
+ 
   SemanticsUpdate build() {
     return SemanticsUpdate._(
       nodeUpdates: _nodeUpdates,
     );
   }
 }
+
 
 abstract class SemanticsUpdate {
   factory SemanticsUpdate._({List<engine.SemanticsNodeUpdate>? nodeUpdates}) =

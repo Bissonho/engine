@@ -111,20 +111,21 @@ class PlatformViewManager {
     _viewIdToType[viewId] = viewType;
 
     return _contents.putIfAbsent(viewId, () {
-      final DomElement wrapper = domDocument.createElement('flt-platform-view')..setAttribute('slot', slotName);
+      //final DomElement wrapper = domDocument.createElement('flt-platform-view')..setAttribute('slot', slotName);
 
-      final Function factoryFunction = _factories[viewType]!;
-      late DomElement content;
+      //final Function factoryFunction = _factories[viewType]!;
+     // late DomElement content;
 
-      if (factoryFunction is ParameterizedPlatformViewFactory) {
-        content = factoryFunction(viewId, params: params);
-      } else {
-        content = (factoryFunction as PlatformViewFactory).call(viewId);
-      }
+     // if (factoryFunction is ParameterizedPlatformViewFactory) {
+     //   content = factoryFunction(viewId, params: params);
+     // } else {
+      //  content = (factoryFunction as PlatformViewFactory).call(viewId);
+      //}
 
-      _ensureContentCorrectlySized(content, viewType);
+     // _ensureContentCorrectlySized(content, viewType);
 
-      return wrapper..append(content);
+      //return wrapper..append(content);
+      throw "Exception";
     });
   }
 
@@ -181,21 +182,24 @@ class PlatformViewManager {
     // We shouldn't modify users' returned `content` if at all possible.
     // Note there's also no getContent(viewId) function anymore, to prevent
     // from later modifications too.
-    if (content.style.height.isEmpty) {
-      printWarning('Height of Platform View type: [$viewType] may not be set.'
-          ' Defaulting to `height: 100%`.\n'
-          'Set `style.height` to any appropriate value to stop this message.');
+    
+    
+    
+    // if (content.style.height.isEmpty) {
+    //   printWarning('Height of Platform View type: [$viewType] may not be set.'
+    //       ' Defaulting to `height: 100%`.\n'
+    //       'Set `style.height` to any appropriate value to stop this message.');
 
-      content.style.height = '100%';
-    }
+    //   content.style.height = '100%';
+    // }
 
-    if (content.style.width.isEmpty) {
-      printWarning('Width of Platform View type: [$viewType] may not be set.'
-          ' Defaulting to `width: 100%`.\n'
-          'Set `style.width` to any appropriate value to stop this message.');
+    // if (content.style.width.isEmpty) {
+    //   printWarning('Width of Platform View type: [$viewType] may not be set.'
+    //       ' Defaulting to `width: 100%`.\n'
+    //       'Set `style.width` to any appropriate value to stop this message.');
 
-      content.style.width = '100%';
-    }
+    //   content.style.width = '100%';
+    // }
   }
 
   /// Returns `true` if the given [viewId] is for an invisible platform view.

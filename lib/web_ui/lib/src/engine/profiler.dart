@@ -223,8 +223,9 @@ void frameTimingsOnRasterFinish() {
 ///   particularly notes about Firefox rounding to 1ms for security reasons,
 ///   which can be bypassed in tests by setting certain browser options.
 int _nowMicros() {
-  print((domWindow.performance.now() * 1000).toInt().toString());
+  //print((domWindow.performance.now() * 1000).toInt().toString());
   //return (domWindow.performance.now() * 1000).toInt();
+  //TODO(BUG?)
   return 1000;
 }
 

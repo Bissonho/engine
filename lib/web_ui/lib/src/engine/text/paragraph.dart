@@ -1,3 +1,5 @@
+
+
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -104,7 +106,7 @@ class EngineLineMetrics implements ui.LineMetrics {
     }
   }
 }
-
+/*
 class ParagraphLine {
   ParagraphLine({
     required bool hardBreak,
@@ -121,7 +123,6 @@ class ParagraphLine {
     required this.trailingSpaces,
     required this.spaceCount,
     required this.widthWithTrailingSpaces,
-    required this.fragments,
     required this.textDirection,
     this.displayText,
   })  : assert(trailingNewlines <= endIndex - startIndex),
@@ -171,7 +172,7 @@ class ParagraphLine {
   final double widthWithTrailingSpaces;
 
   /// The fragments that make up this line.
-  final List<LayoutFragment> fragments;
+  //final List<LayoutFragment> fragments;
 
   /// The text direction of this line, which is the same as the paragraph's.
   final ui.TextDirection textDirection;
@@ -200,9 +201,9 @@ class ParagraphLine {
 
   String getText(CanvasParagraph paragraph) {
     final StringBuffer buffer = StringBuffer();
-    for (final LayoutFragment fragment in fragments) {
-      buffer.write(fragment.getText(paragraph));
-    }
+    //for (final LayoutFragment fragment in fragments) {
+    //  buffer.write(fragment.getText(paragraph));
+    //}
     return buffer.toString();
   }
 
@@ -215,7 +216,7 @@ class ParagraphLine {
         trailingSpaces,
         spaceCount,
         widthWithTrailingSpaces,
-        fragments,
+       
         textDirection,
         displayText,
       );
@@ -236,7 +237,6 @@ class ParagraphLine {
         other.trailingSpaces == trailingSpaces &&
         other.spaceCount == spaceCount &&
         other.widthWithTrailingSpaces == widthWithTrailingSpaces &&
-        other.fragments == fragments &&
         other.textDirection == textDirection &&
         other.displayText == displayText;
   }
@@ -472,27 +472,30 @@ class EngineTextStyle implements ui.TextStyle {
   ///
   /// See <https://developer.mozilla.org/en-US/docs/Web/CSS/font>.
   String get cssFontString {
-    return _cssFontString ??= buildCssFontString(
-      fontStyle: fontStyle,
-      fontWeight: fontWeight,
-      fontSize: fontSize,
-      fontFamily: effectiveFontFamily,
-    );
+    
+    return "";
+    // return _cssFontString ??= buildCssFontString(
+    //   fontStyle: fontStyle,
+    //   fontWeight: fontWeight,
+    //   fontSize: fontSize,
+    //   fontFamily: effectiveFontFamily,
+    // );
   }
 
-  late final TextHeightStyle heightStyle = _createHeightStyle();
+  //late final TextHeightStyle heightStyle = _createHeightStyle();
 
-  TextHeightStyle _createHeightStyle() {
-    return TextHeightStyle(
-      fontFamily: effectiveFontFamily,
-      fontSize: fontSize ?? FlutterViewEmbedder.defaultFontSize,
-      height: height,
-      // TODO(mdebbar): Pass the actual value when font features become supported
-      //                https://github.com/flutter/flutter/issues/64595
-      fontFeatures: null,
-      fontVariations: null,
-    );
-  }
+
+  // TextHeightStyle _createHeightStyle() {
+  //   return TextHeightStyle(
+  //     fontFamily: effectiveFontFamily,
+  //     fontSize: fontSize ?? FlutterViewEmbedder.defaultFontSize,
+  //     height: height,
+  //     // TODO(mdebbar): Pass the actual value when font features become supported
+  //     //                https://github.com/flutter/flutter/issues/64595
+  //     fontFeatures: null,
+  //     fontVariations: null,
+  //   );
+  // }
 
   EngineTextStyle copyWith({
     ui.Color? color,
@@ -766,91 +769,93 @@ void applyTextStyleToElement({
   required DomElement element,
   required EngineTextStyle style,
 }) {
+  
+  
   assert(element != null);
   assert(style != null);
-  bool updateDecoration = false;
-  final DomCSSStyleDeclaration cssStyle = element.style;
+  // bool updateDecoration = false;
+  // final DomCSSStyleDeclaration cssStyle = element.style;
 
-  final ui.Color? color = style.foreground?.color ?? style.color;
-  if (style.foreground?.style == ui.PaintingStyle.stroke) {
-    // When comparing the outputs of the Bitmap Canvas and the DOM
-    // implementation, we have found, that we need to set the background color
-    // of the text to transparent to achieve the same effect as in the Bitmap
-    // Canvas and the Skia Engine where only the text stroke is painted.
-    // If we don't set it here to transparent, the text will inherit the color
-    // of it's parent element.
-    cssStyle.color = 'transparent';
-    // Use hairline (device pixel when strokeWidth is not specified).
-    final double? strokeWidth = style.foreground?.strokeWidth;
-    final double adaptedWidth = strokeWidth != null && strokeWidth > 0 ? strokeWidth : 1.0 / ui.window.devicePixelRatio;
-    cssStyle.textStroke = '${adaptedWidth}px ${colorToCssString(color)}';
-  } else if (color != null) {
-    cssStyle.color = colorToCssString(color)!;
-  }
-  final ui.Color? background = style.background?.color;
-  if (background != null) {
-    cssStyle.backgroundColor = colorToCssString(background)!;
-  }
-  final double? fontSize = style.fontSize;
-  if (fontSize != null) {
-    cssStyle.fontSize = '${fontSize.floor()}px';
-  }
-  if (style.fontWeight != null) {
-    cssStyle.fontWeight = fontWeightToCss(style.fontWeight)!;
-  }
-  if (style.fontStyle != null) {
-    cssStyle.fontStyle = style.fontStyle == ui.FontStyle.normal ? 'normal' : 'italic';
-  }
-  // For test environment use effectiveFontFamily since we need to
-  // consistently use Ahem font.
-  if (ui.debugEmulateFlutterTesterEnvironment) {
-    cssStyle.fontFamily = canonicalizeFontFamily(style.effectiveFontFamily)!;
-  } else {
-    cssStyle.fontFamily = canonicalizeFontFamily(style.fontFamily)!;
-  }
-  if (style.letterSpacing != null) {
-    cssStyle.letterSpacing = '${style.letterSpacing}px';
-  }
-  if (style.wordSpacing != null) {
-    cssStyle.wordSpacing = '${style.wordSpacing}px';
-  }
-  if (style.decoration != null) {
-    updateDecoration = true;
-  }
-  final List<ui.Shadow>? shadows = style.shadows;
-  if (shadows != null) {
-    cssStyle.textShadow = _shadowListToCss(shadows);
-  }
+  // final ui.Color? color = style.foreground?.color ?? style.color;
+  // if (style.foreground?.style == ui.PaintingStyle.stroke) {
+  //   // When comparing the outputs of the Bitmap Canvas and the DOM
+  //   // implementation, we have found, that we need to set the background color
+  //   // of the text to transparent to achieve the same effect as in the Bitmap
+  //   // Canvas and the Skia Engine where only the text stroke is painted.
+  //   // If we don't set it here to transparent, the text will inherit the color
+  //   // of it's parent element.
+  //   cssStyle.color = 'transparent';
+  //   // Use hairline (device pixel when strokeWidth is not specified).
+  //   final double? strokeWidth = style.foreground?.strokeWidth;
+  //   final double adaptedWidth = strokeWidth != null && strokeWidth > 0 ? strokeWidth : 1.0 / ui.window.devicePixelRatio;
+  //   cssStyle.textStroke = '${adaptedWidth}px ${colorToCssString(color)}';
+  // } else if (color != null) {
+  //   cssStyle.color = colorToCssString(color)!;
+  // }
+  // final ui.Color? background = style.background?.color;
+  // if (background != null) {
+  //   cssStyle.backgroundColor = colorToCssString(background)!;
+  // }
+  // final double? fontSize = style.fontSize;
+  // if (fontSize != null) {
+  //   cssStyle.fontSize = '${fontSize.floor()}px';
+  // }
+  // if (style.fontWeight != null) {
+  //   cssStyle.fontWeight = fontWeightToCss(style.fontWeight)!;
+  // }
+  // if (style.fontStyle != null) {
+  //   cssStyle.fontStyle = style.fontStyle == ui.FontStyle.normal ? 'normal' : 'italic';
+  // }
+  // // For test environment use effectiveFontFamily since we need to
+  // // consistently use Ahem font.
+  // if (ui.debugEmulateFlutterTesterEnvironment) {
+  //   cssStyle.fontFamily = canonicalizeFontFamily(style.effectiveFontFamily)!;
+  // } else {
+  //   cssStyle.fontFamily = canonicalizeFontFamily(style.fontFamily)!;
+  // }
+  // if (style.letterSpacing != null) {
+  //   cssStyle.letterSpacing = '${style.letterSpacing}px';
+  // }
+  // if (style.wordSpacing != null) {
+  //   cssStyle.wordSpacing = '${style.wordSpacing}px';
+  // }
+  // if (style.decoration != null) {
+  //   updateDecoration = true;
+  // }
+  // final List<ui.Shadow>? shadows = style.shadows;
+  // if (shadows != null) {
+  //   cssStyle.textShadow = _shadowListToCss(shadows);
+  // }
 
-  if (updateDecoration) {
-    if (style.decoration != null) {
-      final String? textDecoration = _textDecorationToCssString(style.decoration, style.decorationStyle);
-      if (textDecoration != null) {
-        //#Unity
-        cssStyle.textDecoration = textDecoration;
-        /*if (browserEngine == BrowserEngine.webkit) {
-          setElementStyle(element, '-webkit-text-decoration', textDecoration);
-        } else {
-          cssStyle.textDecoration = textDecoration;
-        }*/
+  // if (updateDecoration) {
+  //   if (style.decoration != null) {
+  //     final String? textDecoration = _textDecorationToCssString(style.decoration, style.decorationStyle);
+  //     if (textDecoration != null) {
+  //       //#Unity
+  //       cssStyle.textDecoration = textDecoration;
+  //       /*if (browserEngine == BrowserEngine.webkit) {
+  //         setElementStyle(element, '-webkit-text-decoration', textDecoration);
+  //       } else {
+  //         cssStyle.textDecoration = textDecoration;
+  //       }*/
 
-        final ui.Color? decorationColor = style.decorationColor;
-        if (decorationColor != null) {
-          cssStyle.textDecorationColor = colorToCssString(decorationColor)!;
-        }
-      }
-    }
-  }
+  //       final ui.Color? decorationColor = style.decorationColor;
+  //       if (decorationColor != null) {
+  //         cssStyle.textDecorationColor = colorToCssString(decorationColor)!;
+  //       }
+  //     }
+  //   }
+  // }
 
-  final List<ui.FontFeature>? fontFeatures = style.fontFeatures;
-  if (fontFeatures != null && fontFeatures.isNotEmpty) {
-    cssStyle.fontFeatureSettings = _fontFeatureListToCss(fontFeatures);
-  }
+  // final List<ui.FontFeature>? fontFeatures = style.fontFeatures;
+  // if (fontFeatures != null && fontFeatures.isNotEmpty) {
+  //   cssStyle.fontFeatureSettings = _fontFeatureListToCss(fontFeatures);
+  // }
 
-  final List<ui.FontVariation>? fontVariations = style.fontVariations;
-  if (fontVariations != null && fontVariations.isNotEmpty) {
-    cssStyle.setProperty('font-variation-settings', _fontVariationListToCss(fontVariations));
-  }
+  // final List<ui.FontVariation>? fontVariations = style.fontVariations;
+  // if (fontVariations != null && fontVariations.isNotEmpty) {
+  //   cssStyle.setProperty('font-variation-settings', _fontVariationListToCss(fontVariations));
+  // }
 }
 
 String _shadowListToCss(List<ui.Shadow> shadows) {
@@ -980,3 +985,4 @@ String textAlignToCssValue(ui.TextAlign? align, ui.TextDirection textDirection) 
       return '';
   }
 }
+*/

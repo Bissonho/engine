@@ -293,7 +293,6 @@ class ImageDecoderOptions {
 class DecodeResult {}
 
 extension DecodeResultExtension on DecodeResult {
-  external VideoFrame get image;
   external bool get complete;
 }
 
@@ -311,6 +310,9 @@ class DecodeOptions {
   });
 }
 
+
+
+/*
 /// The only frame in a static image, or one of the frames in an animated one.
 ///
 /// This class maps to the `VideoFrame` type provided by the browser.
@@ -334,7 +336,7 @@ extension VideoFrameExtension on VideoFrame {
   external int? get duration;
   external VideoFrame clone();
   external void close();
-}
+}*/
 
 /// Corresponds to the browser's `ImageTrackList` type.
 ///
@@ -397,6 +399,8 @@ void vertexAttribPointerGlContext(
     offset,
   ]);
 }
+
+/*
 
 /// Compiled and cached gl program.
 class GlProgram {
@@ -1095,4 +1099,4 @@ class OffScreenCanvas {
   /// Feature detects OffscreenCanvas.
   static bool get supported =>
       _supported ??= js_util.hasProperty(domWindow, 'OffscreenCanvas');
-}
+}*/

@@ -1,3 +1,5 @@
+
+
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -101,10 +103,10 @@ class ShadowDomHostNode implements HostNode {
       'delegatesFocus': false,
     });
 
-    final DomHTMLStyleElement shadowRootStyleElement =
-        createDomHTMLStyleElement();
+    //final DomHTMLStyleElement shadowRootStyleElement =
+    //    createDomHTMLStyleElement();
     // The shadowRootStyleElement must be appended to the DOM, or its `sheet` will be null later.
-    _shadow.appendChild(shadowRootStyleElement);
+    //_shadow.appendChild(shadowRootStyleElement);
 
     // TODO(dit): Apply only rules for the shadow root
     /*applyGlobalCssRulesToSheet(

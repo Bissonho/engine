@@ -12,11 +12,14 @@ abstract class FlutterView {
   Size get physicalSize => viewConfiguration.geometry.size;
   WindowPadding get viewInsets => viewConfiguration.viewInsets;
   WindowPadding get viewPadding => viewConfiguration.viewPadding;
-  WindowPadding get systemGestureInsets => viewConfiguration.systemGestureInsets;
+  WindowPadding get systemGestureInsets =>
+      viewConfiguration.systemGestureInsets;
   WindowPadding get padding => viewConfiguration.padding;
   List<DisplayFeature> get displayFeatures => viewConfiguration.displayFeatures;
   void render(Scene scene) => platformDispatcher.render(scene, this);
-  void updateSemantics(SemanticsUpdate update) => platformDispatcher.updateSemantics(update);
+  //Possivel break change de API
+  void updateSemantics(SemanticsUpdate update) =>
+      platformDispatcher.updateSemantics(update.toString());
 }
 
 abstract class FlutterWindow extends FlutterView {
@@ -49,27 +52,31 @@ abstract class SingletonFlutterWindow extends FlutterWindow {
 
   double get textScaleFactor => platformDispatcher.textScaleFactor;
 
-  bool get nativeSpellCheckServiceDefined => platformDispatcher.nativeSpellCheckServiceDefined;
+  bool get nativeSpellCheckServiceDefined =>
+      platformDispatcher.nativeSpellCheckServiceDefined;
 
   bool get brieflyShowPassword => platformDispatcher.brieflyShowPassword;
 
   bool get alwaysUse24HourFormat => platformDispatcher.alwaysUse24HourFormat;
 
-  VoidCallback? get onTextScaleFactorChanged => platformDispatcher.onTextScaleFactorChanged;
+  VoidCallback? get onTextScaleFactorChanged =>
+      platformDispatcher.onTextScaleFactorChanged;
   set onTextScaleFactorChanged(VoidCallback? callback) {
     platformDispatcher.onTextScaleFactorChanged = callback;
   }
 
   Brightness get platformBrightness => platformDispatcher.platformBrightness;
 
-  VoidCallback? get onPlatformBrightnessChanged => platformDispatcher.onPlatformBrightnessChanged;
+  VoidCallback? get onPlatformBrightnessChanged =>
+      platformDispatcher.onPlatformBrightnessChanged;
   set onPlatformBrightnessChanged(VoidCallback? callback) {
     platformDispatcher.onPlatformBrightnessChanged = callback;
   }
 
   String? get systemFontFamily => platformDispatcher.systemFontFamily;
 
-  VoidCallback? get onSystemFontFamilyChanged => platformDispatcher.onSystemFontFamilyChanged;
+  VoidCallback? get onSystemFontFamilyChanged =>
+      platformDispatcher.onSystemFontFamilyChanged;
   set onSystemFontFamilyChanged(VoidCallback? callback) {
     platformDispatcher.onSystemFontFamilyChanged = callback;
   }
@@ -89,7 +96,8 @@ abstract class SingletonFlutterWindow extends FlutterWindow {
     platformDispatcher.onReportTimings = callback;
   }
 
-  PointerDataPacketCallback? get onPointerDataPacket => platformDispatcher.onPointerDataPacket;
+  PointerDataPacketCallback? get onPointerDataPacket =>
+      platformDispatcher.onPointerDataPacket;
   set onPointerDataPacket(PointerDataPacketCallback? callback) {
     platformDispatcher.onPointerDataPacket = callback;
   }
@@ -108,12 +116,14 @@ abstract class SingletonFlutterWindow extends FlutterWindow {
 
   bool get semanticsEnabled => platformDispatcher.semanticsEnabled;
 
-  VoidCallback? get onSemanticsEnabledChanged => platformDispatcher.onSemanticsEnabledChanged;
+  VoidCallback? get onSemanticsEnabledChanged =>
+      platformDispatcher.onSemanticsEnabledChanged;
   set onSemanticsEnabledChanged(VoidCallback? callback) {
     platformDispatcher.onSemanticsEnabledChanged = callback;
   }
 
-  SemanticsActionCallback? get onSemanticsAction => platformDispatcher.onSemanticsAction;
+  SemanticsActionCallback? get onSemanticsAction =>
+      platformDispatcher.onSemanticsAction;
   set onSemanticsAction(SemanticsActionCallback? callback) {
     platformDispatcher.onSemanticsAction = callback;
   }
@@ -123,7 +133,9 @@ abstract class SingletonFlutterWindow extends FlutterWindow {
   VoidCallback? get onFrameDataChanged => null;
   set onFrameDataChanged(VoidCallback? callback) {}
 
-  AccessibilityFeatures get accessibilityFeatures => platformDispatcher.accessibilityFeatures;
+  //Possivel break change
+  AccessibilityFeatures? get accessibilityFeatures =>
+      platformDispatcher.accessibilityFeatures;
 
   VoidCallback? get onAccessibilityFeaturesChanged =>
       platformDispatcher.onAccessibilityFeaturesChanged;
@@ -139,12 +151,14 @@ abstract class SingletonFlutterWindow extends FlutterWindow {
     platformDispatcher.sendPlatformMessage(name, data, callback);
   }
 
-  PlatformMessageCallback? get onPlatformMessage => platformDispatcher.onPlatformMessage;
+  PlatformMessageCallback? get onPlatformMessage =>
+      platformDispatcher.onPlatformMessage;
   set onPlatformMessage(PlatformMessageCallback? callback) {
     platformDispatcher.onPlatformMessage = callback;
   }
 
-  void setIsolateDebugName(String name) => PlatformDispatcher.instance.setIsolateDebugName(name);
+  void setIsolateDebugName(String name) =>
+      PlatformDispatcher.instance.setIsolateDebugName(name);
 }
 
 abstract class AccessibilityFeatures {
@@ -157,6 +171,35 @@ abstract class AccessibilityFeatures {
   bool get onOffSwitchLabels;
 }
 
+class FakeAccessibilityFeatures implements AccessibilityFeatures {
+  
+  const FakeAccessibilityFeatures();
+
+  @override
+  bool get accessibleNavigation => false;
+
+  @override
+  bool get boldText => false;
+
+  @override
+  bool get disableAnimations => false;
+
+  @override
+  bool get highContrast => false;
+
+  @override
+  bool get invertColors => false;
+
+  @override
+  bool get onOffSwitchLabels => false;
+
+  @override
+  bool get reduceMotion => false;
+}
+
+  
+ //final defaultFeatures = FakeAccessibilityFeatures();
+
 enum Brightness {
   dark,
   light,
@@ -166,7 +209,7 @@ enum Brightness {
 // TODO(dit): see https://github.com/flutter/flutter/issues/33614.
 class CallbackHandle {
   CallbackHandle.fromRawHandle(this._handle)
-    : assert(_handle != null, "'_handle' must not be null.");
+      : assert(_handle != null, "'_handle' must not be null.");
 
   final int _handle;
 
@@ -239,7 +282,8 @@ class GestureSettings {
   }) {
     return GestureSettings(
       physicalTouchSlop: physicalTouchSlop ?? this.physicalTouchSlop,
-      physicalDoubleTapSlop: physicalDoubleTapSlop ?? this.physicalDoubleTapSlop,
+      physicalDoubleTapSlop:
+          physicalDoubleTapSlop ?? this.physicalDoubleTapSlop,
     );
   }
 
@@ -249,13 +293,14 @@ class GestureSettings {
       return false;
     }
     return other is GestureSettings &&
-      other.physicalTouchSlop == physicalTouchSlop &&
-      other.physicalDoubleTapSlop == physicalDoubleTapSlop;
+        other.physicalTouchSlop == physicalTouchSlop &&
+        other.physicalDoubleTapSlop == physicalDoubleTapSlop;
   }
 
   @override
   int get hashCode => Object.hash(physicalTouchSlop, physicalDoubleTapSlop);
 
   @override
-  String toString() => 'GestureSettings(physicalTouchSlop: $physicalTouchSlop, physicalDoubleTapSlop: $physicalDoubleTapSlop)';
+  String toString() =>
+      'GestureSettings(physicalTouchSlop: $physicalTouchSlop, physicalDoubleTapSlop: $physicalDoubleTapSlop)';
 }

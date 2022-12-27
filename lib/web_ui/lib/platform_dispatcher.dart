@@ -91,7 +91,7 @@ abstract class PlatformDispatcher {
     semantics, use PlatformDispatcher.instance.views to get a [FlutterView] and
     call `updateSemantics`.
   ''')
-  void updateSemantics(SemanticsUpdate update);
+  void updateSemantics(String update);
 
   Locale get locale;
 
@@ -146,7 +146,7 @@ abstract class PlatformDispatcher {
 
 class PlatformConfiguration {
   const PlatformConfiguration({
-    this.accessibilityFeatures = const engine.EngineAccessibilityFeatures(0),
+    this.accessibilityFeatures = const FakeAccessibilityFeatures(),
     this.alwaysUse24HourFormat = false,
     this.semanticsEnabled = false,
     this.platformBrightness = Brightness.light,

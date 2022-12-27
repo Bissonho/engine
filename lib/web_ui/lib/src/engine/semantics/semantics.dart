@@ -1,3 +1,5 @@
+
+
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -334,7 +336,7 @@ class SemanticsNodeUpdate {
   /// See [ui.SemanticsUpdateBuilder.updateNode].
   final double thickness;
 }
-
+/*
 /// Identifies one of the roles a [SemanticsObject] plays.
 enum Role {
   /// Supports incrementing and/or decrementing its value.
@@ -1972,3 +1974,4 @@ enum EnabledState {
   /// The node is disabled.
   disabled,
 }
+*/

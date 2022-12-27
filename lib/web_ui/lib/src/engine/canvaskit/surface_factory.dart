@@ -122,7 +122,7 @@ class SurfaceFactory {
 
   // Removes [surface] from the DOM.
   void _removeFromDom(Surface surface) {
-    surface.htmlElement.remove();
+   // surface.htmlElement.remove();
   }
 
   /// Signals that a surface is no longer being used. It can be reused.
@@ -132,7 +132,7 @@ class SurfaceFactory {
         _liveSurfaces.contains(surface),
         'Attempting to release a Surface which '
         'was not created by this factory');
-    surface.htmlElement.remove();
+    //surface.htmlElement.remove();
     _liveSurfaces.remove(surface);
     _cache.add(surface);
   }

@@ -19,21 +19,23 @@ const double baselineRatioHack = 1.1662499904632568;
 /// The `root` [DomNode] is optional. Defaults to [flutterViewEmbedder.glassPaneShadow].
 class RulerHost {
   RulerHost({DomNode? root}) {
-    _rulerHost.style
-      ..position = 'fixed'
-      ..visibility = 'hidden'
-      ..overflow = 'hidden'
-      ..top = '0'
-      ..left = '0'
-      ..width = '0'
-      ..height = '0';
+    
+    
+    // _rulerHost.style
+    //   ..position = 'fixed'
+    //   ..visibility = 'hidden'
+    //   ..overflow = 'hidden'
+    //   ..top = '0'
+    //   ..left = '0'
+    //   ..width = '0'
+    //   ..height = '0';
 
-    if (root == null) {
-      flutterViewEmbedder.glassPaneShadow!.node.appendChild(_rulerHost);
-    } else {
-      root.appendChild(_rulerHost);
-    }
-    registerHotRestartListener(dispose);
+    // if (root == null) {
+    //   flutterViewEmbedder.glassPaneShadow!.node.appendChild(_rulerHost);
+    // } else {
+    //   root.appendChild(_rulerHost);
+    // }
+    // registerHotRestartListener(dispose);
   }
 
   /// Hosts a cache of rulers that measure text.
@@ -73,7 +75,6 @@ double _lastWidth = -1;
 /// This method assumes that the correct font has already been set on
 /// [canvasContext].
 double measureSubstring(
-  DomCanvasRenderingContext2D canvasContext,
   String text,
   int start,
   int end, {
@@ -87,7 +88,7 @@ double measureSubstring(
     return 0;
   }
 
-  final String cssFont = canvasContext.font;
+  final String cssFont = '';
   double width;
 
   // TODO(mdebbar): Explore caching all widths in a map, not only the last one.
@@ -102,7 +103,7 @@ double measureSubstring(
   } else {
     final String sub =
       start == 0 && end == text.length ? text : text.substring(start, end);
-    width = canvasContext.measureText(sub).width!.toDouble();
+    width = 23;
   }
 
   _lastStart = start;

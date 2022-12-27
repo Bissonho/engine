@@ -16,6 +16,10 @@ import 'paragraph.dart';
 import 'ruler.dart';
 import 'text_direction.dart';
 
+
+/*
+
+
 /// Performs layout on a [CanvasParagraph].
 ///
 /// It uses a [DomCanvasElement] to measure text.
@@ -882,10 +886,10 @@ class LineBuilder {
 /// it's set, the [Spanometer] updates the underlying [context] so that
 /// subsequent measurements use the correct styles.
 class Spanometer {
-  Spanometer(this.paragraph, this.context);
+  Spanometer(this.paragraph);
 
   final CanvasParagraph paragraph;
-  final DomCanvasRenderingContext2D context;
+  //final DomCanvasRenderingContext2D context;
 
   static final RulerHost _rulerHost = RulerHost();
 
@@ -938,7 +942,7 @@ class Spanometer {
     final String cssFontString = span.style.cssFontString;
     if (_cssFontString != cssFontString) {
       _cssFontString = cssFontString;
-      context.font = cssFontString;
+      //context.font = cssFontString;
     }
   }
 
@@ -955,7 +959,7 @@ class Spanometer {
   double get height => _currentRuler!.height;
 
   double measureText(String text) {
-    return measureSubstring(context, text, 0, text.length);
+    return measureSubstring( text, 0, text.length);
   }
 
   double measureRange(int start, int end) {
@@ -1047,11 +1051,10 @@ class Spanometer {
     assert(end >= currentSpan.start && end <= currentSpan.end);
 
     return measureSubstring(
-      context,
       paragraph.plainText,
       start,
       end,
       letterSpacing: letterSpacing,
     );
   }
-}
+}*/

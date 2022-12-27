@@ -202,6 +202,8 @@ class CkBrowserImageDecoder implements ui.Codec {
 
       return webDecoder;
     } catch (error) {
+      throw Exception("Decoder");
+      /*
       if (domInstanceOfString(error, 'DOMException')) {
         if ((error as DomException).name == DomException.notSupported) {
           throw ImageCodecException(
@@ -214,7 +216,7 @@ class CkBrowserImageDecoder implements ui.Codec {
         "Failed to decode image using the browser's ImageDecoder API.\n"
         'Image source: $debugSource\n'
         'Original browser error: $error'
-      );
+      );*/
     }
   }
 
@@ -225,6 +227,8 @@ class CkBrowserImageDecoder implements ui.Codec {
     final DecodeResult result = await promiseToFuture<DecodeResult>(
       webDecoder.decode(DecodeOptions(frameIndex: _nextFrameIndex)),
     );
+    
+    /*
     final VideoFrame frame = result.image;
     _nextFrameIndex = (_nextFrameIndex + 1) % frameCount;
 
@@ -237,21 +241,25 @@ class CkBrowserImageDecoder implements ui.Codec {
         width: frame.displayWidth,
         height: frame.displayHeight,
       ),
-    );
+    );*/
 
     // Duration can be null if the image is not animated. However, Flutter
     // requires a non-null value. 0 indicates that the frame is meant to be
     // displayed indefinitely, which is fine for a static image.
-    final Duration duration = Duration(microseconds: frame.duration ?? 0);
+    //final Duration duration = Duration(microseconds: frame.duration ?? 0);
 
-    if (skImage == null) {
+   /* if (skImage == null) {
       throw ImageCodecException(
         "Failed to create image from pixel data decoded using the browser's ImageDecoder.",
       );
-    }
+    }*/
 
-    final CkImage image = CkImage(skImage, videoFrame: frame);
-    return Future<ui.FrameInfo>.value(AnimatedImageFrameInfo(duration, image));
+    throw ImageCodecException(
+        "Failed to create image from pixel data decoded using the browser's ImageDecoder.",
+      );
+
+    //final CkImage image = CkImage(skImage, videoFrame: frame);
+    //return Future<ui.FrameInfo>.value(AnimatedImageFrameInfo(duration, image));
   }
 }
 
@@ -388,6 +396,7 @@ bool isAvif(Uint8List data) {
   return false;
 }
 
+/*
 Future<ByteData> readPixelsFromVideoFrame(VideoFrame videoFrame, ui.ImageByteFormat format) async {
   if (format == ui.ImageByteFormat.png) {
     final Uint8List png = await encodeVideoFrameAsPng(videoFrame);
@@ -412,7 +421,7 @@ Future<ByteData> readPixelsFromVideoFrame(VideoFrame videoFrame, ui.ImageByteFor
 
   // Last resort, just return the original pixels.
   return pixels.asByteData();
-}
+}*/
 
 /// Mutates the [pixels], converting them from BGRX/BGRA to RGBA.
 void _bgrToRgba(ByteBuffer pixels) {
@@ -433,6 +442,7 @@ void _bgrToRgba(ByteBuffer pixels) {
   }
 }
 
+/*
 bool _shouldReadPixelsUnmodified(VideoFrame videoFrame, ui.ImageByteFormat format) {
   if (format == ui.ImageByteFormat.rawUnmodified) {
     return true;
@@ -458,7 +468,7 @@ Future<Uint8List> encodeVideoFrameAsPng(VideoFrame videoFrame) async {
   final DomCanvasElement canvas = createDomCanvasElement(width: width, height:
       height);
   final DomCanvasRenderingContext2D ctx = canvas.context2D;
-  ctx.drawImage(videoFrame, 0, 0);
+  //ctx.drawImage(videoFrame, 0, 0);
   final String pngBase64 = canvas.toDataURL().substring('data:image/png;base64,'.length);
   return base64.decode(pngBase64);
-}
+}*/
