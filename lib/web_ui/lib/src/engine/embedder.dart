@@ -266,8 +266,8 @@ class FlutterViewEmbedder {
     final DomElement glassPaneElement =
         domDocument.createElement(_glassPaneTagName);
     _glassPaneElement = glassPaneElement;
-    
-    
+
+
     /*
     glassPaneElement.style
       ..position = 'absolute'
@@ -293,8 +293,8 @@ class FlutterViewEmbedder {
 
     final DomElement semanticsHostElement =
         domDocument.createElement('flt-semantics-host');
-    
-    
+
+
     /*
     semanticsHostElement.style
       ..position = 'absolute'
@@ -307,7 +307,7 @@ class FlutterViewEmbedder {
     //    .prepareAccessibilityPlaceholder();
 
     glassPaneElementHostNode.appendAll(<DomNode>[
-      
+
       _sceneHostElement!,
 
       // The semantic host goes last because hit-test order-wise it must be
@@ -446,7 +446,7 @@ class FlutterViewEmbedder {
   ///
   /// See w3c screen api: https://www.w3.org/TR/screen-orientation/
   Future<bool> setPreferredOrientation(List<dynamic> orientations) {
-    
+
     /*
     final DomScreen? screen = domWindow.screen;
     if (screen != null) {
@@ -561,7 +561,7 @@ void applyGlobalCssRulesToSheet(
 
   // This undoes browser's default painting and layout attributes of range
   // input, which is used in semantics.
-  
+
   /*
   sheet.insertRule(
     '''
@@ -592,7 +592,7 @@ void applyGlobalCssRulesToSheet(
   //#Unity
 
   /*
-  
+
   sheet.insertRule(
       'input::selection {'
       '  background-color: transparent;'

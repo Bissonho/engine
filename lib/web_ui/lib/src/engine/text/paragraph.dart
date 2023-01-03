@@ -216,7 +216,7 @@ class ParagraphLine {
         trailingSpaces,
         spaceCount,
         widthWithTrailingSpaces,
-       
+
         textDirection,
         displayText,
       );
@@ -472,7 +472,7 @@ class EngineTextStyle implements ui.TextStyle {
   ///
   /// See <https://developer.mozilla.org/en-US/docs/Web/CSS/font>.
   String get cssFontString {
-    
+
     return "";
     // return _cssFontString ??= buildCssFontString(
     //   fontStyle: fontStyle,
@@ -769,8 +769,8 @@ void applyTextStyleToElement({
   required DomElement element,
   required EngineTextStyle style,
 }) {
-  
-  
+
+
   assert(element != null);
   assert(style != null);
   // bool updateDecoration = false;

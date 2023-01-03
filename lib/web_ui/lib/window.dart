@@ -172,7 +172,7 @@ abstract class AccessibilityFeatures {
 }
 
 class FakeAccessibilityFeatures implements AccessibilityFeatures {
-  
+
   const FakeAccessibilityFeatures();
 
   @override
@@ -197,7 +197,7 @@ class FakeAccessibilityFeatures implements AccessibilityFeatures {
   bool get reduceMotion => false;
 }
 
-  
+
  //final defaultFeatures = FakeAccessibilityFeatures();
 
 enum Brightness {

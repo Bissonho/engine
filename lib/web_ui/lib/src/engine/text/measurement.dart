@@ -19,8 +19,8 @@ const double baselineRatioHack = 1.1662499904632568;
 /// The `root` [DomNode] is optional. Defaults to [flutterViewEmbedder.glassPaneShadow].
 class RulerHost {
   RulerHost({DomNode? root}) {
-    
-    
+
+
     // _rulerHost.style
     //   ..position = 'fixed'
     //   ..visibility = 'hidden'

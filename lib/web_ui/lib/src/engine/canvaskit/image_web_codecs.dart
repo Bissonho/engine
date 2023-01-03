@@ -227,7 +227,7 @@ class CkBrowserImageDecoder implements ui.Codec {
     final DecodeResult result = await promiseToFuture<DecodeResult>(
       webDecoder.decode(DecodeOptions(frameIndex: _nextFrameIndex)),
     );
-    
+
     /*
     final VideoFrame frame = result.image;
     _nextFrameIndex = (_nextFrameIndex + 1) % frameCount;

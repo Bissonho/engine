@@ -28,7 +28,7 @@ extension DomWindowExtension on DomWindow {
   external DomDocument get document;
   external DomPerformance get performance;
 
-  
+
   // external DomHistory get history;
   // int? get innerHeight =>
   //     js_util.getProperty<double?>(this, 'innerHeight')?.toInt();
@@ -97,7 +97,7 @@ extension DomDocumentExtension on DomDocument {
   external DomElement createElementNS(
       String namespaceURI, String qualifiedName);
   //external DomText createTextNode(String data);
- 
+
   external DomElement? get activeElement;
   DomElement? elementFromPoint(int x, int y) => js_util.callMethod<DomElement?>(
       this, 'elementFromPoint', <Object>[x.toDouble(), y.toDouble()]);
@@ -109,9 +109,9 @@ class DomHTMLDocument extends DomDocument {}
 
 extension DomHTMLDocumentExtension on DomHTMLDocument {
   external DomHTMLHeadElement? get head;
-  
+
   //external DomFontFaceSet? get fonts;
- 
+
   external DomHTMLBodyElement? get body;
   external set title(String? value);
   external String? get title;
@@ -201,7 +201,7 @@ extension DomNodeExtension on DomNode {
   //external DomNode? get lastChild;
   external DomNode appendChild(DomNode node);
 
-  
+
   DomElement? get parent => js_util.getProperty(this, 'parentElement');
   String? get text => js_util.getProperty(this, 'textContent');
   external DomNode? get parentNode;
@@ -224,7 +224,7 @@ extension DomNodeExtension on DomNode {
   Iterable<DomNode> get childNodes => createDomListWrapper<DomElement>(
       js_util.getProperty<_DomList>(this, 'childNodes'));
   external DomDocument? get ownerDocument;
-  
+
   /*
   void clearChildren() {
     while (firstChild != null) {
@@ -293,7 +293,7 @@ extension DomElementExtension on DomElement {
           .callMethod(this, 'attachShadow', <Object?>[js_util.jsify(initDict)])
       as DomShadowRoot;
   external DomShadowRoot? get shadowRoot;
-  
+
   //void clearChildren() {
   //  while (firstChild != null) {
   //    removeChild(firstChild!);

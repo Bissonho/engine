@@ -182,9 +182,9 @@ class PlatformViewManager {
     // We shouldn't modify users' returned `content` if at all possible.
     // Note there's also no getContent(viewId) function anymore, to prevent
     // from later modifications too.
-    
-    
-    
+
+
+
     // if (content.style.height.isEmpty) {
     //   printWarning('Height of Platform View type: [$viewType] may not be set.'
     //       ' Defaulting to `height: 100%`.\n'

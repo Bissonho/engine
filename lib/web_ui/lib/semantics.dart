@@ -337,9 +337,8 @@ class LocaleStringAttribute extends StringAttribute {
 
 class SemanticsUpdateBuilder {
   SemanticsUpdateBuilder();
-
   final List<engine.SemanticsNodeUpdate> _nodeUpdates = <engine.SemanticsNodeUpdate>[];
-  
+
   void updateNode({
     required int id,
     required int flags,
@@ -377,7 +376,7 @@ class SemanticsUpdateBuilder {
     if (transform.length != 16) {
       throw ArgumentError('transform argument must have 16 entries.');
     }
-    
+
     /*
     _nodeUpdates.add(engine.SemanticsNodeUpdate(
       id: id,
@@ -423,8 +422,8 @@ class SemanticsUpdateBuilder {
   }) {
     // TODO(yjbanov): implement.
   }
-  
- 
+
+
   SemanticsUpdate build() {
     return SemanticsUpdate._(
       nodeUpdates: _nodeUpdates,

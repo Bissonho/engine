@@ -34,7 +34,7 @@ String getPlatformViewSlotName(int viewId) {
 /// `flt-platform-view-slot` tag)
 /// /
 // DomElement createPlatformViewSlot(int viewId) {
-  
+
 //   final String slotName = getPlatformViewSlotName(viewId);
 
 //   final DomElement wrapper = domDocument
