@@ -2658,10 +2658,10 @@ void patchCanvasKitModule(DomHTMLScriptElement canvasKitScript) {
   domDocument.head!.appendChild(canvasKitScript);
 }
 
-const String _canvaskitVersion = '0.37.0';
+const String _canvaskitVersionX = '0.37.1';
 const String _defaultCanvasKitBaseUrl = String.fromEnvironment(
   'FLUTTER_WEB_CANVASKIT_URL',
-  defaultValue: 'https://unpkg.com/canvaskit-wasm@$_canvaskitVersion/bin/',
+  defaultValue: 'https://unpkg.com/canvaskit-wasm@$_canvaskitVersionX/bin/',
 );
 
 String get canvasKitBuildUrl =>

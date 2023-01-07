@@ -1,3 +1,5 @@
+
+/*
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -436,7 +438,7 @@ void _bgrToRgba(ByteBuffer pixels) {
   }
 }
 
-/*
+
 bool _shouldReadPixelsUnmodified(VideoFrame videoFrame, ui.ImageByteFormat format) {
   if (format == ui.ImageByteFormat.rawUnmodified) {
     return true;
@@ -465,4 +467,5 @@ Future<Uint8List> encodeVideoFrameAsPng(VideoFrame videoFrame) async {
   //ctx.drawImage(videoFrame, 0, 0);
   final String pngBase64 = canvas.toDataURL().substring('data:image/png;base64,'.length);
   return base64.decode(pngBase64);
-}*/
+}
+*/

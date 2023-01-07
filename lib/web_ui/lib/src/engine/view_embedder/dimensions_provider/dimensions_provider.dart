@@ -10,6 +10,7 @@ import 'package:ui/ui.dart' as ui show Size;
 import '../../dom.dart';
 import 'custom_element_dimensions_provider.dart';
 import 'full_page_dimensions_provider.dart';
+/*
 
 /// This class provides the dimensions of the "viewport" in which the app is rendered.
 ///
@@ -63,3 +64,4 @@ abstract class DimensionsProvider {
   /// will be closed.
   void close();
 }
+*/

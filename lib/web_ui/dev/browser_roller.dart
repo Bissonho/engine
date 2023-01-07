@@ -443,7 +443,7 @@ data:
   // Downloads Firefox from the internet, packs it in the directory structure
   // that the LUCI script wants. The result of this will be then uploaded to CIPD.
   Future<void> _rollFirefox(_Platform platform) async {
-    final String version = _lock.firefoxLock.version;
+    final String version = '';
     final String url = platform.binding.getFirefoxDownloadUrl(version);
     final String cipdPackageName = 'flutter_internal/browsers/firefox/${platform.name}';
     final io.Directory platformDir = io.Directory(path.join(_rollDir.path, platform.name));

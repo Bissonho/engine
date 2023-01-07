@@ -19,6 +19,8 @@ import 'picture.dart';
 import 'picture_recorder.dart';
 import 'skia_object_cache.dart';
 
+
+/*
 /// Instantiates a [ui.Codec] backed by an `SkAnimatedImage` from Skia.
 FutureOr<ui.Codec> skiaInstantiateImageCodec(Uint8List list,
     [int? targetWidth, int? targetHeight]) {
@@ -31,7 +33,7 @@ FutureOr<ui.Codec> skiaInstantiateImageCodec(Uint8List list,
   } else {
     return CkAnimatedImage.decodeFromBytes(list, 'encoded image bytes', targetWidth: targetWidth, targetHeight: targetHeight);
   }
-}
+}*/
 
 void skiaDecodeImageFromPixels(
   Uint8List pixels,
@@ -75,7 +77,7 @@ void skiaDecodeImageFromPixels(
 
     if (targetWidth != null || targetHeight != null) {
       if (!validUpscale(allowUpscaling, targetWidth, targetHeight, width, height)) {
-        domWindow.console.warn('Cannot apply targetWidth/targetHeight when allowUpscaling is false.');
+        //domWindow.console.warn('Cannot apply targetWidth/targetHeight when allowUpscaling is false.');
       } else {
         return callback(scaleImage(skImage, targetWidth, targetHeight));
       }
@@ -383,11 +385,12 @@ class CkImage implements ui.Image, StackTraceDebugger {
     assert(_debugCheckIsNotDisposed());
     // readPixelsFromVideoFrame currently does not convert I420, I444, I422
     // videoFrame formats to RGBA
-    if (videoFrame != null && videoFrame!.format != 'I420' && videoFrame!.format != 'I444' && videoFrame!.format != 'I422') {
-      return readPixelsFromVideoFrame(videoFrame!, format);
-    } else {
-      return _readPixelsFromSkImage(format);
-    //}
+    throw "errror";
+    // if (videoFrame != null && videoFrame!.format != 'I420' && videoFrame!.format != 'I444' && videoFrame!.format != 'I422') {
+    //   return readPixelsFromVideoFrame(videoFrame!, format);
+    // } else {
+    //   return _readPixelsFromSkImage(format);
+    // //}
   }
 
   Future<ByteData> _readPixelsFromSkImage(ui.ImageByteFormat format) {

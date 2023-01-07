@@ -7,6 +7,7 @@ import 'package:ui/src/engine/util.dart' show assertionsEnabled, setElementStyle
 
 import 'embedding_strategy.dart';
 
+
 /// An [EmbeddingStrategy] that takes over the whole web page.
 ///
 /// This strategy takes over the <body> element, modifies the viewport meta-tag,
@@ -56,7 +57,7 @@ class FullPageEmbeddingStrategy extends EmbeddingStrategy {
   void _setHostStyles() {
     final DomHTMLBodyElement bodyElement = domDocument.body!;
 
-    setElementStyle(bodyElement, 'position', 'fixed');
+    /*setElementStyle(bodyElement, 'position', 'fixed');
     setElementStyle(bodyElement, 'top', '0');
     setElementStyle(bodyElement, 'right', '0');
     setElementStyle(bodyElement, 'bottom', '0');
@@ -71,7 +72,7 @@ class FullPageEmbeddingStrategy extends EmbeddingStrategy {
     // This is required to prevent the browser from doing any native touch
     // handling. If this is not done, the browser doesn't report 'pointermove'
     // events properly.
-    setElementStyle(bodyElement, 'touch-action', 'none');
+    setElementStyle(bodyElement, 'touch-action', 'none');*/
   }
 
   // Sets a meta viewport tag appropriate for Flutter Web in full screen.

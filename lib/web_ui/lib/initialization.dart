@@ -82,11 +82,11 @@ Future<void> webOnlyWarmupEngine({
   final engine.FlutterLoader? loader = engine.flutter?.loader;
   if (loader == null || loader.isAutoStart) {
     // The user does not want control of the app, bootstrap immediately.
-    engine.domWindow.console.debug('Flutter Web Bootstrap: Auto.');
+    //engine.domWindow.console.debug('Flutter Web Bootstrap: Auto.');
     await bootstrap.autoStart();
   } else {
     // Yield control of the bootstrap procedure to the user.
-    engine.domWindow.console.debug('Flutter Web Bootstrap: Programmatic.');
+    //engine.domWindow.console.debug('Flutter Web Bootstrap: Programmatic.');
     loader.didCreateEngineInitializer(bootstrap.prepareEngineInitializer());
   }
 }
@@ -105,7 +105,7 @@ set debugEmulateFlutterTesterEnvironment(bool value) {
     engine.window.webOnlyDebugPhysicalSizeOverride =
         logicalSize * window.devicePixelRatio;
   }
-  engine.debugDisableFontFallbacks = value;
+  //engine.debugDisableFontFallbacks = value;
 }
 
 bool _debugEmulateFlutterTesterEnvironment = false;
@@ -134,8 +134,9 @@ class PlatformViewRegistry {
       Object Function(int viewId) viewFactory,
       {bool isVisible = true}) {
     // TODO(web): Deprecate this once there's another way of calling `registerFactory` (js interop?)
-    return engine.platformViewManager
-        .registerFactory(viewTypeId, viewFactory, isVisible: isVisible);
+    // return engine.platformViewManager
+    //     .registerFactory(viewTypeId, viewFactory, isVisible: isVisible);
+    return true;
   }
 }
 

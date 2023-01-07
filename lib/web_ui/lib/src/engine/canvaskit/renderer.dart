@@ -200,10 +200,12 @@ class CanvasKitRenderer implements Renderer {
     int? targetWidth,
     int? targetHeight,
     bool allowUpscaling = true
-  }) async => skiaInstantiateImageCodec(
-    list,
-    targetWidth,
-    targetHeight);
+  }) async => throw "not implemented skiaInstantiateImageCodec";
+  
+  // skiaInstantiateImageCodec(
+  //   list,
+  //   targetWidth,
+  //   targetHeight)
 
   @override
   Future<ui.Codec> instantiateImageCodecFromUrl(

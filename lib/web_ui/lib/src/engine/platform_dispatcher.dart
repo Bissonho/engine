@@ -80,11 +80,11 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   /// Private constructor, since only dart:ui is supposed to create one of
   /// these.
   EnginePlatformDispatcher() {
-    _addBrightnessMediaQueryListener();
-    HighContrastSupport.instance.addListener(_updateHighContrast);
-    _addFontSizeObserver();
-    _addLocaleChangedListener();
-    registerHotRestartListener(dispose);
+   // _addBrightnessMediaQueryListener();
+    //HighContrastSupport.instance.addListener(_updateHighContrast);
+   // _addFontSizeObserver();
+    //_addLocaleChangedListener();
+    //registerHotRestartListener(dispose);
   }
 
   /// The [EnginePlatformDispatcher] singleton.
@@ -100,10 +100,10 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
       );
 
   void dispose() {
-    _removeBrightnessMediaQueryListener();
-    _disconnectFontSizeObserver();
-    _removeLocaleChangedListener();
-    HighContrastSupport.instance.removeListener(_updateHighContrast);
+    //_removeBrightnessMediaQueryListener();
+   // _disconnectFontSizeObserver();
+    //_removeLocaleChangedListener();
+    //HighContrastSupport.instance.removeListener(_updateHighContrast);
   }
 
   /// Receives all events related to platform configuration changes.
@@ -176,7 +176,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
 
   /// Returns device pixel ratio returned by browser.
   static double get browserDevicePixelRatio {
-    final double ratio = domWindow.devicePixelRatio;
+    final double ratio = 16/9;
     // Guard against WebOS returning 0.
     return (ratio == 0.0) ? 1.0 : ratio;
   }
@@ -467,18 +467,18 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         const MethodCodec codec = JSONMethodCodec();
         final MethodCall decoded = codec.decodeMethodCall(data);
         switch (decoded.method) {
-          case 'SystemNavigator.pop':
-            // TODO(a-wallen): As multi-window support expands, the pop call
-            // will need to include the view ID. Right now only one view is
-            // supported.
-            (viewData[kSingletonViewId]! as EngineFlutterWindow)
-                .browserHistory
-                .exit()
-                .then((_) {
-              replyToPlatformMessage(
-                  callback, codec.encodeSuccessEnvelope(true));
-            });*/
-            return;
+          // case 'SystemNavigator.pop':
+          //   // TODO(a-wallen): As multi-window support expands, the pop call
+          //   // will need to include the view ID. Right now only one view is
+          //   // supported.
+          //   (viewData[kSingletonViewId]! as EngineFlutterWindow)
+          //       .browserHistory
+          //       .exit()
+          //       .then((_) {
+          //     replyToPlatformMessage(
+          //         callback, codec.encodeSuccessEnvelope(true));
+          //   });*/
+          //   return;
           /*case 'HapticFeedback.vibrate':
             final String? type = decoded.arguments as String?;
             vibrate(_getHapticFeedbackDuration(type));
@@ -545,15 +545,15 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
                 _handleWebTestEnd2EndMessage(codec, data)));
         return;
 
-      case 'flutter/platform_views':
-        _platformViewMessageHandler ??= PlatformViewMessageHandler(
-          contentManager: platformViewManager,
-          /*contentHandler: (DomElement content) {
-            flutterViewEmbedder.glassPaneElement!.append(content);
-          },*/
-        );
-        _platformViewMessageHandler!.handlePlatformViewCall(data, callback!);
-        return;
+      // case 'flutter/platform_views':
+      //   _platformViewMessageHandler ??= PlatformViewMessageHandler(
+      //     contentManager: platformViewManager,
+      //     /*contentHandler: (DomElement content) {
+      //       flutterViewEmbedder.glassPaneElement!.append(content);
+      //     },*/
+      //   );
+      //   _platformViewMessageHandler!.handlePlatformViewCall(data, callback!);
+      //   return;
 
       case 'flutter/accessibility':
         // In widget tests we want to bypass processing of platform messages.
@@ -562,20 +562,20 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
         replyToPlatformMessage(callback, codec.encodeMessage(true));
         return;
 
-      case 'flutter/navigation':
-        // TODO(a-wallen): As multi-window support expands, the navigation call
-        // will need to include the view ID. Right now only one view is
-        // supported.
-        (viewData[kSingletonViewId]! as EngineFlutterWindow)
-            .handleNavigationMessage(data)
-            .then((bool handled) {
-          if (handled) {
-            const MethodCodec codec = JSONMethodCodec();
-            replyToPlatformMessage(callback, codec.encodeSuccessEnvelope(true));
-          } else {
-            callback?.call(null);
-          }
-        });*/
+      // case 'flutter/navigation':
+      //   // TODO(a-wallen): As multi-window support expands, the navigation call
+      //   // will need to include the view ID. Right now only one view is
+      //   // supported.
+      //   (viewData[kSingletonViewId]! as EngineFlutterWindow)
+      //       .handleNavigationMessage(data)
+      //       .then((bool handled) {
+      //     if (handled) {
+      //       const MethodCodec codec = JSONMethodCodec();
+      //       replyToPlatformMessage(callback, codec.encodeSuccessEnvelope(true));
+      //     } else {
+      //       callback?.call(null);
+      //     }
+      //   });*/
 
         // As soon as Flutter starts taking control of the app navigation, we
         // should reset _defaultRouteName to "/" so it doesn't have any
@@ -743,27 +743,28 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   List<ui.Locale> get locales => configuration.locales;
 
   // A subscription to the 'languagechange' event of 'window'.
-  DomSubscription? _onLocaleChangedSubscription;
+  //DomSubscription? _onLocaleChangedSubscription;
 
-  /// Configures the [_onLocaleChangedSubscription].
-  void _addLocaleChangedListener() {
-    if (_onLocaleChangedSubscription != null) {
-      return;
-    }
-    updateLocales(); // First time, for good measure.
-    _onLocaleChangedSubscription =
-      DomSubscription(domWindow, 'languagechange', allowInterop((DomEvent _) {
-        // Update internal config, then propagate the changes.
-        updateLocales();
-        invokeOnLocaleChanged();
-      }));
-  }
+  // /// Configures the [_onLocaleChangedSubscription].
+  // void _addLocaleChangedListener() {
+  //   if (_onLocaleChangedSubscription != null) {
+  //     return;
+  //   }
+    
+  //   // updateLocales(); // First time, for good measure.
+  //   // _onLocaleChangedSubscription =
+  //   //   DomSubscription(domWindow, 'languagechange', allowInterop((DomEvent _) {
+  //   //     // Update internal config, then propagate the changes.
+  //   //     updateLocales();
+  //   //     invokeOnLocaleChanged();
+  //   //   }));
+  // }
 
-  /// Removes the [_onLocaleChangedSubscription].
-  void _removeLocaleChangedListener() {
-    _onLocaleChangedSubscription?.cancel();
-    _onLocaleChangedSubscription = null;
-  }
+  // /// Removes the [_onLocaleChangedSubscription].
+  // void _removeLocaleChangedListener() {
+  //   _onLocaleChangedSubscription?.cancel();
+  //   _onLocaleChangedSubscription = null;
+  // }
 
   /// Performs the platform-native locale resolution.
   ///
@@ -1155,8 +1156,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   ///    requests from the embedder.
   @override
   String get defaultRouteName {
-    return _defaultRouteName ??=
-        (viewData[kSingletonViewId]! as EngineFlutterWindow).browserHistory.currentPath;
+    return '/';
   }
 
   /// Lazily initialized when the `defaultRouteName` getter is invoked.

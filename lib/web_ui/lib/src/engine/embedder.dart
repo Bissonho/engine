@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:ui/src/engine/configuration.dart';
 import 'package:ui/ui.dart' as ui;
 
 import '../engine.dart' show buildMode, renderer, window;
@@ -12,10 +13,6 @@ import 'dom.dart';
 import 'host_node.dart';
 //import 'keyboard_binding.dart';
 import 'platform_dispatcher.dart';
-import 'pointer_binding.dart';
-import 'semantics.dart';
-import 'text_editing/text_editing.dart';
-import 'view_embedder/dimensions_provider/dimensions_provider.dart';
 import 'view_embedder/embedding_strategy/embedding_strategy.dart';
 
 /// Controls the placement and lifecycle of a Flutter view on the web page.
@@ -51,9 +48,11 @@ class FlutterViewEmbedder {
             EmbeddingStrategy.create(hostElement: hostElement) {
     // Configure the EngineWindow so it knows how to measure itself.
     // TODO(dit): Refactor ownership according to new design, https://github.com/flutter/flutter/issues/117098
-    window.configureDimensionsProvider(DimensionsProvider.create(
-      hostElement: hostElement,
-    ));
+    
+
+    //window.configureDimensionsProvider(DimensionsProvider.create(
+    //  hostElement: hostElement,
+    //));
 
     reset();
   }
@@ -131,21 +130,21 @@ class FlutterViewEmbedder {
       '$defaultFontStyle $defaultFontWeight ${defaultFontSize}px $defaultFontFamily';
 
   void reset() {
-    // How was the current renderer selected?
-    const String rendererSelection = FlutterConfiguration.flutterWebAutoDetect
-        ? 'auto-selected'
-        : 'requested explicitly';
+    // // How was the current renderer selected?
+    // const String rendererSelection = FlutterConfiguration.flutterWebAutoDetect
+    //     ? 'auto-selected'
+    //     : 'requested explicitly';
 
-    // Initializes the embeddingStrategy so it can host a single-view Flutter app.
-    _embeddingStrategy.initialize(
-      hostElementAttributes: <String, String>{
-        'flt-renderer': '${renderer.rendererTag} ($rendererSelection)',
-        'flt-build-mode': buildMode,
-        // TODO(mdebbar): Disable spellcheck until changes in the framework and
-        // engine are complete.
-        'spellcheck': 'false',
-      },
-    );
+    // // Initializes the embeddingStrategy so it can host a single-view Flutter app.
+    // _embeddingStrategy.initialize(
+    //   hostElementAttributes: <String, String>{
+    //     'flt-renderer': '${renderer.rendererTag} ($rendererSelection)',
+    //     'flt-build-mode': buildMode,
+    //     // TODO(mdebbar): Disable spellcheck until changes in the framework and
+    //     // engine are complete.
+    //     'spellcheck': 'false',
+    //   },
+    // );
 
     // Create and inject the [_glassPaneElement].
     final DomElement glassPaneElement =
@@ -213,13 +212,13 @@ class FlutterViewEmbedder {
       _sceneHostElement!.style.opacity = '0.3';
     }*/
 
-    KeyboardBinding.initInstance();
-    PointerBinding.initInstance(
-      glassPaneElement,
-      KeyboardBinding.instance!.converter,
-    );
+    // KeyboardBinding.initInstance();
+    // PointerBinding.initInstance(
+    //   glassPaneElement,
+    //   KeyboardBinding.instance!.converter,
+    // );
 
-    window.onResize.listen(_metricsDidChange);
+    //window.onResize.listen(_metricsDidChange);
   }
 
   /// The framework specifies semantics in physical pixels, but CSS uses
@@ -242,7 +241,7 @@ class FlutterViewEmbedder {
   void _metricsDidChange(ui.Size? newSize) {
     updateSemanticsScreenProperties();
     // TODO(dit): Do not computePhysicalSize twice, https://github.com/flutter/flutter/issues/117036
-    if (isMobile && !window.isRotation() && textEditing.isEditing) {
+    if (isMobile && !window.isRotation()) {
       window.computeOnScreenKeyboardInsets(true);
       EnginePlatformDispatcher.instance.invokeOnMetricsChanged();
     } else {
@@ -339,14 +338,15 @@ class FlutterViewEmbedder {
       final DomElement resourcesHost = domDocument
           .createElement('flt-svg-filters')
         ..style.visibility = 'hidden';
-      if (isWebKit) {
-        // The resourcesHost *must* be a sibling of the glassPaneElement.
-        _embeddingStrategy.attachResourcesHost(resourcesHost,
-            nextTo: glassPaneElement);
-      } else {
-        glassPaneShadow!.node
+      // if (isWebKit) {
+      //   // The resourcesHost *must* be a sibling of the glassPaneElement.
+      //   _embeddingStrategy.attachResourcesHost(resourcesHost,
+      //       nextTo: glassPaneElement);
+      // } else {
+       
+      // }
+       glassPaneShadow!.node
             .insertBefore(resourcesHost, glassPaneShadow!.node.firstChild);
-      }
       _resourcesHost = resourcesHost;
     }
     _resourcesHost!.append(element);

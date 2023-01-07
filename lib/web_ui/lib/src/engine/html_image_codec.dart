@@ -24,7 +24,6 @@ final bool _supportsDecode = _jsImageDecodeFunction != null;
 typedef WebOnlyImageCodecChunkCallback = void Function(
     int cumulativeBytesLoaded, int expectedTotalBytes);
 
-
 /*
 
 class HtmlCodec implements ui.Codec {

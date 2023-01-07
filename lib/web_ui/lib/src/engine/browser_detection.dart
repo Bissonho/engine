@@ -205,7 +205,7 @@ bool get isFirefox => browserEngine == BrowserEngine.firefox;*/
 //#Unity
 
 /// Whether the current browser is Edge.
-bool get isEdge => domWindow.navigator.userAgent.contains('Edg/');
+bool get isEdge => false;
 
 /// Use in tests to simulate the detection of iOS 15.
 //bool? debugIsIOS15;

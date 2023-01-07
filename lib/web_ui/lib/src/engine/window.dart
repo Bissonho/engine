@@ -2,21 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/*@JS()
-library window;*/
+@JS()
+library window;
 
 import 'dart:async';
 import 'dart:typed_data';
 
 //import 'package:js/js.dart';
 //import 'package:meta/meta.dart';
+import 'package:js/js.dart';
 import 'package:ui/ui.dart' as ui;
 
 import '../engine.dart' show DimensionsProvider, registerHotRestartListener, renderer;
-import 'dom.dart';
-import 'navigation/history.dart';
-import 'navigation/js_url_strategy.dart';
-import 'navigation/url_strategy.dart';
 import 'platform_dispatcher.dart';
 import 'services.dart';
 //import 'test_embedding.dart';
@@ -52,13 +49,15 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     engineDispatcher.viewData[viewId] = this;
     engineDispatcher.windowConfigurations[viewId] = const ui.ViewConfiguration();
     if (_isUrlStrategySet) {
-      _browserHistory = createHistoryForExistingState(_customUrlStrategy);
+      //_browserHistory = createHistoryForExistingState(_customUrlStrategy);
     }
-    registerHotRestartListener(() {
-      _browserHistory?.dispose();
-      renderer.clearFragmentProgramCache();
-      _dimensionsProvider.close();
-    });
+    
+    
+    //registerHotRestartListener(() {
+    //   _browserHistory?.dispose();
+    //   renderer.clearFragmentProgramCache();
+    //   _dimensionsProvider.close();
+    // });
   }
 
   @override
@@ -212,15 +211,16 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
         const ui.ViewConfiguration();
   }
 
-  late DimensionsProvider _dimensionsProvider;
-  void configureDimensionsProvider(DimensionsProvider dimensionsProvider) {
-    _dimensionsProvider = dimensionsProvider;
-  }
+  //late DimensionsProvider _dimensionsProvider;
+  
+  //void configureDimensionsProvider(DimensionsProvider dimensionsProvider) {
+  //  _dimensionsProvider = dimensionsProvider;
+  //}
 
   @override
-  double get devicePixelRatio => _dimensionsProvider.getDevicePixelRatio();
+  double get devicePixelRatio => 16/9;
 
-  Stream<ui.Size?> get onResize => _dimensionsProvider.onResize;
+  //Stream<ui.Size?> get onResize => _dimensionsProvider.onResize;
 
   @override
   ui.Size get physicalSize {
@@ -259,7 +259,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
         windowInnerWidth,
         windowInnerHeight,
       );
-      _physicalSize = _dimensionsProvider.computePhysicalSize();
+      //_physicalSize = _dimensionsProvider.computePhysicalSize();
     }
   }
 
@@ -277,10 +277,10 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     final double bottomPadding = _physicalSize!.height - windowInnerHeight;
     _viewInsets =
         WindowPadding(bottom: bottomPadding, left: 0, right: 0, top: 0);
-    _viewInsets = _dimensionsProvider.computeKeyboardInsets(
-      _physicalSize!.height,
-      isEditingOnMobile,
-    );
+    // _viewInsets = _dimensionsProvider.computeKeyboardInsets(
+    //   _physicalSize!.height,
+    //   isEditingOnMobile,
+    // );
   }
 
   /// Uses the previous physical size and current innerHeight/innerWidth
@@ -306,6 +306,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
 
     // This method compares the new dimensions with the previous ones.
     // Return false if the previous dimensions are not set.
+    /*
     if (_physicalSize != null) {
       final ui.Size current = _dimensionsProvider.computePhysicalSize();
       // First confirm both height and width are effected.
@@ -318,7 +319,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
           return true;
         }
       }
-    }
+    }*/
     return false;
   }
 

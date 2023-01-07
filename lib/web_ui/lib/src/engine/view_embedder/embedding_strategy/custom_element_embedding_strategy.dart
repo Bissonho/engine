@@ -5,7 +5,7 @@
 import 'package:ui/src/engine/dom.dart';
 
 import 'embedding_strategy.dart';
-
+/*
 /// An [EmbeddingStrategy] that renders flutter inside a target host element.
 ///
 /// This strategy attempts to minimize DOM modifications outside of the host
@@ -55,3 +55,4 @@ class CustomElementEmbeddingStrategy extends EmbeddingStrategy {
     _hostElement.setAttribute(name, value);
   }
 }
+*/

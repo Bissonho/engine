@@ -10,6 +10,7 @@ import 'package:ui/src/engine/view_embedder/hot_restart_cache_handler.dart';
 import 'custom_element_embedding_strategy.dart';
 import 'full_page_embedding_strategy.dart';
 
+
 /// Controls how a Flutter app is placed, sized and measured on the page.
 ///
 /// The base class handles general behavior (like hot-restart cleanup), and then
@@ -30,11 +31,7 @@ abstract class EmbeddingStrategy {
   }
 
   factory EmbeddingStrategy.create({DomElement? hostElement}) {
-    if (hostElement != null) {
-      return CustomElementEmbeddingStrategy(hostElement);
-    } else {
-      return FullPageEmbeddingStrategy();
-    }
+    return FullPageEmbeddingStrategy();
   }
 
   /// Keeps a list of elements to be cleaned up at hot-restart.

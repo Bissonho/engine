@@ -10,6 +10,8 @@ import 'package:ui/ui.dart' as ui show Size;
 
 import 'dimensions_provider.dart';
 
+/*
+
 /// This class provides observable, real-time dimensions of a host element.
 ///
 /// All the measurements returned from this class are potentially *expensive*,
@@ -85,4 +87,4 @@ class CustomElementDimensionsProvider extends DimensionsProvider {
       left: 0,
     );
   }
-}
+}*/

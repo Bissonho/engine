@@ -7,6 +7,8 @@ import 'package:ui/ui.dart' as ui show Offset;
 import '../dom.dart';
 import '../semantics.dart' show EngineSemanticsOwner;
 
+/*
+
 /// Returns an [ui.Offset] of the position of [event], relative to the position of [actualTarget].
 ///
 /// The offset is *not* multiplied by DPR or anything else, it's the closest
@@ -111,3 +113,4 @@ ui.Offset _computeOffsetForTalkbackEvent(DomMouseEvent event, DomElement actualT
   }
   return ui.Offset(offsetX, offsetY);
 }
+*/

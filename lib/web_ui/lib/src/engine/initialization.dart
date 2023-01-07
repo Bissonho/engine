@@ -8,7 +8,6 @@ import 'dart:js';
 
 import 'package:ui/src/engine/assets.dart';
 import 'package:ui/src/engine/browser_detection.dart';
-import 'package:ui/src/engine/configuration.dart';
 import 'package:ui/src/engine/embedder.dart';
 //import 'package:ui/src/engine/mouse_cursor.dart';
 //import 'package:ui/src/engine/navigation.dart';
@@ -19,9 +18,9 @@ import 'package:ui/src/engine/profiler.dart';
 import 'package:ui/src/engine/renderer.dart';
 import 'package:ui/src/engine/safe_browser_api.dart';
 import 'package:ui/src/engine/semantics/accessibility.dart';
-import 'package:ui/src/engine/window.dart';
 import 'package:ui/ui.dart' as ui;
 
+import 'configuration.dart';
 import 'dom.dart';
 
 /// The mode the app is running in.
@@ -244,9 +243,9 @@ Future<void> initializeEngineUi() async {
   }
   _initializationState = DebugEngineInitializationState.initializingUi;
 
-  initializeAccessibilityAnnouncements();
-  RawKeyboard.initialize(onMacOs: operatingSystem == OperatingSystem.macOs);
-  MouseCursor.initialize();
+  //initializeAccessibilityAnnouncements();
+  //RawKeyboard.initialize(onMacOs: operatingSystem == OperatingSystem.macOs);
+  //MouseCursor.initialize();
   ensureFlutterViewEmbedderInitialized();
   _initializationState = DebugEngineInitializationState.initialized;
 }
@@ -254,13 +253,14 @@ Future<void> initializeEngineUi() async {
 WebOnlyMockAssetManager get assetManager => _assetManager!;
 WebOnlyMockAssetManager? _assetManager;
 
-void _setAssetManager(WebOnlyMockAssetManager assetManager) {
+void _setAssetManager(AssetManager assetManager) {
   assert(assetManager != null, 'Cannot set assetManager to null');
   if (assetManager == _assetManager) {
     return;
   }
 
-  _assetManager = assetManager;
+  //TODO:Pedro
+  _assetManager = assetManager as WebOnlyMockAssetManager;
 }
 
 Future<void> _downloadAssetFonts() async {
