@@ -49,7 +49,7 @@ extension DomWindowExtension on DomWindow {
       ]) as DomCSSStyleDeclaration;
   //external DomScreen? get screen;
   external double requestAnimationFrame(DomRequestAnimationFrameCallback callback);
-  
+
   /*
   void postMessage(Object message, String targetOrigin,
           [List<DomMessagePort>? messagePorts]) =>
@@ -614,8 +614,8 @@ void debugResetCanvasCount() {
 
 DomCanvasElement createDomCanvasElement({int? width, int? height}) {
   debugCanvasCount++;
-  
-  
+
+
   final DomCanvasElement canvas =
       domWindow.document.createElement('canvas') as DomCanvasElement;
   if (width != null) {
@@ -898,7 +898,7 @@ extension DomCanvasElementExtension on DomCanvasElement {
 // typedef DomFontFaceSetForEachCallback = void Function(
 //     DomFontFace fontFace, DomFontFace fontFaceAgain, DomFontFaceSet set);
 
-// 
+//
 
 @JS()
 @staticInterop

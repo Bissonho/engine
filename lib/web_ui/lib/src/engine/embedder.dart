@@ -48,7 +48,7 @@ class FlutterViewEmbedder {
             EmbeddingStrategy.create(hostElement: hostElement) {
     // Configure the EngineWindow so it knows how to measure itself.
     // TODO(dit): Refactor ownership according to new design, https://github.com/flutter/flutter/issues/117098
-    
+
 
     //window.configureDimensionsProvider(DimensionsProvider.create(
     //  hostElement: hostElement,
@@ -343,7 +343,7 @@ class FlutterViewEmbedder {
       //   _embeddingStrategy.attachResourcesHost(resourcesHost,
       //       nextTo: glassPaneElement);
       // } else {
-       
+
       // }
        glassPaneShadow!.node
             .insertBefore(resourcesHost, glassPaneShadow!.node.firstChild);

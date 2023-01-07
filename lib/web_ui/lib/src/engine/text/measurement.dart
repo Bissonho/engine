@@ -103,7 +103,7 @@ double measureSubstring(
   } else {
     final String sub =
       start == 0 && end == text.length ? text : text.substring(start, end);
-    width = 23; 
+    width = 23;
     //TODO: canvasContext.measureText(sub).width!;
   }
 

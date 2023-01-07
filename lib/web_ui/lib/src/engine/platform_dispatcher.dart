@@ -750,7 +750,7 @@ class EnginePlatformDispatcher extends ui.PlatformDispatcher {
   //   if (_onLocaleChangedSubscription != null) {
   //     return;
   //   }
-    
+
   //   // updateLocales(); // First time, for good measure.
   //   // _onLocaleChangedSubscription =
   //   //   DomSubscription(domWindow, 'languagechange', allowInterop((DomEvent _) {

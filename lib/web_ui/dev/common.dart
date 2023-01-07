@@ -143,7 +143,7 @@ BrowserEnvironment getBrowserEnvironment(String browserName, { required bool ena
   switch (browserName) {
     case kChrome:
       return ChromeEnvironment(enableWasmGC);
-   
+
   }
   throw UnsupportedError('Browser $browserName is not supported.');
 }

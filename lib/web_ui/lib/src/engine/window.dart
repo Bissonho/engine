@@ -51,8 +51,8 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
     if (_isUrlStrategySet) {
       //_browserHistory = createHistoryForExistingState(_customUrlStrategy);
     }
-    
-    
+
+
     //registerHotRestartListener(() {
     //   _browserHistory?.dispose();
     //   renderer.clearFragmentProgramCache();
@@ -212,7 +212,7 @@ class EngineFlutterWindow extends ui.SingletonFlutterWindow {
   }
 
   //late DimensionsProvider _dimensionsProvider;
-  
+
   //void configureDimensionsProvider(DimensionsProvider dimensionsProvider) {
   //  _dimensionsProvider = dimensionsProvider;
   //}

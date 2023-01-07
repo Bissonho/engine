@@ -148,7 +148,7 @@ class SkwasmRenderer implements Renderer {
     throw UnimplementedError('Not yet implemented');
   }
 
-  
+
   @override
   Future<ui.Codec> instantiateImageCodecFromUrl(Uri uri, {WebOnlyImageCodecChunkCallback? chunkCallback}) {
     throw UnimplementedError('Not yet implemented');
