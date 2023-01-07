@@ -171,7 +171,7 @@ void PlatformConfiguration::DispatchPlatformMessage(
                          tonic::ToDart(response_id)}));
 }
 
-void PlatformConfiguration::DispatchSemanticsAction(int32_t id,
+void PlatformConfiguration::DispatchSemanticsAction(int32_t node_id,
                                                     SemanticsAction action,
                                                     fml::MallocMapping args) {
   std::shared_ptr<tonic::DartState> dart_state =
@@ -190,7 +190,7 @@ void PlatformConfiguration::DispatchSemanticsAction(int32_t id,
 
   tonic::CheckAndHandleError(tonic::DartInvoke(
       dispatch_semantics_action_.Get(),
-      {tonic::ToDart(id), tonic::ToDart(static_cast<int32_t>(action)),
+      {tonic::ToDart(node_id), tonic::ToDart(static_cast<int32_t>(action)),
        args_handle}));
 }
 
@@ -371,9 +371,17 @@ void PlatformConfigurationNativeApi::SetIsolateDebugName(
   UIDartState::Current()->SetDebugName(name);
 }
 
+Dart_PerformanceMode PlatformConfigurationNativeApi::current_performace_mode_ =
+    Dart_PerformanceMode_Default;
+
+Dart_PerformanceMode PlatformConfigurationNativeApi::GetDartPerformanceMode() {
+  return current_performace_mode_;
+}
+
 int PlatformConfigurationNativeApi::RequestDartPerformanceMode(int mode) {
   UIDartState::ThrowIfUIOperationsProhibited();
-  return Dart_SetPerformanceMode(static_cast<Dart_PerformanceMode>(mode));
+  current_performace_mode_ = static_cast<Dart_PerformanceMode>(mode);
+  return Dart_SetPerformanceMode(current_performace_mode_);
 }
 
 Dart_Handle PlatformConfigurationNativeApi::GetPersistentIsolateData() {

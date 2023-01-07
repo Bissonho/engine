@@ -7,6 +7,7 @@ part of ui;
 abstract class FlutterView {
   PlatformDispatcher get platformDispatcher;
   ViewConfiguration get viewConfiguration;
+  Object get viewId;
   double get devicePixelRatio => viewConfiguration.devicePixelRatio;
   Rect get physicalGeometry => viewConfiguration.geometry;
   Size get physicalSize => viewConfiguration.geometry.size;
@@ -22,15 +23,7 @@ abstract class FlutterView {
       platformDispatcher.updateSemantics(update.toString());
 }
 
-abstract class FlutterWindow extends FlutterView {
-  @override
-  PlatformDispatcher get platformDispatcher;
-
-  @override
-  ViewConfiguration get viewConfiguration;
-}
-
-abstract class SingletonFlutterWindow extends FlutterWindow {
+abstract class SingletonFlutterWindow extends FlutterView {
   VoidCallback? get onMetricsChanged => platformDispatcher.onMetricsChanged;
   set onMetricsChanged(VoidCallback? callback) {
     platformDispatcher.onMetricsChanged = callback;

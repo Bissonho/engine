@@ -139,10 +139,16 @@ const List<String> kAllBrowserNames = <String>[
 /// Creates an environment for a browser.
 ///
 /// The [browserName] matches the browser name passed as the `--browser` option.
-BrowserEnvironment getBrowserEnvironment(String browserName) {
+BrowserEnvironment getBrowserEnvironment(String browserName, { required bool enableWasmGC }) {
   switch (browserName) {
     case kChrome:
-      return ChromeEnvironment();
+      return ChromeEnvironment(enableWasmGC);
+    case kEdge:
+      return EdgeEnvironment();
+    case kFirefox:
+      return FirefoxEnvironment();
+    case kSafari:
+      return SafariMacOsEnvironment();
   }
   throw UnsupportedError('Browser $browserName is not supported.');
 }

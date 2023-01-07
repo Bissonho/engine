@@ -5,12 +5,17 @@
 #include <array>
 #include <cmath>
 #include <iostream>
+#include <memory>
 #include <tuple>
+#include <utility>
 
 #include "flutter/testing/testing.h"
 #include "impeller/aiks/aiks_playground.h"
 #include "impeller/aiks/canvas.h"
 #include "impeller/aiks/image.h"
+#include "impeller/entity/contents/color_source_contents.h"
+#include "impeller/entity/contents/filters/inputs/filter_input.h"
+#include "impeller/entity/contents/scene_contents.h"
 #include "impeller/entity/contents/tiled_texture_contents.h"
 #include "impeller/geometry/color.h"
 #include "impeller/geometry/geometry_unittests.h"
@@ -19,6 +24,8 @@
 #include "impeller/playground/widgets.h"
 #include "impeller/renderer/command_buffer.h"
 #include "impeller/renderer/snapshot.h"
+#include "impeller/scene/material.h"
+#include "impeller/scene/node.h"
 #include "impeller/typographer/backends/skia/text_frame_skia.h"
 #include "impeller/typographer/backends/skia/text_render_context_skia.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -74,7 +81,7 @@ TEST_P(AiksTest, CanRenderImage) {
   ASSERT_TRUE(OpenPlaygroundHere(canvas.EndRecordingAsPicture()));
 }
 
-bool GenerateMipmap(std::shared_ptr<Context> context,
+bool GenerateMipmap(const std::shared_ptr<Context>& context,
                     std::shared_ptr<Texture> texture,
                     std::string label) {
   auto buffer = context->CreateCommandBuffer();
@@ -85,7 +92,7 @@ bool GenerateMipmap(std::shared_ptr<Context> context,
   if (!pass) {
     return false;
   }
-  pass->GenerateMipmap(texture, label);
+  pass->GenerateMipmap(std::move(texture), std::move(label));
   pass->EncodeCommands(context->GetResourceAllocator());
   return true;
 }
@@ -100,8 +107,6 @@ TEST_P(AiksTest, CanRenderTiledTexture) {
     if (first_frame) {
       first_frame = false;
       GenerateMipmap(context, texture, "table_mountain_nx");
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
     }
 
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
@@ -302,14 +307,7 @@ TEST_P(AiksTest, CanSaveLayerStandalone) {
 }
 
 TEST_P(AiksTest, CanRenderLinearGradient) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -360,14 +358,7 @@ TEST_P(AiksTest, CanRenderLinearGradient) {
 }
 
 TEST_P(AiksTest, CanRenderLinearGradientManyColors) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -432,14 +423,7 @@ TEST_P(AiksTest, CanRenderLinearGradientManyColors) {
 }
 
 TEST_P(AiksTest, CanRenderLinearGradientWayManyColors) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -481,8 +465,8 @@ TEST_P(AiksTest, CanRenderLinearGradientWayManyColors) {
                           colors = std::move(colors)]() {
       auto contents = std::make_shared<LinearGradientContents>();
       contents->SetEndPoints({0, 0}, {200, 200});
-      contents->SetColors(std::move(colors));
-      contents->SetStops(std::move(stops));
+      contents->SetColors(colors);
+      contents->SetStops(stops);
       contents->SetTileMode(tile_mode);
       contents->SetMatrix(matrix);
       return contents;
@@ -494,14 +478,7 @@ TEST_P(AiksTest, CanRenderLinearGradientWayManyColors) {
 }
 
 TEST_P(AiksTest, CanRenderLinearGradientManyColorsUnevenStops) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -558,14 +535,7 @@ TEST_P(AiksTest, CanRenderLinearGradientManyColorsUnevenStops) {
 }
 
 TEST_P(AiksTest, CanRenderRadialGradient) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -613,14 +583,7 @@ TEST_P(AiksTest, CanRenderRadialGradient) {
 }
 
 TEST_P(AiksTest, CanRenderRadialGradientManyColors) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -682,14 +645,7 @@ TEST_P(AiksTest, CanRenderRadialGradientManyColors) {
 }
 
 TEST_P(AiksTest, CanRenderSweepGradient) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -736,14 +692,7 @@ TEST_P(AiksTest, CanRenderSweepGradient) {
 }
 
 TEST_P(AiksTest, CanRenderSweepGradientManyColors) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
     const Entity::TileMode tile_modes[] = {
         Entity::TileMode::kClamp, Entity::TileMode::kRepeat,
@@ -834,14 +783,7 @@ TEST_P(AiksTest, CanRenderDifferentShapesWithSameColorSource) {
 }
 
 TEST_P(AiksTest, CanPictureConvertToImage) {
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     static int size[2] = {1000, 1000};
     ImGui::Begin("Controls", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::SliderInt2("Size", size, 0, 1000);
@@ -1077,7 +1019,7 @@ TEST_P(AiksTest, CanRenderDifferencePaths) {
   canvas.DrawImage(
       std::make_shared<Image>(CreateTextureForFixture("boston.jpg")), {10, 10},
       Paint{});
-  canvas.DrawPath(std::move(path), paint);
+  canvas.DrawPath(path, paint);
 
   ASSERT_TRUE(OpenPlaygroundHere(canvas.EndRecordingAsPicture()));
 }
@@ -1097,7 +1039,7 @@ static sk_sp<SkData> OpenFixtureAsSkData(const char* fixture_name) {
   return data;
 }
 
-bool RenderTextInCanvas(std::shared_ptr<Context> context,
+bool RenderTextInCanvas(const std::shared_ptr<Context>& context,
                         Canvas& canvas,
                         const std::string& text,
                         const std::string& font_fixture,
@@ -1129,7 +1071,7 @@ bool RenderTextInCanvas(std::shared_ptr<Context> context,
 
   Paint text_paint;
   text_paint.color = Color::Yellow();
-  canvas.DrawTextFrame(std::move(frame), text_position, text_paint);
+  canvas.DrawTextFrame(frame, text_position, text_paint);
   return true;
 }
 
@@ -1181,10 +1123,48 @@ TEST_P(AiksTest, CanRenderTextInSaveLayer) {
   ASSERT_TRUE(OpenPlaygroundHere(canvas.EndRecordingAsPicture()));
 }
 
+TEST_P(AiksTest, CanRenderTextOutsideBoundaries) {
+  Canvas canvas;
+  canvas.Translate({200, 150});
+
+  // Construct the text blob.
+  auto mapping = OpenFixtureAsSkData("wtf.otf");
+  ASSERT_NE(mapping, nullptr);
+
+  Scalar font_size = 80;
+  SkFont sk_font(SkTypeface::MakeFromData(mapping), font_size);
+
+  Paint text_paint;
+  text_paint.color = Color::White().WithAlpha(0.8);
+
+  struct {
+    Point position;
+    const char* text;
+  } text[] = {{Point(0, 0), "0F0F0F0"},
+              {Point(1, 2), "789"},
+              {Point(1, 3), "456"},
+              {Point(1, 4), "123"},
+              {Point(0, 6), "0F0F0F0"}};
+  for (auto& t : text) {
+    canvas.Save();
+    canvas.Translate(t.position * Point(font_size * 2, font_size * 1.1));
+    {
+      auto blob = SkTextBlob::MakeFromString(t.text, sk_font);
+      ASSERT_NE(blob, nullptr);
+      auto frame = TextFrameFromTextBlob(blob);
+      canvas.DrawTextFrame(frame, Point(), text_paint);
+    }
+    canvas.Restore();
+  }
+
+  ASSERT_TRUE(OpenPlaygroundHere(canvas.EndRecordingAsPicture()));
+}
+
 TEST_P(AiksTest, CanDrawPaint) {
   Paint paint;
   paint.color = Color::MediumTurquoise();
   Canvas canvas;
+  canvas.Scale(Vector2(0.2, 0.2));
   canvas.DrawPaint(paint);
   ASSERT_TRUE(OpenPlaygroundHere(canvas.EndRecordingAsPicture()));
 }
@@ -1295,13 +1275,7 @@ TEST_P(AiksTest, ColorWheel) {
   std::shared_ptr<Image> color_wheel_image;
   Matrix color_wheel_transform;
 
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowPos({25, 25});
-    }
-
     // UI state.
     static int current_blend_index = 3;
     static float dst_alpha = 1;
@@ -1429,19 +1403,12 @@ TEST_P(AiksTest, TransformMultipliesCorrectly) {
 
 TEST_P(AiksTest, SolidStrokesRenderCorrectly) {
   // Compare with https://fiddle.skia.org/c/027392122bec8ac2b5d5de00a4b9bbe2
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     static Color color = Color::Black().WithAlpha(0.5);
     static float scale = 3;
     static bool add_circle_clip = true;
 
-    ImGui::Begin("Controls");
+    ImGui::Begin("Controls", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::ColorEdit4("Color", reinterpret_cast<float*>(&color));
     ImGui::SliderFloat("Scale", &scale, 0, 6);
     ImGui::Checkbox("Circle clip", &add_circle_clip);
@@ -1499,14 +1466,7 @@ TEST_P(AiksTest, SolidStrokesRenderCorrectly) {
 
 TEST_P(AiksTest, GradientStrokesRenderCorrectly) {
   // Compare with https://fiddle.skia.org/c/027392122bec8ac2b5d5de00a4b9bbe2
-  bool first_frame = true;
   auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
-    if (first_frame) {
-      first_frame = false;
-      ImGui::SetNextWindowSize({480, 100});
-      ImGui::SetNextWindowPos({100, 550});
-    }
-
     static float scale = 3;
     static bool add_circle_clip = true;
     const char* tile_mode_names[] = {"Clamp", "Repeat", "Mirror", "Decal"};
@@ -1516,7 +1476,7 @@ TEST_P(AiksTest, GradientStrokesRenderCorrectly) {
     static int selected_tile_mode = 0;
     static float alpha = 1;
 
-    ImGui::Begin("Controls");
+    ImGui::Begin("Controls", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::SliderFloat("Scale", &scale, 0, 6);
     ImGui::Checkbox("Circle clip", &add_circle_clip);
     ImGui::SliderFloat("Alpha", &alpha, 0, 1);
@@ -1725,7 +1685,7 @@ TEST_P(AiksTest, SaveLayerFiltersScaleWithTransform) {
   canvas.Translate(Vector2(100, 100));
 
   auto texture = std::make_shared<Image>(CreateTextureForFixture("boston.jpg"));
-  auto draw_image_layer = [&canvas, &texture](Paint paint) {
+  auto draw_image_layer = [&canvas, &texture](const Paint& paint) {
     canvas.SaveLayer(paint);
     canvas.DrawImage(texture, {}, Paint{});
     canvas.Restore();
@@ -1743,6 +1703,42 @@ TEST_P(AiksTest, SaveLayerFiltersScaleWithTransform) {
   draw_image_layer(effect_paint);
 
   ASSERT_TRUE(OpenPlaygroundHere(canvas.EndRecordingAsPicture()));
+}
+
+TEST_P(AiksTest, SceneColorSource) {
+  // Load up the scene.
+  auto mapping =
+      flutter::testing::OpenFixtureAsMapping("flutter_logo_baked.glb.ipscene");
+  ASSERT_NE(mapping, nullptr);
+
+  std::shared_ptr<scene::Node> gltf_scene = scene::Node::MakeFromFlatbuffer(
+      *mapping, *GetContext()->GetResourceAllocator());
+  ASSERT_NE(gltf_scene, nullptr);
+
+  auto callback = [&](AiksContext& renderer, RenderTarget& render_target) {
+    Paint paint;
+
+    paint.color_source_type = Paint::ColorSourceType::kScene;
+    paint.color_source = [this, gltf_scene]() {
+      Scalar angle = GetSecondsElapsed();
+      Scalar distance = 2;
+      auto camera_position =
+          Vector3(distance * std::sin(angle), 2, -distance * std::cos(angle));
+      auto contents = std::make_shared<SceneContents>();
+      contents->SetNode(gltf_scene);
+      contents->SetCameraTransform(
+          Matrix::MakePerspective(Degrees(45), GetWindowSize(), 0.1, 1000) *
+          Matrix::MakeLookAt(camera_position, {0, 0, 0}, {0, 1, 0}));
+      return contents;
+    };
+
+    Canvas canvas;
+    canvas.Scale(GetContentScale());
+    canvas.DrawPaint(paint);
+    return renderer.Render(canvas.EndRecordingAsPicture(), render_target);
+  };
+
+  ASSERT_TRUE(OpenPlaygroundHere(callback));
 }
 
 }  // namespace testing

@@ -138,9 +138,9 @@ class TextDimensions {
 
   /// The height of the paragraph being measured.
   double get height {
-    double cachedHeight = _readAndCacheMetrics().height as double;
-
-    //#Unity
+    double cachedHeight = _readAndCacheMetrics().height;
+    
+    
     /*if (browserEngine == BrowserEngine.firefox &&
       // In the flutter tester environment, we use a predictable-size for font
       // measurement tests.
@@ -173,7 +173,7 @@ class TextHeightRuler {
   final TextDimensions _dimensions = TextDimensions(domDocument.createElement('flt-paragraph'));
 
   /// The alphabetic baseline for this ruler's [textHeightStyle].
-  late final double alphabeticBaseline = _probe.getBoundingClientRect().bottom.toDouble();
+  late final double alphabeticBaseline = _probe.getBoundingClientRect().bottom;
 
   /// The height for this ruler's [textHeightStyle].
   late final double height = _dimensions.height;

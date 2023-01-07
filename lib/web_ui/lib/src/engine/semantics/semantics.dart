@@ -1243,6 +1243,11 @@ class SemanticsObject {
     }
   }
 
+  /// Removes the `role` HTML attribue, if any.
+  void clearAriaRole() {
+    element.removeAttribute('role');
+  }
+
   /// Role managers.
   ///
   /// The [_roleManagers] map needs to have a stable order for easier debugging

@@ -8,8 +8,8 @@
 #include <unordered_map>
 
 #include "flutter/fml/hash_combine.h"
+#include "flutter/fml/logging.h"
 #include "flutter/fml/macros.h"
-#include "fml/logging.h"
 #include "impeller/base/validation.h"
 #include "impeller/entity/advanced_blend.vert.h"
 #include "impeller/entity/advanced_blend_color.frag.h"
@@ -61,14 +61,22 @@
 #include "impeller/entity/tiled_texture_fill.frag.h"
 #include "impeller/entity/tiled_texture_fill.vert.h"
 #include "impeller/entity/vertices.frag.h"
+#include "impeller/entity/yuv_to_rgb_filter.frag.h"
+#include "impeller/entity/yuv_to_rgb_filter.vert.h"
 #include "impeller/renderer/formats.h"
 #include "impeller/renderer/pipeline.h"
+#include "impeller/scene/scene_context.h"
 
 #include "impeller/entity/position.vert.h"
 #include "impeller/entity/position_color.vert.h"
 #include "impeller/entity/position_uv.vert.h"
 
+#include "impeller/scene/scene_context.h"
 #include "impeller/typographer/glyph_atlas.h"
+
+#include "impeller/entity/linear_gradient_ssbo_fill.frag.h"
+#include "impeller/entity/radial_gradient_ssbo_fill.frag.h"
+#include "impeller/entity/sweep_gradient_ssbo_fill.frag.h"
 
 namespace impeller {
 
@@ -80,6 +88,15 @@ using RadialGradientFillPipeline =
     RenderPipelineT<GradientFillVertexShader, RadialGradientFillFragmentShader>;
 using SweepGradientFillPipeline =
     RenderPipelineT<GradientFillVertexShader, SweepGradientFillFragmentShader>;
+using LinearGradientSSBOFillPipeline =
+    RenderPipelineT<GradientFillVertexShader,
+                    LinearGradientSsboFillFragmentShader>;
+using RadialGradientSSBOFillPipeline =
+    RenderPipelineT<GradientFillVertexShader,
+                    RadialGradientSsboFillFragmentShader>;
+using SweepGradientSSBOFillPipeline =
+    RenderPipelineT<GradientFillVertexShader,
+                    SweepGradientSsboFillFragmentShader>;
 using BlendPipeline = RenderPipelineT<BlendVertexShader, BlendFragmentShader>;
 using RRectBlurPipeline =
     RenderPipelineT<RrectBlurVertexShader, RrectBlurFragmentShader>;
@@ -160,17 +177,20 @@ using GeometryPositionPipeline =
     RenderPipelineT<PositionVertexShader, VerticesFragmentShader>;
 using GeometryColorPipeline =
     RenderPipelineT<PositionColorVertexShader, VerticesFragmentShader>;
+using YUVToRGBFilterPipeline =
+    RenderPipelineT<YuvToRgbFilterVertexShader, YuvToRgbFilterFragmentShader>;
 
 struct ContentContextOptions {
   SampleCount sample_count = SampleCount::kCount1;
   BlendMode blend_mode = BlendMode::kSourceOver;
   CompareFunction stencil_compare = CompareFunction::kEqual;
   StencilOperation stencil_operation = StencilOperation::kKeep;
+  PrimitiveType primitive_type = PrimitiveType::kTriangle;
 
   struct Hash {
     constexpr std::size_t operator()(const ContentContextOptions& o) const {
       return fml::HashCombine(o.sample_count, o.blend_mode, o.stencil_compare,
-                              o.stencil_operation);
+                              o.stencil_operation, o.primitive_type);
     }
   };
 
@@ -180,7 +200,8 @@ struct ContentContextOptions {
       return lhs.sample_count == rhs.sample_count &&
              lhs.blend_mode == rhs.blend_mode &&
              lhs.stencil_compare == rhs.stencil_compare &&
-             lhs.stencil_operation == rhs.stencil_operation;
+             lhs.stencil_operation == rhs.stencil_operation &&
+             lhs.primitive_type == rhs.primitive_type;
     }
   };
 
@@ -197,11 +218,31 @@ class ContentContext {
 
   bool IsValid() const;
 
+  std::shared_ptr<scene::SceneContext> GetSceneContext() const;
+
   std::shared_ptr<Tessellator> GetTessellator() const;
 
   std::shared_ptr<Pipeline<PipelineDescriptor>> GetLinearGradientFillPipeline(
       ContentContextOptions opts) const {
     return GetPipeline(linear_gradient_fill_pipelines_, opts);
+  }
+
+  std::shared_ptr<Pipeline<PipelineDescriptor>>
+  GetLinearGradientSSBOFillPipeline(ContentContextOptions opts) const {
+    FML_DCHECK(GetBackendFeatures().ssbo_support);
+    return GetPipeline(linear_gradient_ssbo_fill_pipelines_, opts);
+  }
+
+  std::shared_ptr<Pipeline<PipelineDescriptor>>
+  GetRadialGradientSSBOFillPipeline(ContentContextOptions opts) const {
+    FML_DCHECK(GetBackendFeatures().ssbo_support);
+    return GetPipeline(radial_gradient_ssbo_fill_pipelines_, opts);
+  }
+
+  std::shared_ptr<Pipeline<PipelineDescriptor>>
+  GetSweepGradientSSBOFillPipeline(ContentContextOptions opts) const {
+    FML_DCHECK(GetBackendFeatures().ssbo_support);
+    return GetPipeline(sweep_gradient_ssbo_fill_pipelines_, opts);
   }
 
   std::shared_ptr<Pipeline<PipelineDescriptor>> GetRadialGradientFillPipeline(
@@ -299,6 +340,11 @@ class ContentContext {
     return GetPipeline(atlas_pipelines_, opts);
   }
 
+  std::shared_ptr<Pipeline<PipelineDescriptor>> GetYUVToRGBFilterPipeline(
+      ContentContextOptions opts) const {
+    return GetPipeline(yuv_to_rgb_filter_pipelines_, opts);
+  }
+
   // Advanced blends.
 
   std::shared_ptr<Pipeline<PipelineDescriptor>> GetBlendColorPipeline(
@@ -380,13 +426,16 @@ class ContentContext {
 
   std::shared_ptr<GlyphAtlasContext> GetGlyphAtlasContext() const;
 
+  const BackendFeatures& GetBackendFeatures() const;
+
   using SubpassCallback =
       std::function<bool(const ContentContext&, RenderPass&)>;
 
   /// @brief  Creates a new texture of size `texture_size` and calls
   ///         `subpass_callback` with a `RenderPass` for drawing to the texture.
-  std::shared_ptr<Texture> MakeSubpass(ISize texture_size,
-                                       SubpassCallback subpass_callback) const;
+  std::shared_ptr<Texture> MakeSubpass(
+      ISize texture_size,
+      const SubpassCallback& subpass_callback) const;
 
  private:
   std::shared_ptr<Context> context_;
@@ -404,6 +453,12 @@ class ContentContext {
   mutable Variants<LinearGradientFillPipeline> linear_gradient_fill_pipelines_;
   mutable Variants<RadialGradientFillPipeline> radial_gradient_fill_pipelines_;
   mutable Variants<SweepGradientFillPipeline> sweep_gradient_fill_pipelines_;
+  mutable Variants<LinearGradientSSBOFillPipeline>
+      linear_gradient_ssbo_fill_pipelines_;
+  mutable Variants<RadialGradientSSBOFillPipeline>
+      radial_gradient_ssbo_fill_pipelines_;
+  mutable Variants<SweepGradientSSBOFillPipeline>
+      sweep_gradient_ssbo_fill_pipelines_;
   mutable Variants<RRectBlurPipeline> rrect_blur_pipelines_;
   mutable Variants<BlendPipeline> texture_blend_pipelines_;
   mutable Variants<TexturePipeline> texture_pipelines_;
@@ -421,6 +476,7 @@ class ContentContext {
   mutable Variants<AtlasPipeline> atlas_pipelines_;
   mutable Variants<GeometryPositionPipeline> geometry_position_pipelines_;
   mutable Variants<GeometryColorPipeline> geometry_color_pipelines_;
+  mutable Variants<YUVToRGBFilterPipeline> yuv_to_rgb_filter_pipelines_;
   // Advanced blends.
   mutable Variants<BlendColorPipeline> blend_color_pipelines_;
   mutable Variants<BlendColorBurnPipeline> blend_colorburn_pipelines_;
@@ -470,6 +526,7 @@ class ContentContext {
   bool is_valid_ = false;
   std::shared_ptr<Tessellator> tessellator_;
   std::shared_ptr<GlyphAtlasContext> glyph_atlas_context_;
+  std::shared_ptr<scene::SceneContext> scene_context_;
 
   FML_DISALLOW_COPY_AND_ASSIGN(ContentContext);
 };

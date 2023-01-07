@@ -7,7 +7,8 @@ import 'dart:developer' as developer;
 import 'dart:js';
 
 import 'package:ui/src/engine/assets.dart';
-//import 'package:ui/src/engine/browser_detection.dart';
+import 'package:ui/src/engine/browser_detection.dart';
+import 'package:ui/src/engine/configuration.dart';
 import 'package:ui/src/engine/embedder.dart';
 //import 'package:ui/src/engine/mouse_cursor.dart';
 //import 'package:ui/src/engine/navigation.dart';
@@ -16,8 +17,9 @@ import 'package:ui/src/engine/platform_views/content_manager.dart';
 import 'package:ui/src/engine/profiler.dart';
 //import 'package:ui/src/engine/raw_keyboard.dart';
 import 'package:ui/src/engine/renderer.dart';
-//import 'package:ui/src/engine/safe_browser_api.dart';
-//import 'package:ui/src/engine/window.dart';
+import 'package:ui/src/engine/safe_browser_api.dart';
+import 'package:ui/src/engine/semantics/accessibility.dart';
+import 'package:ui/src/engine/window.dart';
 import 'package:ui/ui.dart' as ui;
 
 import 'dom.dart';
@@ -128,7 +130,8 @@ void debugResetEngineInitializationState() {
 ///  * [initializeEngineUi], which is typically called after this function, and
 ///    puts UI elements on the page.
 Future<void> initializeEngineServices({
-  WebOnlyMockAssetManager? assetManager,
+  AssetManager? assetManager,
+  JsFlutterConfiguration? jsConfiguration
 }) async {
   if (_initializationState != DebugEngineInitializationState.uninitialized) {
     assert(() {
@@ -140,6 +143,9 @@ Future<void> initializeEngineServices({
     return;
   }
   _initializationState = DebugEngineInitializationState.initializingServices;
+
+  // Store `jsConfiguration` so user settings are available to the engine.
+  configuration.setUserConfiguration(jsConfiguration);
 
   // Setup the hook that allows users to customize URL strategy before running
   // the app.
@@ -238,8 +244,9 @@ Future<void> initializeEngineUi() async {
   }
   _initializationState = DebugEngineInitializationState.initializingUi;
 
-  //RawKeyboard.initialize(onMacOs: operatingSystem == OperatingSystem.macOs);
-  //MouseCursor.initialize();
+  initializeAccessibilityAnnouncements();
+  RawKeyboard.initialize(onMacOs: operatingSystem == OperatingSystem.macOs);
+  MouseCursor.initialize();
   ensureFlutterViewEmbedderInitialized();
   _initializationState = DebugEngineInitializationState.initialized;
 }

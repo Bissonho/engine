@@ -8,8 +8,11 @@
 
 #include "flutter/fml/closure.h"
 #include "flutter/fml/macros.h"
+#include "flutter/fml/time/time_delta.h"
 
 #include "impeller/geometry/point.h"
+#include "impeller/image/compressed_image.h"
+#include "impeller/image/decompressed_image.h"
 #include "impeller/renderer/renderer.h"
 #include "impeller/renderer/texture.h"
 #include "impeller/runtime_stage/runtime_stage.h"
@@ -38,7 +41,9 @@ class Playground {
 
   static bool ShouldOpenNewPlaygrounds();
 
-  void SetupWindow(PlaygroundBackend backend);
+  void SetupContext(PlaygroundBackend backend);
+
+  void SetupWindow();
 
   void TeardownWindow();
 
@@ -48,14 +53,29 @@ class Playground {
 
   Point GetContentScale() const;
 
+  /// @brief Get the amount of time elapsed from the start of the playground's
+  /// execution.
+  Scalar GetSecondsElapsed() const;
+
   std::shared_ptr<Context> GetContext() const;
 
   bool OpenPlaygroundHere(const Renderer::RenderCallback& render_callback);
 
   bool OpenPlaygroundHere(SinglePassCallback pass_callback);
 
-  std::optional<DecompressedImage> LoadFixtureImageRGBA(
-      const char* fixture_name) const;
+  std::shared_ptr<CompressedImage> LoadFixtureImageCompressed(
+      std::shared_ptr<fml::Mapping> mapping) const;
+
+  std::optional<DecompressedImage> DecodeImageRGBA(
+      const std::shared_ptr<CompressedImage>& compressed) const;
+
+  std::shared_ptr<Texture> CreateTextureForFixture(
+      DecompressedImage& decompressed_image,
+      bool enable_mipmapping = false) const;
+
+  std::shared_ptr<Texture> CreateTextureForFixture(
+      std::shared_ptr<fml::Mapping> mapping,
+      bool enable_mipmapping = false) const;
 
   std::shared_ptr<Texture> CreateTextureForFixture(
       const char* fixture_name,
@@ -63,9 +83,6 @@ class Playground {
 
   std::shared_ptr<Texture> CreateTextureCubeForFixture(
       std::array<const char*, 6> fixture_names) const;
-
-  std::shared_ptr<RuntimeStage> LoadFixtureRuntimeStage(
-      const char* fixture_name) const;
 
   static bool SupportsBackend(PlaygroundBackend backend);
 
@@ -81,9 +98,12 @@ class Playground {
   static const bool is_enabled_ = false;
 #endif  // IMPELLER_ENABLE_PLAYGROUND
 
+  fml::TimeDelta start_time_;
+
   struct GLFWInitializer;
   std::unique_ptr<GLFWInitializer> glfw_initializer_;
   std::unique_ptr<PlaygroundImpl> impl_;
+  std::shared_ptr<Context> context_;
   std::unique_ptr<Renderer> renderer_;
   Point cursor_position_;
   ISize window_size_ = ISize{1024, 768};

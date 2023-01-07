@@ -19,7 +19,7 @@ sk_sp<SkSurface> CreateRenderSurface(const FlutterLayer& layer,
       SkImageInfo::MakeN32Premul(layer.size.width, layer.size.height);
   auto surface = context ? SkSurface::MakeRenderTarget(
                                context,                   // context
-                               SkBudgeted::kNo,           // budgeted
+                               skgpu::Budgeted::kNo,      // budgeted
                                image_info,                // image info
                                1,                         // sample count
                                kTopLeft_GrSurfaceOrigin,  // surface origin
@@ -275,9 +275,10 @@ void FilterMutationsByType(
 void FilterMutationsByType(
     const FlutterPlatformView* view,
     FlutterPlatformViewMutationType type,
-    std::function<void(const FlutterPlatformViewMutation& mutation)> handler) {
+    const std::function<void(const FlutterPlatformViewMutation& mutation)>&
+        handler) {
   return FilterMutationsByType(view->mutations, view->mutations_count, type,
-                               std::move(handler));
+                               handler);
 }
 
 SkMatrix GetTotalMutationTransformationMatrix(
